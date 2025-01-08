@@ -1,0 +1,29 @@
+.box {
+    background-color:#cdf3ff;
+    color: black;
+    padding: 1rem;
+    border: 2px solid #888484;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 15px;
+    margin: 10px auto;
+    display: inline-block;
+}
+.box:hover,
+.box:focus {
+    background-color: #8de3fc;
+}
+.box:has(input:checked) {
+    border: 2px solid #116215;
+    background-color: #9de387;
+}
+
+.box label {
+    margin-left: 10px;
+}
+
+.boxContainer {
+    display: flex;
+    align-content: center;
+    flex-grow: 1;
+}
