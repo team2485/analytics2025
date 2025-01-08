@@ -1,0 +1,44 @@
+.svg {
+    width: 40px;
+}
+
+.svg:hover {
+    color: #FFD90f;
+    
+}
+
+.Success {
+    background-color: #9de387;
+    text-align: center;
+    font-size: 25px;
+    height: 40px;
+    width: 150px;
+    border-radius: 5px;
+    border: 2px solid #15771a;
+}
+
+.Fail {
+    background-color: #f2a4a4;
+    text-align: center;
+    font-size: 25px;
+    height: 40px;
+    width: 150px;
+    border-radius: 5px;
+    border: 2px solid rgb(184, 0, 0);
+}
+
+.NumericInput {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.input {
+    display: flex;
+    flex-direction: row;
+}
+
+.NumericInput label.label {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
