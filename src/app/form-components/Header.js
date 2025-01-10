@@ -5,6 +5,7 @@ export default function Header ({ headerName }) {
         <div className={styles.header}>
             <span>{headerName}</span>
             <hr></hr>
+            
         </div>
     )
 }

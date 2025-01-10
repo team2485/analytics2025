@@ -7,6 +7,7 @@ import Checkbox from "./form-components/Checkbox";
 import SubHeader from "./form-components/SubHeader";
 import Qualitative from "./form-components/Qualitative";
 import CommentBox from "./form-components/CommentBox";
+import EndPlacement from "./form-components/EndPlacement";
 
 export default function Home() {
   const [noShow, setNoShow] = useState(false);
