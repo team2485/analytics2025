@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 import Checkbox from "./form-components/Checkbox";
 import SubHeader from "./form-components/SubHeader";
+import EndPlacement from "./form-components/EndPlacement";
 
 export default function Home() {
   const [noShow, setNoShow] = useState(false);
@@ -75,6 +76,7 @@ export default function Home() {
             </div>
           </>
         )}
+        <EndPlacement />
       </form>
     </div>
   );
