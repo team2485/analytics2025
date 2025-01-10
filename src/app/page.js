@@ -4,6 +4,7 @@ import TextInput from "./form-components/TextInput";
 import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 import Checkbox from "./form-components/Checkbox";
+import SubHeader from "./form-components/SubHeader";
 
 export default function Home() {
   const [noShow, setNoShow] = useState(false);
@@ -41,6 +42,7 @@ export default function Home() {
             type={"number"}
           />
         </div>
+        <div>match type radio button</div>
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
@@ -51,6 +53,25 @@ export default function Home() {
             <div className={styles.Auto}>
               <Header headerName={"Auto"}/>
               <Checkbox visibleName={"Leave"} internalName={"leave"} />
+              <div className={styles.Coral}>
+                <SubHeader subHeaderName={"Coral"}/>
+                <div className={styles.L1}>
+                  <span>L1</span><div>Success Input</div><div>Fail Input</div>
+                </div>
+                <div className={styles.L2}>
+                  <span>L2</span><div>Success Input</div><div>Fail Input</div>
+                </div>
+                <div className={styles.L3}>
+                  <span>L3</span><div>Success Input</div><div>Fail Input</div>
+                </div>
+                <div className={styles.L4}>
+                  <span>L4</span><div>Success Input</div><div>Fail Input</div>
+                </div>
+              </div>
+              <SubHeader subHeaderName={"Algae Removed"}/>
+              <div className={styles.HBox}>
+                
+              </div>
             </div>
           </>
         )}
