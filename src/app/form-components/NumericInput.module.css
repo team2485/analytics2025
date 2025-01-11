@@ -1,13 +1,19 @@
-.svg {
-    width: 40px;
+
+.SuccessButton {
+    width: 1000px;
+    background-color: yellow;
 }
 
-.svg:hover {
-    color: #FFD90f;
+.FailButton {
+    width: 1000px;
     
 }
 
-.Success {
+.Counter button {
+    width: 1000;
+}
+
+.Success input {
     background-color: #9de387;
     text-align: center;
     font-size: 25px;
@@ -17,7 +23,7 @@
     border: 2px solid #15771a;
 }
 
-.Fail {
+.Fail input {
     background-color: #f2a4a4;
     text-align: center;
     font-size: 25px;
@@ -27,13 +33,23 @@
     border: 2px solid rgb(184, 0, 0);
 }
 
+.Counter{
+    background-color: #66FFD4;
+    text-align: center;
+    font-size: 25px;
+    height: 40px;
+    width: 150px;
+    border-radius: 5px;
+    border: 2px solid #CBFFF5;
+}
+
 .NumericInput {
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
-.input {
+.Container {
     display: flex;
     flex-direction: row;
 }

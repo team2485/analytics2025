@@ -5,7 +5,9 @@ import NumericInput from "./form-components/NumericInput";
 export default function Home() {
   return (
     <div>
-      <NumericInput/>
+      <NumericInput pieceType={"Fail"}/>
+      <NumericInput pieceType={"Success"}/>
+      
     </div>
   );
 }
