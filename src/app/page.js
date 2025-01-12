@@ -1,8 +1,14 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import Header from "./form-components/Header";
 import TextInput from "./form-components/TextInput";
 import styles from "./page.module.css";
 import NumericInput from "./form-components/NumericInput";
+import Checkbox from "./form-components/Checkbox";
+import CommentBox from "./form-components/CommentBox";
+import EndPlacement from "./form-components/EndPlacement";
+import Qualitative from "./form-components/Qualitative";
+import SubHeader from "./form-components/SubHeader";
 
 
 export default function Home() {
@@ -27,6 +33,7 @@ export default function Home() {
   return (
     <div className={styles.MainDiv}>
       <form ref={form} name="Scouting Form">
+        <NumericInput pieceType={"Success"}/>
         <Header headerName={"Match Info"} />
         <div className={styles.MatchInfo}>
         <TextInput 
