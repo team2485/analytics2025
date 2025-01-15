@@ -7,7 +7,7 @@
     padding-bottom: 50px;
     min-height: calc(100vh - 45px);
     font-family: "Belleza", sans-serif;
-    justify-content: center;
+    justify-items: center;
 }
 
 .MatchInfo {
@@ -17,6 +17,9 @@
     justify-content: space-evenly;
     gap: 5px;
   }
+.Endgame {
+  justify-items: center;
+}
 .Coral {
     display: flex;
     flex-direction: column;

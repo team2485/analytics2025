@@ -1,52 +1,46 @@
-'use client';
-import { useState } from 'react';
-import './EndPlacement.css';
+import { useEffect, useState } from 'react';
+import styles from './EndPlacement.module.css'
 
-function EndPlacement() {
-  const items = [
-    { id: 'none', label: 'None' },
-    { id: 'park', label: 'Park' },
-    { id: 'failpark', label: 'Fail Park' },
-    { id: 'shallowcage', label: 'Shallow Cage' },
-    { id: 'deepcage', label: 'Deep Cage' },
-    { id: 'multi-cage', label: 'Multi-cage climb' }
-  ];
+export default function EndPlacement () {
 
-  const [selected, setSelected] = useState('');
+    const [endLocation, setEndLocation] = useState(0);
+    const [multicage, setMultiCage] = useState(false);
 
-  const handleChange = (id) => {
-    setSelected(id);
-  };
+    useEffect(() => {
+        if (multicage && (endLocation != 3 ||endLocation != 4)) setMultiCage(false);
+        console.log(endLocation);
+    }, [multicage, endLocation]);
 
-  return (
-    <div className="container">
-      <h1 className="title">Endgame</h1>
-      <div className="box-container">
-        {items.map((item) => {
-          if (item.id === 'multi-cage' && selected !== 'deepcage') {
-            return null;
-          }
-          
-          return (
-            <div
-              key={item.id}
-              className={`box ${selected === item.id ? 'checked' : ''}`}
-              onClick={() => handleChange(item.id)}
-            >
-              <input
-                type="radio"
-                name="endgame"
-                value={item.id}
-                checked={selected === item.id}
-                onChange={() => handleChange(item.id)}
-              />
-              <label>{item.label}</label>
+    return (
+        <div className={styles.endPossibilities}>
+            <div className={styles.option} onClick={(e) => {e.target.querySelector("input")?.click();}}>
+                <input name="endlocation" type="radio" id="None" value={0} defaultChecked onChange={(e) => setEndLocation(e.target.value)}></input>
+                <label htmlFor="None">None</label>
             </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+            <div className={styles.option} onClick={(e) => {e.target.querySelector("input")?.click();}}>
+                <input name="endlocation" type="radio" id="Park" value={1} onChange={(e) => setEndLocation(e.target.value)}></input>
+                <label htmlFor="Park">Park</label>
+            </div>
+            <div className={styles.option} onClick={(e) => {e.target.querySelector("input")?.click();}}>
+                <input name="endlocation" type="radio" id="FailAndPark" value={2} onChange={(e) => setEndLocation(e.target.value)}></input>
+                <label htmlFor="FailAndPark">Fail + Park</label>
+            </div>
+            <div className={styles.option} onClick={(e) => {e.target.querySelector("input")?.click();}}>
+                <input name="endlocation" type="radio" id="ShallowSuccess" value={3} onChange={(e) => setEndLocation(e.target.value)}></input>
+                <label htmlFor="ShallowSuccess">Shallow Cage</label>
+            </div>
+            <div className={styles.option} onClick={(e) => {e.target.querySelector("input")?.click();}}>
+                <input name="endlocation" type="radio" id="DeepSuccess" value={4} onChange={(e) => setEndLocation(e.target.value)}></input>
+                <label htmlFor="DeepSuccess">Deep Cage</label>
+            </div>
+            { (endLocation == 3 || endLocation == 4) &&
+                <>
+                    <div className={styles.checkOption} onClick={(e) => {e.target.querySelector("input")?.click();}}>
+                        <input type="checkbox" id="MultiCage" name="multicage" onChange={(e) => {setMultiCage(e.target.checked)}}></input>
+                        <label htmlFor="multicage">Multi-Cage Climb?</label>
+                    </div>
+                </>
+            }
+        </div>
+    )
 }
-
-export default EndPlacement;
