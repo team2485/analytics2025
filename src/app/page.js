@@ -74,7 +74,7 @@ export default function Home() {
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
                 <div className={styles.L1}>
-                  <span>L1</span>
+                  <h2>L1</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"autoL1success"}/>
