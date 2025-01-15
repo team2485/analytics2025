@@ -59,8 +59,8 @@ export default function Home() {
             defaultValue={""}
             type={"number"}
           />
-          <MatchType />
         </div>
+        <MatchType />
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
@@ -227,7 +227,7 @@ export default function Home() {
             </div>
             <div className={styles.Endgame}>
               <Header headerName={"Endgame"}/>
-              <div>Endgame Placement</div>
+              <EndPlacement/>
             </div>
             <div className={styles.PostMatch}>
               <br></br>
