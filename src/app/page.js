@@ -74,29 +74,65 @@ export default function Home() {
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
                 <div className={styles.L1}>
-                  <span>L1</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L1</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"autoL1success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"autoL1fail"}/>
                 </div>
                 <div className={styles.L2}>
-                  <span>L2</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L2</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"autoL2success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"autoL2fail"}/>
                 </div>
                 <div className={styles.L3}>
-                  <span>L3</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L3</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"autoL3success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"autoL3fail"}/>
                 </div>
                 <div className={styles.L4}>
-                  <span>L4</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L4</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"autoL4success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"autoL4fail"}/>
                 </div>
               </div>
               <SubHeader subHeaderName={"Algae Removed"}/>
               <div className={styles.HBox}>
-                <div>Success Input</div>
+                <NumericInput 
+                  pieceType={"Counter"}
+                  internalName={"autoalgaeremoved"}/>
               </div>
               <SubHeader subHeaderName={"Processor"} />
               <div className={styles.HBox}>
-                <div>Success Input</div><div>Fail Input</div>
+                <NumericInput 
+                  pieceType={"Success"}
+                  internalName={"autoprocessorsuccess"}/>
+                <NumericInput 
+                  pieceType={"Fail"}
+                  internalName={"autoprocessorfail"}/>
               </div>
               <SubHeader subHeaderName={"Net"} />
               <div className={styles.HBox}>
-                <div>Success Input</div><div>Fail Input</div>
+                <NumericInput 
+                  pieceType={"Success"}
+                  internalName={"autonetsuccess"}/>
+                <NumericInput 
+                  pieceType={"Fail"}
+                  internalName={"autonetfail"}/>
               </div>
             </div>
             <div className={styles.Auto}>
@@ -104,34 +140,75 @@ export default function Home() {
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
                 <div className={styles.L1}>
-                  <span>L1</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L1</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"teleL1success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"teleL1fail"}/>
                 </div>
                 <div className={styles.L2}>
-                  <span>L2</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L2</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"teleL2success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"teleL2fail"}/>
                 </div>
                 <div className={styles.L3}>
-                  <span>L3</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L3</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"teleL3success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"teleL3fail"}/>
                 </div>
                 <div className={styles.L4}>
-                  <span>L4</span><div>Success Input</div><div>Fail Input</div>
+                  <span>L4</span>
+                  <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"teleL4success"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"teleL4fail"}/>
                 </div>
               </div>
               <SubHeader subHeaderName={"Algae Removed"}/>
               <div className={styles.HBox}>
-                <div>Success Input</div>
+                <NumericInput 
+                  pieceType={"Counter"}
+                  internalName={"telealgaeremoved"}/>
               </div>
               <SubHeader subHeaderName={"Processor"} />
               <div className={styles.HBox}>
-                <div>Success Input</div><div>Fail Input</div>
+                <NumericInput 
+                  pieceType={"Success"}
+                  internalName={"teleprocessorsuccess"}/>
+                <NumericInput 
+                  pieceType={"Fail"}
+                  internalName={"teleprocessorfail"}/>
               </div>
               <SubHeader subHeaderName={"Net"} />
               <div className={styles.HBox}>
-                <div>Success Input</div><div>Fail Input</div>
+              <NumericInput 
+                    pieceType={"Success"}
+                    internalName={"telenetsuccess"}/>
+                  <NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"telenetfail"}/>
               </div>
               <SubHeader subHeaderName={"Human Player"}/>
               <Checkbox visibleName={"Human Player From Team?"} internalName={"humanplayer"}/>
               <div className={styles.HBox}>
-                <div>Success Input</div><div>Fail Input</div>
+                <NumericInput 
+                  pieceType={"Success"}
+                  internalName={"hpsuccess"}/>
+                <NumericInput 
+                  pieceType={"Fail"}
+                  internalName={"hpfail"}/>
               </div>
             </div>
             <div className={styles.Endgame}>

@@ -1,26 +1,24 @@
 
 .SuccessButton {
-    width: 1000px;
-    background-color: yellow;
+
 }
 
 .FailButton {
-    width: 1000px;
+
     
 }
 
 .Counter button {
-    width: 1000;
+
 }
 
 .Success input {
-    background-color: #9de387;
     text-align: center;
     font-size: 25px;
     height: 40px;
     width: 150px;
     border-radius: 5px;
-    border: 2px solid #15771a;
+    border: 2px solid black;
 }
 
 .Fail input {
@@ -34,13 +32,12 @@
 }
 
 .Counter{
-    background-color: #66FFD4;
     text-align: center;
     font-size: 25px;
     height: 40px;
     width: 150px;
     border-radius: 5px;
-    border: 2px solid #CBFFF5;
+    border: 2px solid black;
 }
 
 .NumericInput {
