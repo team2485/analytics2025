@@ -1,43 +1,87 @@
 
-.SuccessButton {
+.SuccessButtonLeft {
+    background-color: #87E47E;
+    border: 1px solid black; 
+    color: black;
+    padding: 5px 10px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
+    
+}
+
+.SuccessButtonRight {
+    background-color: #87E47E;
+    border: 1px solid black; 
+    color: black;
+    padding: 5px 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
 
 }
 
-.FailButton {
 
+.FailButtonLeft {
+    background-color: #FF7272; 
+    border: 1px solid black;
+    color: black;
+    padding: 5px 10px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
+    
+}
+
+.FailButtonRight {
+    background-color: #FF7272; 
+    border: 1px solid black;
+    color: black;
+    padding: 5px 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
+    
     
 }
 
 .Counter button {
-
+    width: 100px;
 }
 
-.Success input {
+.Success {
+    background-color: #CBFFD4;
+    border: 1px solid black;
     text-align: center;
     font-size: 25px;
-    height: 40px;
-    width: 150px;
-    border-radius: 5px;
-    border: 2px solid black;
+    height: 43px;
+    width: 50px;
 }
 
-.Fail input {
-    background-color: #f2a4a4;
+.Fail {
+    background-color: #FFABAB;
+    border: 1px solid black;
     text-align: center;
     font-size: 25px;
-    height: 40px;
-    width: 150px;
-    border-radius: 5px;
-    border: 2px solid rgb(184, 0, 0);
+    height: 43px;
+    width: 50px;
 }
 
 .Counter{
+    background-color: black;
     text-align: center;
-    font-size: 25px;
-    height: 40px;
-    width: 150px;
+    font-size: 100px;
+    height: 30px;
+    width: 100px;
     border-radius: 5px;
-    border: 2px solid black;
 }
 
 .NumericInput {
@@ -51,7 +95,8 @@
     flex-direction: row;
 }
 
-.NumericInput label.label {
+.NumericInput .label{
     margin-bottom: 5px;
     font-size: 18px;
+    
 }
