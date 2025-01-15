@@ -34,6 +34,7 @@ export default function Home() {
     <div className={styles.MainDiv}>
       <form ref={form} name="Scouting Form">
         <NumericInput pieceType={"Success"}/>
+        <NumericInput pieceType={"Fail"}/>
         <Header headerName={"Match Info"} />
         <div className={styles.MatchInfo}>
         <TextInput 
