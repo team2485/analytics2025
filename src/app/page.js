@@ -9,6 +9,7 @@ import CommentBox from "./form-components/CommentBox";
 import EndPlacement from "./form-components/EndPlacement";
 import Qualitative from "./form-components/Qualitative";
 import SubHeader from "./form-components/SubHeader";
+import MatchType from "./form-components/MatchType";
 
 
 export default function Home() {
@@ -33,7 +34,6 @@ export default function Home() {
   return (
     <div className={styles.MainDiv}>
       <form ref={form} name="Scouting Form">
-        <NumericInput pieceType={"Success"}/>
         <Header headerName={"Match Info"} />
         <div className={styles.MatchInfo}>
         <TextInput 
@@ -59,44 +59,8 @@ export default function Home() {
             defaultValue={""}
             type={"number"}
           />
+          <MatchType />
         </div>
-        <div className={styles.MatchType}>
-            <div className={styles.radioGroup}>
-              <label>
-                <input
-                  type="radio"
-                  name="matchtype"
-                  value="qual"
-                  defaultChecked
-                />
-                Qual
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="matchtype"
-                  value="elim"
-                />
-                Elim
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="matchtype"
-                  value="practice"
-                />
-                Practice
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="matchtype"
-                  value="precomp"
-                />
-                Pre-Comp
-              </label>
-            </div>
-          </div>
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
