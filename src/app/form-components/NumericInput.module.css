@@ -1,6 +1,6 @@
 
-.SuccessButtonLeft {
-    background-color: #87E47E;
+.SuccessButtonRight {
+    background-color: #CBFFD4;
     border: 1px solid black; 
     color: black;
     padding: 5px 10px;
@@ -9,11 +9,11 @@
     cursor: pointer;
     width: 40px;
     height: 45px;
-    
+
 }
 
-.SuccessButtonRight {
-    background-color: #87E47E;
+.SuccessButtonLeft {
+    background-color: #CBFFD4;
     border: 1px solid black; 
     color: black;
     padding: 5px 10px;
@@ -25,22 +25,22 @@
 
 }
 
-
-.FailButtonLeft {
-    background-color: #FF7272; 
-    border: 1px solid black;
-    color: black;
-    padding: 5px 10px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    cursor: pointer;
-    width: 40px;
-    height: 45px;
-    
-}
 
 .FailButtonRight {
-    background-color: #FF7272; 
+    background-color: #FFABAB; 
+    border: 1px solid black;
+    color: black;
+    padding: 5px 10px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
+    
+}
+
+.FailButtonLeft {
+    background-color: #FFABAB; 
     border: 1px solid black;
     color: black;
     padding: 5px 10px;
@@ -51,14 +51,10 @@
     height: 45px;
     
     
-}
-
-.Counter button {
-    width: 100px;
 }
 
 .Success {
-    background-color: #CBFFD4;
+    background-color: #87E47E;
     border: 1px solid black;
     text-align: center;
     font-size: 25px;
@@ -67,7 +63,7 @@
 }
 
 .Fail {
-    background-color: #FFABAB;
+    background-color: #FF7272;
     border: 1px solid black;
     text-align: center;
     font-size: 25px;
@@ -76,13 +72,40 @@
 }
 
 .Counter{
-    background-color: black;
+    background-color: #66FFD4;
+    border: 1px solid black;
     text-align: center;
-    font-size: 100px;
-    height: 30px;
-    width: 100px;
-    border-radius: 5px;
+    font-size: 25px;
+    height: 43px;
+    width: 50px;
 }
+
+.CounterButtonRight {
+    background-color: #CBFFF5; 
+    border: 1px solid black;
+    color: black;
+    padding: 5px 10px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
+    
+}
+
+.CounterButtonLeft {
+    background-color: #CBFFF5; 
+    border: 1px solid black;
+    color: black;
+    padding: 5px 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    cursor: pointer;
+    width: 40px;
+    height: 45px;
+    
+}
+
 
 .NumericInput {
     display: flex;

@@ -24,7 +24,7 @@ export default function NumericInput({ visibleName, internalName, pieceType, min
         <div className={styles.NumericInput}>
             <label className={styles.label} htmlFor={internalName}>{visibleName}</label>
             <div className={styles.Container}>
-                <button type="button" className={styles[pieceType + 'ButtonRight']} onClick={decrement}><h1><strong>-</strong></h1></button>
+                <button type="button" className={styles[pieceType + 'ButtonLeft']} onClick={decrement}><h1><strong>-</strong></h1></button>
                 <input
                     className={styles[pieceType]}
                     type="number"
@@ -33,7 +33,7 @@ export default function NumericInput({ visibleName, internalName, pieceType, min
                     value={value}
                     readOnly
                 />
-                <button type="button" className={styles[pieceType + 'ButtonLeft']} onClick={increment}><h1><strong>+</strong></h1></button>
+                <button type="button" className={styles[pieceType + 'ButtonRight']} onClick={increment}><h1><strong>+</strong></h1></button>
             </div>
             <br/>
         </div>

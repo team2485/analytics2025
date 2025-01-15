@@ -76,14 +76,16 @@ export default function Home() {
                 <div className={styles.L1}>
                   <h2>L1</h2>
                   <NumericInput 
+                    visibleName={"Success"}
                     pieceType={"Success"}
                     internalName={"autoL1success"}/>
                   <NumericInput 
+                    visibleName={"Fail"}
                     pieceType={"Fail"}
                     internalName={"autoL1fail"}/>
                 </div>
                 <div className={styles.L2}>
-                  <span>L2</span>
+                  <h2>L2</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"autoL2success"}/>
@@ -92,7 +94,7 @@ export default function Home() {
                     internalName={"autoL2fail"}/>
                 </div>
                 <div className={styles.L3}>
-                  <span>L3</span>
+                  <h2>L3</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"autoL3success"}/>
@@ -101,7 +103,7 @@ export default function Home() {
                     internalName={"autoL3fail"}/>
                 </div>
                 <div className={styles.L4}>
-                  <span>L4</span>
+                  <h2>L4</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"autoL4success"}/>
@@ -119,18 +121,22 @@ export default function Home() {
               <SubHeader subHeaderName={"Processor"} />
               <div className={styles.HBox}>
                 <NumericInput 
+                  visibleName={"Success"}
                   pieceType={"Success"}
                   internalName={"autoprocessorsuccess"}/>
                 <NumericInput 
+                  visibleName={"Fail"}
                   pieceType={"Fail"}
                   internalName={"autoprocessorfail"}/>
               </div>
               <SubHeader subHeaderName={"Net"} />
               <div className={styles.HBox}>
                 <NumericInput 
+                  visibleName={"Success"}
                   pieceType={"Success"}
                   internalName={"autonetsuccess"}/>
                 <NumericInput 
+                  visibleName={"Fail"}
                   pieceType={"Fail"}
                   internalName={"autonetfail"}/>
               </div>
@@ -140,16 +146,18 @@ export default function Home() {
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
                 <div className={styles.L1}>
-                  <span>L1</span>
+                  <h2>L1</h2>
                   <NumericInput 
+                    visibleName={"Success"}
                     pieceType={"Success"}
                     internalName={"teleL1success"}/>
                   <NumericInput 
+                    visibleName={"Fail"}
                     pieceType={"Fail"}
                     internalName={"teleL1fail"}/>
                 </div>
                 <div className={styles.L2}>
-                  <span>L2</span>
+                  <h2>L2</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"teleL2success"}/>
@@ -158,7 +166,7 @@ export default function Home() {
                     internalName={"teleL2fail"}/>
                 </div>
                 <div className={styles.L3}>
-                  <span>L3</span>
+                  <h2>L3</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"teleL3success"}/>
@@ -167,7 +175,7 @@ export default function Home() {
                     internalName={"teleL3fail"}/>
                 </div>
                 <div className={styles.L4}>
-                  <span>L4</span>
+                  <h2>L4</h2>
                   <NumericInput 
                     pieceType={"Success"}
                     internalName={"teleL4success"}/>
@@ -185,18 +193,22 @@ export default function Home() {
               <SubHeader subHeaderName={"Processor"} />
               <div className={styles.HBox}>
                 <NumericInput 
+                  visibleName={"Success"}
                   pieceType={"Success"}
                   internalName={"teleprocessorsuccess"}/>
                 <NumericInput 
+                  visibleName={"Fail"}
                   pieceType={"Fail"}
                   internalName={"teleprocessorfail"}/>
               </div>
               <SubHeader subHeaderName={"Net"} />
               <div className={styles.HBox}>
               <NumericInput 
+                    visibleName={"Success"}
                     pieceType={"Success"}
                     internalName={"telenetsuccess"}/>
                   <NumericInput 
+                    visibleName={"Fail"}
                     pieceType={"Fail"}
                     internalName={"telenetfail"}/>
               </div>
@@ -204,9 +216,11 @@ export default function Home() {
               <Checkbox visibleName={"Human Player From Team?"} internalName={"humanplayer"}/>
               <div className={styles.HBox}>
                 <NumericInput 
+                  visibleName={"Success"}
                   pieceType={"Success"}
                   internalName={"hpsuccess"}/>
                 <NumericInput 
+                  visibleName={"Fail"}
                   pieceType={"Fail"}
                   internalName={"hpfail"}/>
               </div>
