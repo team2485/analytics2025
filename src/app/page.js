@@ -61,7 +61,43 @@ export default function Home() {
             type={"number"}
           />
         </div>
-        <div>match type radio button</div>
+        <div className={styles.MatchType}>
+            <div className={styles.radioGroup}>
+              <label>
+                <input
+                  type="radio"
+                  name="matchtype"
+                  value="qual"
+                  defaultChecked
+                />
+                Qual
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="matchtype"
+                  value="elim"
+                />
+                Elim
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="matchtype"
+                  value="practice"
+                />
+                Practice
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="matchtype"
+                  value="precomp"
+                />
+                Pre-Comp
+              </label>
+            </div>
+          </div>
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
