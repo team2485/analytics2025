@@ -112,33 +112,39 @@ export default function Home() {
                     internalName={"autoL4fail"}/>
                 </div>
               </div>
-              <SubHeader subHeaderName={"Algae Removed"}/>
-              <div className={styles.HBox}>
-                <NumericInput 
-                  pieceType={"Counter"}
-                  internalName={"autoalgaeremoved"}/>
+              <div className={styles.AlgaeRemoved}>
+                <SubHeader subHeaderName={"Algae Removed"}/>
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    pieceType={"Counter"}
+                    internalName={"autoalgaeremoved"}/>
+                </div>
               </div>
-              <SubHeader subHeaderName={"Processor"} />
-              <div className={styles.HBox}>
-                <NumericInput 
-                  visibleName={"Success"}
-                  pieceType={"Success"}
-                  internalName={"autoprocessorsuccess"}/>
-                <NumericInput 
-                  visibleName={"Fail"}
-                  pieceType={"Fail"}
-                  internalName={"autoprocessorfail"}/>
+              <div className={styles.Processor}>
+                <SubHeader subHeaderName={"Processor"} />
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    visibleName={"Success"}
+                    pieceType={"Success"}
+                    internalName={"autoprocessorsuccess"}/>
+                  <NumericInput 
+                    visibleName={"Fail"}
+                    pieceType={"Fail"}
+                    internalName={"autoprocessorfail"}/>
+                </div>
               </div>
-              <SubHeader subHeaderName={"Net"} />
-              <div className={styles.HBox}>
-                <NumericInput 
-                  visibleName={"Success"}
-                  pieceType={"Success"}
-                  internalName={"autonetsuccess"}/>
-                <NumericInput 
-                  visibleName={"Fail"}
-                  pieceType={"Fail"}
-                  internalName={"autonetfail"}/>
+              <div className={styles.Net}>
+                <SubHeader subHeaderName={"Net"} />
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    visibleName={"Success"}
+                    pieceType={"Success"}
+                    internalName={"autonetsuccess"}/>
+                  <NumericInput 
+                    visibleName={"Fail"}
+                    pieceType={"Fail"}
+                    internalName={"autonetfail"}/>
+                </div>
               </div>
             </div>
             <div className={styles.Auto}>
@@ -184,34 +190,41 @@ export default function Home() {
                     internalName={"teleL4fail"}/>
                 </div>
               </div>
-              <SubHeader subHeaderName={"Algae Removed"}/>
-              <div className={styles.HBox}>
-                <NumericInput 
-                  pieceType={"Counter"}
-                  internalName={"telealgaeremoved"}/>
+              <div className={styles.AlgaeRemoved}>
+                <SubHeader subHeaderName={"Algae Removed"}/>
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    pieceType={"Counter"}
+                    internalName={"telealgaeremoved"}/>
+                </div>
               </div>
-              <SubHeader subHeaderName={"Processor"} />
-              <div className={styles.HBox}>
-                <NumericInput 
-                  visibleName={"Success"}
-                  pieceType={"Success"}
-                  internalName={"teleprocessorsuccess"}/>
-                <NumericInput 
-                  visibleName={"Fail"}
-                  pieceType={"Fail"}
-                  internalName={"teleprocessorfail"}/>
-              </div>
-              <SubHeader subHeaderName={"Net"} />
-              <div className={styles.HBox}>
-              <NumericInput 
+              <div className={styles.Processor}>
+                <SubHeader subHeaderName={"Processor"} />
+                <div className={styles.HBox}>
+                  <NumericInput 
                     visibleName={"Success"}
                     pieceType={"Success"}
-                    internalName={"telenetsuccess"}/>
+                    internalName={"teleprocessorsuccess"}/>
                   <NumericInput 
                     visibleName={"Fail"}
                     pieceType={"Fail"}
-                    internalName={"telenetfail"}/>
+                    internalName={"teleprocessorfail"}/>
+                </div>
               </div>
+              <div className={styles.Net}>
+                <SubHeader subHeaderName={"Net"} />
+                <div className={styles.HBox}>
+                <NumericInput 
+                      visibleName={"Success"}
+                      pieceType={"Success"}
+                      internalName={"telenetsuccess"}/>
+                    <NumericInput 
+                      visibleName={"Fail"}
+                      pieceType={"Fail"}
+                      internalName={"telenetfail"}/>
+                </div>
+              </div>
+              <div className={styles.HumanPlayer}>
               <SubHeader subHeaderName={"Human Player"}/>
               <Checkbox visibleName={"Human Player From Team?"} internalName={"humanplayer"}/>
               <div className={styles.HBox}>
@@ -223,6 +236,7 @@ export default function Home() {
                   visibleName={"Fail"}
                   pieceType={"Fail"}
                   internalName={"hpfail"}/>
+                </div>
               </div>
             </div>
             <div className={styles.Endgame}>
