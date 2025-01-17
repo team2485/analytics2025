@@ -1,0 +1,97 @@
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-right: 20px;
+    width: 32%;
+}
+
+.EPAS {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.epaBreakdown {
+    display: flex;
+    flex-direction: row;
+}
+
+.epaBreakdown div {
+    text-align: center;
+    flex-grow: 1;
+    border: 1px solid black;
+    padding: 5px;
+    font-size: larger;
+}
+
+.epaBreakdown div:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.epaBreakdown div:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.epaBox, .Last3EpaBox {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.epaBox::before {
+    content: "EPA";
+    display: block;
+    position: relative;
+    top: 0;
+    width: 80px;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 10px));
+    border: 1px solid black;
+    background: white;
+    padding: auto;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: -20px;
+    font-size: 20px;
+    font-weight: 800;
+}
+.Last3EpaBox::before {
+    content: "Last 3 EPA";
+    display: block;
+    position: relative;
+    top: 0;
+    width: 150px;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 10px));
+    border: 1px solid black;
+    background: white;
+    padding: auto;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: -20px;
+    font-size: 20px;
+    font-weight: 800;
+}
+.EPA, .Last3EPA {
+    border-radius: 10px;
+}
+
+.EPA h1, .EPA h2, .Last3EPA h1, .Last3EPA h2 {
+    text-align: center;
+}
+
+.EPA h1, .Last3EPA h1 {
+    font-size: 45px;
+}
+
+.scoreBreakdownContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    text-align: center;
+}
