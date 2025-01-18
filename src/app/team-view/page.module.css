@@ -11,6 +11,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .epaBreakdown {
@@ -44,11 +45,11 @@
 }
 
 .epaBox::before {
-    content: "EPA";
+    content: "Average EPA";
     display: block;
     position: relative;
     top: 0;
-    width: 80px;
+    width:150px;
     left: 50%;
     transform: translate(-50%, calc(-50% - 10px));
     border: 1px solid black;
@@ -65,7 +66,7 @@
     display: block;
     position: relative;
     top: 0;
-    width: 100px;
+    width: 150px;
     left: 50%;
     transform: translate(-50%, calc(-50% - 10px));
     border: 1px solid black;
@@ -74,7 +75,7 @@
     border-radius: 5px;
     padding: 5px;
     margin-bottom: -20px;
-    font-size: 19.25px;
+    font-size: 20px;
     font-weight: 800;
 }
 .EPA, .Last3EPA {
@@ -93,5 +94,43 @@
     display: flex;
     flex-direction: column;
     margin: 20px;
+    text-align: center;
+}
+
+.graphContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 30%;
+    margin-bottom: 10px;
+}
+
+.graphContainer svg {
+    align-self: center;
+    transform: translateX(-20px);
+}
+
+.graphTitle {
+    display: block;
+    position: relative;
+    top: 0;
+    width: auto;
+    border: 1px solid black;
+    background: white;
+    border-radius: 5px;
+    padding: 2px;
+    margin: auto;
+    font-weight: 800;
+    margin-top: 20px;
+    background-color: #eef5ff;
+}
+
+.valueBoxes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
     text-align: center;
 }
