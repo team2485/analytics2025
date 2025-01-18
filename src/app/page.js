@@ -73,43 +73,61 @@ export default function Home() {
               <Checkbox visibleName={"Leave"} internalName={"leave"} />
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
-                <div className={styles.L1}>
-                  <h2>L1</h2>
-                  <NumericInput 
-                    visibleName={"Success"}
-                    pieceType={"Success"}
-                    internalName={"autoL1success"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
-                    pieceType={"Fail"}
-                    internalName={"autoL1fail"}/>
-                </div>
-                <div className={styles.L2}>
-                  <h2>L2</h2>
-                  <NumericInput 
-                    pieceType={"Success"}
-                    internalName={"autoL2success"}/>
-                  <NumericInput 
-                    pieceType={"Fail"}
-                    internalName={"autoL2fail"}/>
-                </div>
-                <div className={styles.L3}>
-                  <h2>L3</h2>
-                  <NumericInput 
+                <table className={styles.Table}>
+                <thead >
+                <tr>
+                    <th></th>
+                      <th>Success</th>
+                      <th>Fail</th>
+                    </tr>
+                </thead>
+                  <tbody>
+                  <tr>
+                    <td><h2>L4</h2></td>
+                    <td><NumericInput 
+                      pieceType={"Success"}
+                      internalName={"autoL4success"}/>
+                      </td>
+                    <td><NumericInput 
+                      pieceType={"Fail"}
+                      internalName={"autoL4fail"}/>
+                      </td>
+                    </tr> 
+                  <tr>
+                  <td><h2>L3</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
                     internalName={"autoL3success"}/>
-                  <NumericInput 
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
                     internalName={"autoL3fail"}/>
-                </div>
-                <div className={styles.L4}>
-                  <h2>L4</h2>
-                  <NumericInput 
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L2</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL4success"}/>
-                  <NumericInput 
+                    internalName={"autoL2success"}/>
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL4fail"}/>
+                    internalName={"autoL2fail"}/>
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L1</h2></td>
+                  <td><NumericInput 
+                    pieceType={"Success"}
+                    internalName={"autoL1success"}/>
+                    </td>
+                  <td><NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"autoL1fail"}/>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
                 </div>
               </div>
               <div className={styles.AlgaeRemoved}>
@@ -146,69 +164,65 @@ export default function Home() {
                     internalName={"autonetfail"}/>
                 </div>
               </div>
-            </div>
             <div className={styles.Auto}>
               <Header headerName={"Tele"}/>
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
-                <div className={styles.L1}>
-                  <h2>L1</h2>
-                  <NumericInput 
-                    visibleName={"Success"}
-                    pieceType={"Success"}
-                    internalName={"teleL1success"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
-                    pieceType={"Fail"}
-                    internalName={"teleL1fail"}/>
-                </div>
-                <div className={styles.L2}>
-                  <h2>L2</h2>
-                  <NumericInput 
-                    pieceType={"Success"}
-                    internalName={"teleL2success"}/>
-                  <NumericInput 
-                    pieceType={"Fail"}
-                    internalName={"teleL2fail"}/>
-                </div>
-                <div className={styles.L3}>
-                  <h2>L3</h2>
-                  <NumericInput 
+                <table className={styles.Table}>
+                <thead>
+                <tr>
+                    <th></th>
+                      <th>Success</th>
+                      <th>Fail</th>
+                    </tr>
+                </thead>
+                  <tbody>
+                  <tr>
+                    <td><h2>L4</h2></td>
+                    <td><NumericInput 
+                      pieceType={"Success"}
+                      internalName={"teleL4success"}/>
+                      </td>
+                    <td><NumericInput 
+                      pieceType={"Fail"}
+                      internalName={"teleL4fail"}/>
+                      </td>
+                    </tr> 
+                  <tr>
+                  <td><h2>L3</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
                     internalName={"teleL3success"}/>
-                  <NumericInput 
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
                     internalName={"teleL3fail"}/>
-                </div>
-                <div className={styles.L4}>
-                  <h2>L4</h2>
-                  <NumericInput 
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L2</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL4success"}/>
-                  <NumericInput 
+                    internalName={"teleL2success"}/>
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL4fail"}/>
-                </div>
-              </div>
-              <div className={styles.AlgaeRemoved}>
-                <SubHeader subHeaderName={"Algae Removed"}/>
-                <div className={styles.HBox}>
-                  <NumericInput 
-                    pieceType={"Counter"}
-                    internalName={"telealgaeremoved"}/>
-                </div>
-              </div>
-              <div className={styles.Processor}>
-                <SubHeader subHeaderName={"Processor"} />
-                <div className={styles.HBox}>
-                  <NumericInput 
-                    visibleName={"Success"}
+                    internalName={"teleL2fail"}/>
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L1</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleprocessorsuccess"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
+                    internalName={"teleL1success"}/>
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleprocessorfail"}/>
+                    internalName={"teleL1fail"}/>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
                 </div>
               </div>
               <div className={styles.Net}>
@@ -238,7 +252,6 @@ export default function Home() {
                   internalName={"hpfail"}/>
                 </div>
               </div>
-            </div>
             <div className={styles.Endgame}>
               <Header headerName={"Endgame"}/>
               <EndPlacement/>

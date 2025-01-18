@@ -32,6 +32,30 @@
     justify-content: space-evenly;
     text-align: center;
 }
+
+.Table {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Table td {
+  text-align: center; 
+  padding-right: 19px; 
+  position: relative; 
+}
+
+.Table td h2 {
+  padding-bottom: 15px;
+  position: absolute; 
+  right: 0px;
+  bottom: 15px;
+  margin: 0px;
+}
+
+.Table th {
+  padding-right: 19px;
+}
+
 .AlgaeRemoved {
   display: flex;
   flex-direction: column;
