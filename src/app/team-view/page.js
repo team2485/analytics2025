@@ -178,6 +178,92 @@ export default function TeamViewPage() {
           <Comments title={"Breakdown Comments"} value={(data.breakdownComments).join(" | ")}/>
           <Comments title={"Defense Comments"} value={(data.defenseComments).join(" | ")}/>
         </div>
+
+      <div className={styles.RightColumn}>
+        <div className={styles.twoByTwoContainer}>
+          <TwoByTwo
+            HC1="Attempt"
+            HC2="Success"
+            HR1="Cage"
+            R1C1={`${data.attemptCage}%`}
+            R1C2={`${data.successCage}%`}
+          />
+        </div>
+        
+        <div className={styles.twoByTwoContainer}>
+          <TwoByTwo
+            HC1="Success"
+            HC2="Avg Coral"
+            HR1="L4"
+            R1C1={`${data.auto.coral.successL4}%`}
+            R1C2={data.auto.coral.avgL4}
+            HR2="L3"
+            R2C1={`${data.auto.coral.successL3}%`}
+            R2C2={data.auto.coral.avgL3}
+            HR3="L2"
+            R3C1={`${data.auto.coral.successL2}%`}
+            R3C2={data.auto.coral.avgL2}
+            HR4="L1"
+            R4C1={`${data.auto.coral.successL1}%`}
+            R4C2={data.auto.coral.avgL1}
+          />
+        </div>
+
+        <div className={styles.twoByTwoContainer}>
+          <TwoByTwo
+            HC1="Success"
+            HC2="Avg Coral"
+            HR1="L4"
+            R1C1={`${data.tele.coral.successL4}%`}
+            R1C2={data.tele.coral.avgL4}
+            HR2="L3"
+            R2C1={`${data.tele.coral.successL3}%`}
+            R2C2={data.tele.coral.avgL3}
+            HR3="L2"
+            R3C1={`${data.tele.coral.successL2}%`}
+            R3C2={data.tele.coral.avgL2}
+            HR4="L1"
+            R4C1={`${data.tele.coral.successL1}%`}
+            R4C2={data.tele.coral.avgL1}
+          />
+        </div>
+
+        <div className={styles.twoByTwoContainer}>
+          <TwoByTwo
+            HC1="Success"
+            HC2="Avg Algae"
+            HR1="Processor"
+            R1C1={`${data.auto.algae.successProcessor}%`}
+            R1C2={data.auto.algae.avgProcessor}
+            HR2="Net"
+            R2C1={`${data.auto.algae.successNet}%`}
+            R2C2={data.auto.algae.avgNet}
+          />
+        </div>
+
+        <div className={styles.twoByTwoContainer}>
+          <TwoByTwo
+            HC1="Success"
+            HC2="Avg Algae"
+            HR1="Processor"
+            R1C1={`${data.tele.algae.successProcessor}%`}
+            R1C2={data.tele.algae.avgProcessor}
+            HR2="Net"
+            R2C1={`${data.tele.algae.successNet}%`}
+            R2C2={data.tele.algae.avgNet}
+          />
+        </div>
+
+        <div className={styles.valueBoxes}>
+          <VBox title={"Auto Coral Total"} value={data.auto.coral.total} />
+          <VBox title={"Tele Coral Total"} value={data.tele.coral.total} />
+          <VBox title={"Auto Algae Removed"} value={data.auto.algae.removed} />
+          <VBox title={"Tele Algae Removed"} value={data.tele.algae.removed} />
+          <VBox title={"Avg HP"} value={data.tele.avgHp} />
+          <VBox title={"HP Success"} value={data.tele.successHp} />
+        </div>
       </div>
+    </div>
+
     )
   }
