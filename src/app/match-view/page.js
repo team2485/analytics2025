@@ -5,6 +5,8 @@ import { VictoryPie } from "victory";
 import Link from "next/link";
 import styles from "./page.module.css"
 import { useSearchParams } from "next/navigation";
+import PiecePlacement from "./components/PiecePlacement";
+
 
 export default function MatchViewPage() {
   return <Suspense>
@@ -221,19 +223,11 @@ function MatchView() {
         <div style={{background: "red"}}>Barge</div>
         <div style={{background: RP_WIN}}>Victory</div>
       </div>
-      
     </div>
     
   }
 
   function TeamDisplay({teamData, colors, matchMax}) {
-    const generateTicks = (min, max) => {
-      const ticks = [];
-      for (let i = min; i <= max; i += 2) {
-        ticks.push(i);
-      }
-      return ticks;
-    };
 
     const endgameData = [
       { x: 'None', y: teamData.endgame.none },
@@ -259,7 +253,7 @@ function MatchView() {
       </div>
       <div className={styles.barchartContainer}>
         <h2>Average Piece Placement</h2>
-        PIECE PLACEMENT BAR CHART
+        <PiecePlacement matchMax={matchMax} L1={teamData.avgPieces.L1}L2={teamData.avgPieces.L2}L3={teamData.avgPieces.L3} L4={teamData.avgPieces.L4} net={teamData.avgPieces.net}processor={teamData.avgPieces.processor}HP={teamData.avgPieces.HP}/>
       </div>
       <div className={styles.chartContainer}>
         <h2 style={{marginBottom: "-40px"}}>Endgame %</h2>
