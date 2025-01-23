@@ -6,6 +6,7 @@ import Link from "next/link";
 import styles from "./page.module.css"
 import { useSearchParams } from "next/navigation";
 import PiecePlacement from "./components/PiecePlacement";
+import dynamic from 'next/dynamic';
 
 
 export default function MatchViewPage() {
@@ -164,14 +165,84 @@ function MatchView() {
     },
   };
 
-  
 
-    //until url loads show loading
-    if (!data || searchParams == null) {
-      return <div>
-        <h1>Loading...</h1>
-      </div>
-    }
+//setData based on teams selected
+useEffect(() => {
+  if (searchParams && allData) {
+    //search by teams
+    let [team1, team2, team3, team4, team5, team6] = [
+      searchParams.get("team1"),
+      searchParams.get("team2"),
+      searchParams.get("team3"),
+      searchParams.get("team4"),
+      searchParams.get("team5"),
+      searchParams.get("team6")
+    ];
+    setData({
+      team1: allData[team1],
+      team2: allData[team2],
+      team3: allData[team3],
+      team4: allData[team4],
+      team5: allData[team5],
+      team6: allData[team6]
+    });
+  }
+}, [searchParams, allData]);
+
+//until url loads show loading
+if (!data || searchParams == null) {
+  return (
+    <div>
+      <h1>Loading...</h1>
+    </div>
+  );
+}
+
+//show form if systems are not a go
+if (searchParams.get("go") != "go") {
+  return (
+    <div>
+      <form className={styles.teamForm}>
+        <span>View by Teams...</span>
+        <div className={styles.horizontalBox}>
+          <div>
+            <label htmlFor="team1">Red 1:</label>
+            <br />
+            <input id="team1" name="team1" defaultValue={searchParams.get("team1")}></input>
+          </div>
+          <div>
+            <label htmlFor="team2">Red 2:</label>
+            <br />
+            <input id="team2" name="team2" defaultValue={searchParams.get("team2")}></input>
+          </div>
+          <div>
+            <label htmlFor="team3">Red 3:</label>
+            <br />
+            <input id="team3" name="team3" defaultValue={searchParams.get("team3")}></input>
+          </div>
+          <div>
+            <label htmlFor="team4">Blue 1:</label>
+            <br />
+            <input id="team4" name="team4" defaultValue={searchParams.get("team4")}></input>
+          </div>
+          <div>
+            <label htmlFor="team5">Blue 2:</label>
+            <br />
+            <input id="team5" name="team5" defaultValue={searchParams.get("team5")}></input>
+          </div>
+          <div>
+            <label htmlFor="team6">Blue 3:</label>
+            <br />
+            <input id="team6" name="team6" defaultValue={searchParams.get("team6")}></input>
+          </div>
+          <input type="hidden" name="go" value="go"></input>
+        </div>
+        <button>Go!</button>
+      </form>
+    </div>
+  );
+}
+
 
   function AllianceButtons({t1, t2, t3, colors}) {
     return <div className={styles.allianceBoard}>
@@ -229,6 +300,7 @@ function MatchView() {
 
   function TeamDisplay({teamData, colors, matchMax}) {
 
+    const PiecePlacement = dynamic(() => import('./components/PiecePlacement'), { ssr: false });
     const endgameData = [
       { x: 'None', y: teamData.endgame.none },
       { x: 'Fail', y: teamData.endgame.fail},
