@@ -44,6 +44,8 @@ function MatchView() {
       processor: 0,
       HP: 0,
     },
+    leave: false,
+    autoCoral: 0,
     removedAlgae: 0,
     endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
@@ -66,6 +68,8 @@ function MatchView() {
         processor: 1,
         HP: 0,
       },
+      leave: true,
+      autoCoral: 0,
       removedAlgae: 4,
       endgame: { none: 10, park: 13, shallow: 35, deep: 7, fail: 15, multicage: 20 },
       qualitative: { coralspeed: 5, processorspeed: 2, netspeed: 3, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 1, defenseplayed: 4, defenseevasion: 2, aggression: 4, cagehazard: 3 }
@@ -85,6 +89,8 @@ function MatchView() {
         processor: 0,
         HP: 0,
       },
+      leave: true,
+      autoCoral: 0,
       removedAlgae: 0,
       endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
       qualitative: { coralspeed: 3, processorspeed: 1, netspeed: 4, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
@@ -104,6 +110,8 @@ function MatchView() {
         processor: 0,
         HP: 0,
       },
+      leave: true,
+      autoCoral: 0,
       removedAlgae: 0,
       endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
@@ -123,6 +131,8 @@ function MatchView() {
         processor: 0,
         HP: 0,
       },
+      leave: true,
+      autoCoral: 0,
       removedAlgae: 0,
       endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
@@ -142,6 +152,8 @@ function MatchView() {
         processor: 0,
         HP: 0,
       },
+      leave: true,
+      autoCoral: 0,
       removedAlgae: 0,
       endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
@@ -161,6 +173,8 @@ function MatchView() {
         processor: 0,
         HP: 0,
       },
+      leave: true,
+      autoCoral: 0,
       removedAlgae: 0,
       endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
@@ -261,22 +275,43 @@ if (searchParams.get("go") != "go") {
   }
 
   function AllianceDisplay({teams, opponents, colors}) {
+    //calc alliance espm breakdown
     const auto = (teams[0]?.auto || 0) + (teams[1]?.auto || 0) + (teams[2]?.auto || 0);
     const tele = (teams[0]?.tele || 0) + (teams[1]?.tele || 0) + (teams[2]?.tele || 0);
     const end = (teams[0]?.end || 0) + (teams[1]?.end || 0) + (teams[2]?.end || 0);
 
+    //calc ranking points
     const RGBColors = {
       red: "#FF9393",
       green: "#BFFEC1",
       yellow: "#FFDD9A"
     }
-
+    //win = higher espm than opponents
     const teamEPA = (team) => team ? team.auto + team.tele + team.end : 0;
     const opponentsEPA = teamEPA(opponents[0]) + teamEPA(opponents[1]) + teamEPA(opponents[2]);
     const currentAllianceEPA = auto + tele + end;
     let RP_WIN = RGBColors.red;
     if (currentAllianceEPA > opponentsEPA) RP_WIN = RGBColors.green;
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
+
+    //auto rp = all robots leave and alliance scores one coral
+    const allianceCoral = teams[0].autoCoral + teams[1].autoCoral + teams[2].autoCoral
+    let RP_AUTO = RGBColors.red;
+    if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green
+        
+    /*melody = can get 18 notes in speaker & amp (15 is yellow)
+        const teamMelodyNotes = (team) => Math.floor(team.avgNotes.speaker + team.avgNotes.ampedSpeaker + team.avgNotes.amp);
+        const allianceNotes = teamMelodyNotes(teams[0]) + teamMelodyNotes(teams[1]) + teamMelodyNotes(teams[2]);
+        let RP_MELODY = RGBColors.red;
+        if (allianceNotes >= 25) RP_MELODY = RGBColors.green;
+        else if (allianceNotes >= 21) RP_MELODY = RGBColors.yellow;
+    
+        //ensemble = 2 teams will probably go onstage & alliance is estimated to get more than 10 points
+        const goesOnstage = (team) => (team.endgame.onstage + team.endgame.onstageHarmony) > 50;
+        const onstageTeamCount = goesOnstage(teams[0]) + goesOnstage(teams[1]) + goesOnstage(teams[2]);
+        const endgamePoints = Math.floor(teams[0].end) + Math.floor(teams[1].end) + Math.floor(teams[2].end);
+        let RP_ENSEMBLE = RGBColors.red;
+        if (onstageTeamCount >= 2 && endgamePoints >= 10) RP_ENSEMBLE = RGBColors.green; */
 
     //ADD AUTO, CORAL, AND BARGE RPS
 
@@ -291,10 +326,10 @@ if (searchParams.get("go") != "go") {
       </div>
       <div className={styles.RPs}>
         <div style={{background: colors[1]}}>RPs:</div>
-        <div style={{background: "red"}}>Auto</div>
+        <div style={{background: RP_WIN}}>Victory</div>
+        <div style={{background: RP_AUTO}}>Auto</div>
         <div style={{background: "red"}}>Coral</div>
         <div style={{background: "red"}}>Barge</div>
-        <div style={{background: RP_WIN}}>Victory</div>
       </div>
     </div>
     
