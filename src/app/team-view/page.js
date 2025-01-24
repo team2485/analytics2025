@@ -9,6 +9,8 @@ import HBox from "./components/HBox";
 import Comments from "./components/Comments";
 import TwoByTwo from "./components/TwoByTwo";
 import FourByTwo from "./components/FourByTwo";
+import EPALineChart from './components/EPALineChart';
+import PiecePlacement from "./components/PiecePlacement";
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, ResponsiveContainer, Cell, LineChart, Line, RadarChart, PolarRadiusAxis, PolarAngleAxis, PolarGrid, Radar, Legend, ReferenceLine } from 'recharts';
 
 export default function TeamViewPage() {
@@ -152,18 +154,14 @@ export default function TeamViewPage() {
           </div>
           <div className={styles.graphContainer}>
             <h4 className={styles.graphTitle}>EPA Over Time</h4>
-            <LineChart className={styles.lineChart} width={350} height={175} data={data.epaOverTime}>
-              <XAxis type="number" dataKey="match"/>
-              <YAxis dataKey="epa"/>
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
-              <Line type="monotone" dataKey="epa" stroke={Colors[0][0]} strokeWidth="3"/>
-              <Tooltip></Tooltip>
-            </LineChart>
+            <EPALineChart 
+              data={data.epaOverTime} 
+              color={Colors[0][0]} 
+            />
           </div>
           <div className={styles.graphContainer}>
             <h4 className={styles.graphTitle}>Piece Placement</h4>
-            <div>PIECE PLACEMENT BAR CHART</div>
+            <PiecePlacement />
           </div>
           <div className={styles.valueBoxes}>
             <VBox title={"Matches Scouted"} value={data.matchesScouted}/>
