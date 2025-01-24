@@ -31,6 +31,95 @@ export default function Home() {
     setDefense(checked);
   }
 
+
+  // added from last years code (still review)
+  async function submit(e) {
+    e.preventDefault();
+    //disable submit
+    let submitButton = document.querySelector("#submit");//todo: get changed to a useRef
+    submitButton.disabled = true;
+    //import values from form to data variable
+    let data = {noshow: false, leave: false, harmony: false, gndintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null };
+    [...new FormData(form.current).entries()].forEach(([name, value]) => {
+      if (value == 'on') {
+        data[name] = true;
+      } else {
+        if (!isNaN(value) && value != "") {
+          data[name] = +value;
+        } else {
+          data[name] = value;
+        }
+      }
+    });
+    //clear unneeded checkbox values
+    data.breakdown = undefined;
+    data.defense = undefined;
+
+    //check pre-match data
+    let preMatchInputs = document.querySelectorAll(".preMatchInput"); //todo: use the data object
+    for (let preMatchInput of preMatchInputs) {
+      if(preMatchInput.value == "" || preMatchInput.value <= "0") {
+        alert("Invalid Pre-Match Data!");
+        submitButton.disabled = false;
+        return;
+      } 
+    }
+    //check team and match
+    if (data.match < 200) {
+      let valid = await fetch("/api/get-valid-team?team=" + data.team + "&match=" + data.match)
+        .then((resp) => resp.json())
+        .then((data) => data.valid)
+      if (valid == false) {
+        alert("Invalid Team and Match Combination!");
+        submitButton.disabled = false;
+        return;
+      }
+    }
+
+    //confirm and submit
+    if (confirm("Are you sure you want to submit?") == true) {
+      fetch('/api/add-match-data', {
+        method: "POST",
+        body: JSON.stringify(data)
+      }).then((response)=> {
+        if(response.status === 201) {
+          return response.json();
+        } else {
+          return response.json().then(err => Promise.reject(err.message));
+        }
+      }) 
+      .then(data => {
+        alert("Thank you!");
+        const jsConfetti = new JSConfetti();
+        jsConfetti.addConfetti({
+          confettiColors: ['yellow'],
+       })
+        if (typeof document !== 'undefined')  {
+          let ScoutName = document.querySelector("input[name='scoutname']").value;
+          let ScoutTeam = document.querySelector("input[name='scoutteam']").value;
+          let Match = document.querySelector("input[name='match']").value;
+          let scoutProfile = { 
+            scoutname: ScoutName, 
+            scoutteam: ScoutTeam, 
+            match: Number(Match)+1 
+          };
+          localStorage.setItem("ScoutProfile", JSON.stringify(scoutProfile));
+        }
+        setTimeout(() => {
+          location.reload()
+        }, 2000);
+      })
+      .catch(error => {
+        alert(error);
+        submitButton.disabled = false;
+      });
+
+    } else {
+      //user didn't want to submit
+      submitButton.disabled = false;
+    };
+  }
+
   return (
     <div className={styles.MainDiv}>
       <form ref={form} name="Scouting Form">
