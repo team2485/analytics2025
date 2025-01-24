@@ -11,6 +11,7 @@ import TwoByTwo from "./components/TwoByTwo";
 import FourByTwo from "./components/FourByTwo";
 import EPALineChart from './components/EPALineChart';
 import PiecePlacement from "./components/PiecePlacement";
+import Endgame from "./components/Endgame";
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, ResponsiveContainer, Cell, LineChart, Line, RadarChart, PolarRadiusAxis, PolarAngleAxis, PolarGrid, Radar, Legend, ReferenceLine } from 'recharts';
 
 export default function TeamViewPage() {
