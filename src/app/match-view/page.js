@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import PiecePlacement from "./components/PiecePlacement";
 import dynamic from 'next/dynamic';
 import Endgame from "./components/Endgame";
+import Qualitative from "./components/Qualitative";
 
 
 export default function MatchViewPage() {
@@ -70,7 +71,7 @@ function MatchView() {
       qualitative: { coralspeed: 5, processorspeed: 2, netspeed: 3, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 1, defenseplayed: 4, defenseevasion: 2, aggression: 4, cagehazard: 3 }
     },
     team2: {
-      team: 404,
+      team: 1234,
       teamName: "Invisibotics 👻",
       auto: 0,
       tele: 0,
@@ -86,7 +87,7 @@ function MatchView() {
       },
       removedAlgae: 0,
       endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
-      qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
+      qualitative: { coralspeed: 3, processorspeed: 1, netspeed: 4, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team3: {
       team: 404,
@@ -311,36 +312,7 @@ if (searchParams.get("go") != "go") {
       { x: 'Multi', y: teamData.endgame.multicage },
     ];
 
-    /* <VictoryPie
-          padding={100}
-          data={endgameData}
-          colorScale={colors}
-          labels={({ datum }) => `${datum.x}: ${Math.round(datum.y)}%`}
-        />
-        
-              <div className={styles.graphContainer}>
-          <RadarChart outerRadius={75} width={370} height={300} data={radarData}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="qual" fontSize={14}/>
-            <PolarRadiusAxis angle={10} domain={[0, 5]} />
-            <Radar name={data.team1?.team || "-1"} dataKey="team1" stroke={COLORS[3][0]} fill={COLORS[3][3]} fillOpacity={0.3} />
-            <Radar name={data.team2?.team || "-1"} dataKey="team2" stroke={COLORS[4][0]} fill={COLORS[4][3]} fillOpacity={0.3} />
-            <Radar name={data.team3?.team || "-1"} dataKey="team3" stroke={COLORS[5][0]} fill={COLORS[5][3]} fillOpacity={0.3} />
-            <Legend />
-          </RadarChart>
-        </div>
-        <div className={styles.graphContainer}>
-          <RadarChart outerRadius={75} width={370} height={300} data={radarData}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="qual" fontSize={14}/>
-            <PolarRadiusAxis angle={10} domain={[0, 5]} />
-            <Radar name={data.team4?.team || "-1"} dataKey="team4" stroke={COLORS[0][0]} fill={COLORS[0][3]} fillOpacity={0.3} />
-            <Radar name={data.team5?.team || "-1"} dataKey="team5" stroke={COLORS[1][0]} fill={COLORS[1][3]} fillOpacity={0.3} />
-            <Radar name={data.team6?.team || "-1"} dataKey="team6" stroke={COLORS[2][0]} fill={COLORS[2][3]} fillOpacity={0.3} />
-            <Legend />
-          </RadarChart>
-        </div>
-        */
+
 
     return <div className={styles.lightBorderBox}>
       <h1 style={{color: colors[3]}}>{teamData.team}</h1>
@@ -414,7 +386,20 @@ if (searchParams.get("go") != "go") {
         <AllianceDisplay teams={blueAlliance} opponents={redAlliance} colors={["#D3DFFF", "#A9BDFF"]}></AllianceDisplay>
       </div>
       <div className={styles.allianceGraphs}>
-        RADAR CHART
+        <div className={styles.graphContainer}>
+          <Qualitative 
+            radarData={radarData} 
+            teamIndices={[1, 2, 3]} 
+            colors={[COLORS[3][0], COLORS[4][0], COLORS[5][0]]} 
+          />
+        </div>
+        <div className={styles.graphContainer}>
+          <Qualitative 
+            radarData={radarData} 
+            teamIndices={[4, 5, 6]} 
+            colors={[COLORS[0][0], COLORS[1][0], COLORS[2][0]]} 
+          />
+        </div>
       </div>
       <div className={styles.matches}>
         <TeamDisplay teamData={data.team1 || defaultTeam} colors={COLORS[3]} matchMax={matchMax}></TeamDisplay>
