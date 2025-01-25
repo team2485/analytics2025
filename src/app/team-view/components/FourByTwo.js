@@ -13,7 +13,7 @@ export default function FourByTwo({HC1, HC2, HR1, R1C1, R1C2, HR2, R2C1, R2C2, H
         </thead>
         <tbody>
         <tr style={{height: "20px"}}>
-          <td >{HR1}</td>
+          <td>{HR1}</td>
           <td>{R1C1}</td>
           <td>{R1C2}</td>
         </tr>
