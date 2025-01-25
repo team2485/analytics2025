@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { VictoryPie } from "victory";
 
-export default function Endgame({ endgameData }) {
+export default function Endgame({ colors, endgameData }) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -17,8 +17,14 @@ export default function Endgame({ endgameData }) {
     <VictoryPie
       padding={100}
       data={endgameData}
-      colorScale="blue"
+      colorScale={colors}
       labels={({ datum }) => `${datum.x}: ${Math.round(datum.y)}%`}
+      style={{
+        data: {
+          stroke: '#000', // Black border
+          strokeWidth: 1.5, // Border width
+        },
+      }}
     />
   );
 }

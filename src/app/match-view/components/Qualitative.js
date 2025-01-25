@@ -4,7 +4,7 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-export default function Qualitative({ radarData, teamIndices, colors }) {
+export default function Qualitative({ radarData, teamIndices, colors, teamNumbers }) {
   const [isClient, setIsClient] = useState(false);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -27,7 +27,7 @@ export default function Qualitative({ radarData, teamIndices, colors }) {
           data: {
             labels: radarData.map(item => item.qual),
             datasets: teamIndices.map((teamIndex, index) => ({
-              label: `Team ${teamIndex}`,
+              label: `${teamNumbers[index] || 404}`, // Use teamNumbers instead of teamIndex
               data: radarData.map(item => item[`team${teamIndex}`] || 0),
               fill: true,
               backgroundColor: colors[index] + '4D',
@@ -64,7 +64,7 @@ export default function Qualitative({ radarData, teamIndices, colors }) {
         chartInstance.current.destroy();
       }
     };
-  }, [isClient, radarData, teamIndices, colors]);
+  }, [isClient, radarData, teamIndices, colors, teamNumbers]);
 
   if (!isClient) {
     return null;

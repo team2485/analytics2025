@@ -9,6 +9,7 @@ import PiecePlacement from "./components/PiecePlacement";
 import dynamic from 'next/dynamic';
 import Endgame from "./components/Endgame";
 import Qualitative from "./components/Qualitative";
+import EPALineChart from "./components/EPALineChart";
 
 
 export default function MatchViewPage() {
@@ -20,13 +21,15 @@ export default function MatchViewPage() {
 function MatchView() {
   const [allData, setAllData] = useState(null);
   const searchParams = useSearchParams();
+  //light to dark
   const COLORS = [
-    ["#B7F7F2", "#A1E7E1", "#75C6BF", "#58ada6", "#458782"],
-    ["#8AB8FD", "#7D99FF", "#6184DD", "#306BDD", "#2755b0"],
-    ["#E1BFFA", "#E1A6FE", "#CA91F2", "#b273d9", "#A546DF"],
-    ["#FFC6F6", "#ECA6E0", "#ED75D9", "#db51c5", "#C342AE"],
-    ["#FABFC4", "#FEA6AD", "#F29199", "#E67983", "#db606b"],
-    ["#FFE3D3", "#EBB291", "#E19A70", "#D7814F", "#c26d3c"],
+    ["#A4E5DF", "#6FDCD3", "#93C8C4", "#73CEC7", "#5EACB5"], //green
+    ["#B7D1F7", "#9FBCEC", "#8FA5F5", "#838FDC", "#5E6CB5"], //blue
+    ["#DDB7F7", "#B38DDE", "#B16FDC", "#9051BE", "#975EB5"], //purple
+    ["#F6C1D8", "#F2A8C9", "#D883A2", "#D883AC", "#B55E7B"], //pink
+    ["#FFD1D0", "#F7B7B7", "#DC8683", "#BE5151", "#B55E5E"], //red
+    ["#FFD4AB", "#FABD7C", "#FFAF72", "#FFA75A", "#FF9F4B"], //orange
+    
   ];
 
   const defaultTeam = {
@@ -79,7 +82,7 @@ function MatchView() {
       teamName: "Invisibotics 👻",
       auto: 0,
       tele: 0,
-      end: 0,
+      end: 4,
       avgPieces: {
         L1: 1,
         L2: 2,
@@ -92,7 +95,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
+      endgame: { none: 9, park: 2, shallow: 1, deep: 4, fail: 5},
       qualitative: { coralspeed: 3, processorspeed: 1, netspeed: 4, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team3: {
@@ -113,7 +116,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
+      endgame: { none: 5, park: 6, shallow: 7, deep: 8, fail: 9},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team4: {
@@ -134,7 +137,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
+      endgame: { none: 3, park: 2, shallow: 1, deep: 2, fail: 3},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team5: {
@@ -155,7 +158,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
+      endgame: { none: 10, park: 12, shallow: 17, deep: 18, fail: 4},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team6: {
@@ -176,7 +179,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
+      endgame: { none: 7, park: 17, shallow: 21, deep: 23, fail: 10},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
   };
@@ -295,7 +298,7 @@ if (searchParams.get("go") != "go") {
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
 
     //auto rp = all robots leave and alliance scores one coral
-    const allianceCoral = teams[0].autoCoral + teams[1].autoCoral + teams[2].autoCoral;
+    const allianceCoral = Math.floor(teams[0].autoCoral) + Math.floor(teams[1].autoCoral) + Math.floor(teams[2].autoCoral);
     let RP_AUTO = RGBColors.red;
     if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
 
@@ -318,23 +321,10 @@ if (searchParams.get("go") != "go") {
     //if 3 conditions are true
     else if (trueCount == 3) RP_CORAL = RGBColors.yellow;
   
-    //barge rp = 
-        
-    /*melody = can get 18 notes in speaker & amp (15 is yellow)
-        const teamMelodyNotes = (team) => Math.floor(team.avgNotes.speaker + team.avgNotes.ampedSpeaker + team.avgNotes.amp);
-        const allianceNotes = teamMelodyNotes(teams[0]) + teamMelodyNotes(teams[1]) + teamMelodyNotes(teams[2]);
-        let RP_MELODY = RGBColors.red;
-        if (allianceNotes >= 25) RP_MELODY = RGBColors.green;
-        else if (allianceNotes >= 21) RP_MELODY = RGBColors.yellow;
-    
-        //ensemble = 2 teams will probably go onstage & alliance is estimated to get more than 10 points
-        const goesOnstage = (team) => (team.endgame.onstage + team.endgame.onstageHarmony) > 50;
-        const onstageTeamCount = goesOnstage(teams[0]) + goesOnstage(teams[1]) + goesOnstage(teams[2]);
-        const endgamePoints = Math.floor(teams[0].end) + Math.floor(teams[1].end) + Math.floor(teams[2].end);
-        let RP_ENSEMBLE = RGBColors.red;
-        if (onstageTeamCount >= 2 && endgamePoints >= 10) RP_ENSEMBLE = RGBColors.green; */
-
-    //ADD AUTO, CORAL, AND BARGE RPS
+    //barge rp = 14 points in the barge
+    const endgamePoints = Math.floor(teams[0].end) + Math.floor(teams[1].end) + Math.floor(teams[2].end)
+    let RP_BARGE = RGBColors.red;
+    if (endgamePoints >= 14) RP_BARGE = RGBColors.green;
 
     return <div className={styles.lightBorderBox}>
       <div className={styles.scoreBreakdownContainer}>
@@ -350,7 +340,7 @@ if (searchParams.get("go") != "go") {
         <div style={{background: RP_WIN}}>Victory</div>
         <div style={{background: RP_AUTO}}>Auto</div>
         <div style={{background: RP_CORAL}}>Coral</div>
-        <div style={{background: "red"}}>Barge</div>
+        <div style={{background: RP_BARGE}}>Barge</div>
       </div>
     </div>
     
@@ -377,18 +367,31 @@ if (searchParams.get("go") != "go") {
           {Math.round(10*(teamData.auto + teamData.tele + teamData.end))/10}
         </div>
         <div className={styles.EPABreakdown}>
-          <div style={{background: colors[1]}}>A: {Math.round(10*teamData.auto)/10}</div>
-          <div style={{background: colors[1]}}>T: {Math.round(10*teamData.tele)/10}</div>
-          <div style={{background: colors[1]}}>E: {Math.round(10*teamData.end)/10}</div>
+          <div style={{background: colors[2]}}>A: {Math.round(10*teamData.auto)/10}</div>
+          <div style={{background: colors[2]}}>T: {Math.round(10*teamData.tele)/10}</div>
+          <div style={{background: colors[2]}}>E: {Math.round(10*teamData.end)/10}</div>
         </div>
       </div>
       <div className={styles.barchartContainer}>
         <h2>Average Piece Placement</h2>
-        <PiecePlacement matchMax={matchMax} L1={teamData.avgPieces.L1}L2={teamData.avgPieces.L2}L3={teamData.avgPieces.L3} L4={teamData.avgPieces.L4} net={teamData.avgPieces.net}processor={teamData.avgPieces.processor}HP={teamData.avgPieces.HP}/>
+        <PiecePlacement 
+          colors={colors}
+          matchMax={matchMax} 
+          L1={teamData.avgPieces.L1}
+          L2={teamData.avgPieces.L2}
+          L3={teamData.avgPieces.L3} 
+          L4={teamData.avgPieces.L4} 
+          net={teamData.avgPieces.net}
+          processor={teamData.avgPieces.processor}
+          HP={teamData.avgPieces.HP}
+        />
       </div>
       <div className={styles.chartContainer}>
         <h2 style={{marginBottom: "-40px"}}>Endgame %</h2>
-        <Endgame endgameData={endgameData}/>
+        <Endgame 
+          colors={colors}
+          endgameData={endgameData}
+        />
       </div>
     </div>
   }
@@ -407,6 +410,13 @@ if (searchParams.get("go") != "go") {
   let redScores = [0, get(redAlliance, "auto")]
   redScores.push(redScores[1] + get(redAlliance, "tele"))
   redScores.push(redScores[2] + get(redAlliance, "end"));
+  let epaData = [
+    {name: "Start", blue: 0, red: 0},
+    {name: "Auto", blue: blueScores[1], red: redScores[1]},
+    {name: "Tele", blue: blueScores[2], red: redScores[2]},
+    {name: "End", blue: blueScores[3], red: redScores[3]},
+  ];
+
   //getting radar data
   let radarData = [];
   for (let qual of ['coralspeed', 'processorspeed', 'netspeed', 'algaeremovalspeed', 'climbspeed', 'maneuverability', 'defenseplayed', 'defenseevasion', 'aggression', 'cagehazard']) {
@@ -432,27 +442,34 @@ if (searchParams.get("go") != "go") {
   return (
     <div>
       <div className={styles.matchNav}>
-        <AllianceButtons t1={data.team1 || defaultTeam} t2={data.team2 || defaultTeam} t3={data.team3 || defaultTeam} colors={[COLORS[0], COLORS[1], COLORS[2]]}></AllianceButtons>
+        <AllianceButtons t1={data.team1 || defaultTeam} t2={data.team2 || defaultTeam} t3={data.team3 || defaultTeam} colors={[COLORS[3], COLORS[4], COLORS[5]]}></AllianceButtons>
         <Link href={`/match-view?team1=${data.team1?.team || ""}&team2=${data.team2?.team || ""}&team3=${data.team3?.team || ""}&team4=${data.team4?.team || ""}&team5=${data.team5?.team || ""}&team6=${data.team6?.team || ""}`}><button style={{background: "#ffff88", color: "black"}}>Edit</button></Link>
-        <AllianceButtons t1={data.team4 || defaultTeam} t2={data.team5 || defaultTeam} t3={data.team6 || defaultTeam} colors={[COLORS[3], COLORS[4], COLORS[5]]}></AllianceButtons>
+        <AllianceButtons t1={data.team4 || defaultTeam} t2={data.team5 || defaultTeam} t3={data.team6 || defaultTeam} colors={[COLORS[0], COLORS[1], COLORS[2]]}></AllianceButtons>
       </div>
       <div className={styles.allianceEPAs}>
-        <AllianceDisplay teams={redAlliance} opponents={blueAlliance} colors={["#FFE4E9", "#FDC3CA"]}></AllianceDisplay>
-        <AllianceDisplay teams={blueAlliance} opponents={redAlliance} colors={["#D3DFFF", "#A9BDFF"]}></AllianceDisplay>
+        <AllianceDisplay teams={redAlliance} opponents={blueAlliance} colors={["#FFD5E1", "#F29FA6"]}></AllianceDisplay>
+        <AllianceDisplay teams={blueAlliance} opponents={redAlliance} colors={["#D3DFFF", "#8FA5F5"]}></AllianceDisplay>
       </div>
       <div className={styles.allianceGraphs}>
         <div className={styles.graphContainer}>
           <Qualitative 
             radarData={radarData} 
             teamIndices={[1, 2, 3]} 
-            colors={[COLORS[3][0], COLORS[4][0], COLORS[5][0]]} 
+            colors={[COLORS[3][0], COLORS[4][0], COLORS[5][0]]}
+            teamNumbers={[data.team1.team, data.team2.team, data.team3.team]} 
           />
+        </div>
+        <div className={styles.lineGraphContainer}>
+          <h2>EPA / time</h2>
+          <br></br>
+          <EPALineChart data={epaData}/>
         </div>
         <div className={styles.graphContainer}>
           <Qualitative 
             radarData={radarData} 
             teamIndices={[4, 5, 6]} 
             colors={[COLORS[0][0], COLORS[1][0], COLORS[2][0]]} 
+            teamNumbers={[data.team4.team, data.team5.team, data.team6.team]} 
           />
         </div>
       </div>

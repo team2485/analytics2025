@@ -259,3 +259,15 @@
 .barchartContainer svg {
     transform: translateX(-20px);
 }
+.lineGraphContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.lineGraphContainer svg {
+    transform: translateX(-20px);
+}
