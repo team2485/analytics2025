@@ -47,7 +47,7 @@ function MatchView() {
     leave: false,
     autoCoral: 0,
     removedAlgae: 0,
-    endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
+    endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
   };
 
@@ -71,7 +71,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 4,
-      endgame: { none: 10, park: 13, shallow: 35, deep: 7, fail: 15, multicage: 20 },
+      endgame: { none: 10, park: 13, shallow: 35, deep: 7, fail: 15},
       qualitative: { coralspeed: 5, processorspeed: 2, netspeed: 3, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 1, defenseplayed: 4, defenseevasion: 2, aggression: 4, cagehazard: 3 }
     },
     team2: {
@@ -81,8 +81,8 @@ function MatchView() {
       tele: 0,
       end: 0,
       avgPieces: {
-        L1: 0,
-        L2: 0,
+        L1: 1,
+        L2: 2,
         L3: 0,
         L4: 0,
         net:0, 
@@ -92,18 +92,18 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
+      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
       qualitative: { coralspeed: 3, processorspeed: 1, netspeed: 4, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team3: {
-      team: 404,
+      team: 4321,
       teamName: "Invisibotics 👻",
       auto: 0,
       tele: 0,
       end: 0,
       avgPieces: {
-        L1: 0,
-        L2: 0,
+        L1: 3,
+        L2: 2,
         L3: 0,
         L4: 0,
         net:0, 
@@ -113,20 +113,20 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
+      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team4: {
-      team: 404,
+      team: 4,
       teamName: "Invisibotics 👻",
       auto: 0,
       tele: 0,
       end: 0,
       avgPieces: {
-        L1: 0,
-        L2: 0,
-        L3: 0,
-        L4: 0,
+        L1: 4,
+        L2: 3,
+        L3: 2,
+        L4: 1,
         net:0, 
         processor: 0,
         HP: 0,
@@ -134,19 +134,19 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
+      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team5: {
-      team: 404,
+      team: 5,
       teamName: "Invisibotics 👻",
-      auto: 0,
-      tele: 0,
-      end: 0,
+      auto: 1,
+      tele: 11,
+      end: 12,
       avgPieces: {
-        L1: 0,
-        L2: 0,
-        L3: 0,
+        L1: 1,
+        L2: 2,
+        L3: 3,
         L4: 0,
         net:0, 
         processor: 0,
@@ -155,11 +155,11 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
+      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
     team6: {
-      team: 404,
+      team: 6,
       teamName: "Invisibotics 👻",
       auto: 0,
       tele: 0,
@@ -176,7 +176,7 @@ function MatchView() {
       leave: true,
       autoCoral: 0,
       removedAlgae: 0,
-      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0, multicage:0 },
+      endgame: { none: 100, park: 0, shallow: 0, deep: 0, fail: 0},
       qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
     },
   };
@@ -295,9 +295,30 @@ if (searchParams.get("go") != "go") {
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
 
     //auto rp = all robots leave and alliance scores one coral
-    const allianceCoral = teams[0].autoCoral + teams[1].autoCoral + teams[2].autoCoral
+    const allianceCoral = teams[0].autoCoral + teams[1].autoCoral + teams[2].autoCoral;
     let RP_AUTO = RGBColors.red;
-    if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green
+    if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+
+    //coral rp = 5 coral scored on each level (5 on 3 levels is yellow)
+    const allianceL1 = teams[0].avgPieces.L1 + teams[1].avgPieces.L1 + teams[2].avgPieces.L1;
+    const allianceL2 = teams[0].avgPieces.L2 + teams[1].avgPieces.L2 + teams[2].avgPieces.L2;
+    const allianceL3 = teams[0].avgPieces.L3 + teams[1].avgPieces.L3 + teams[2].avgPieces.L3;
+    const allianceL4 = teams[0].avgPieces.L4 + teams[1].avgPieces.L4 + teams[2].avgPieces.L4;
+    let RP_CORAL = RGBColors.red;
+    const conditions = [
+      allianceL1 >= 5,
+      allianceL2 >= 5,
+      allianceL3 >= 5,
+      allianceL4 >= 5
+    ];
+    //count the number of true conditions
+    const trueCount = conditions.filter(Boolean).length;
+    //if all 4 conditions are true
+    if (trueCount == 4) RP_CORAL = RGBColors.green;
+    //if 3 conditions are true
+    else if (trueCount == 3) RP_CORAL = RGBColors.yellow;
+  
+    //barge rp = 
         
     /*melody = can get 18 notes in speaker & amp (15 is yellow)
         const teamMelodyNotes = (team) => Math.floor(team.avgNotes.speaker + team.avgNotes.ampedSpeaker + team.avgNotes.amp);
@@ -328,7 +349,7 @@ if (searchParams.get("go") != "go") {
         <div style={{background: colors[1]}}>RPs:</div>
         <div style={{background: RP_WIN}}>Victory</div>
         <div style={{background: RP_AUTO}}>Auto</div>
-        <div style={{background: "red"}}>Coral</div>
+        <div style={{background: RP_CORAL}}>Coral</div>
         <div style={{background: "red"}}>Barge</div>
       </div>
     </div>
@@ -344,7 +365,6 @@ if (searchParams.get("go") != "go") {
       { x: 'Park', y: teamData.endgame.park },
       { x: 'Shallow', y: teamData.endgame.shallow },
       { x: 'Deep', y: teamData.endgame.deep },
-      { x: 'Multi', y: teamData.endgame.multicage },
     ];
 
 
