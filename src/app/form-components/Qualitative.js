@@ -26,58 +26,6 @@ export default function Qualitative ({ visibleName, internalName, description, s
                 })}
             </div>
             
-            {(description == "Amp Speed" || description == "Speaker Speed" || description == "Trap Speed") && rating === -1 && (
-                        <div>
-                            Not Applicable 
-                        </div>
-            )}
-            {rating === -1 && description == "Maneuverability" && (
-
-                <div>
-                    Did Not Move 
-                </div>
-            )}
-             {rating === -1 && description == "Onstage Speed" && (
-
-                <div>
-                    Did Not Try To Go Onstage 
-                </div>
-            )}
-             {rating === -1 && description == "Harmony Speed" && (
-
-                <div>
-                    Did Not Try To Harmonize 
-                </div>
-            )}
-            {rating === -1 && description == "Ability To Play Defense" && (
-
-                <div>
-                    Did Not Defend  
-                </div>
-            )}
-
-            {rating === -1 && description == "Defense Evasion Ability" && (
-
-                <div>
-                    Was Not Defended Against  
-                </div>
-            )}
-
-
-            {rating === -1 && description == "Aggression" && (
-
-                <div>
-                    Did Not Move 
-                </div>
-            )}
-
-            {rating === -1 && description == "Stagehazard" && (
-
-                <div>
-                    Did Not Interact With Teamates On Stage
-                </div>
-                
-            )}
             {rating >= 0 && (
 
                 <div>
@@ -92,3 +40,6 @@ export default function Qualitative ({ visibleName, internalName, description, s
         </div>
     )
 }
+
+
+

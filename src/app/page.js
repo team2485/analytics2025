@@ -17,6 +17,7 @@ export default function Home() {
   const [humanplayer, setHumanPlayer] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
+  const [HP, setHP] = useState(false);
   const form = useRef();
   
   function onNoShowChange(e) {
@@ -36,6 +37,99 @@ export default function Home() {
   function onDefenseChange(e) {
     let checked = e.target.checked;
     setDefense(checked);
+  }
+  function onHPChange(e) {
+    let checked = e.target.checked;
+    setHP(checked);
+  }
+
+
+  // added from last years code (still review)
+  async function submit(e) {
+    e.preventDefault();
+    //disable submit
+    let submitButton = document.querySelector("#submit");//todo: get changed to a useRef
+    submitButton.disabled = true;
+    //import values from form to data variable
+    let data = {noshow: false, leave: false, harmony: false, gndintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null };
+    [...new FormData(form.current).entries()].forEach(([name, value]) => {
+      if (value == 'on') {
+        data[name] = true;
+      } else {
+        if (!isNaN(value) && value != "") {
+          data[name] = +value;
+        } else {
+          data[name] = value;
+        }
+      }
+    });
+    //clear unneeded checkbox values
+    data.breakdown = undefined;
+    data.defense = undefined;
+
+    //check pre-match data
+    let preMatchInputs = document.querySelectorAll(".preMatchInput"); //todo: use the data object
+    for (let preMatchInput of preMatchInputs) {
+      if(preMatchInput.value == "" || preMatchInput.value <= "0") {
+        alert("Invalid Pre-Match Data!");
+        submitButton.disabled = false;
+        return;
+      } 
+    }
+    //check team and match
+    if (data.match < 200) {
+      let valid = await fetch("/api/get-valid-team?team=" + data.team + "&match=" + data.match)
+        .then((resp) => resp.json())
+        .then((data) => data.valid)
+      if (valid == false) {
+        alert("Invalid Team and Match Combination!");
+        submitButton.disabled = false;
+        return;
+      }
+    }
+
+    //confirm and submit
+    if (confirm("Are you sure you want to submit?") == true) {
+      fetch('/api/add-match-data', {
+        method: "POST",
+        body: JSON.stringify(data)
+      }).then((response)=> {
+        if(response.status === 201) {
+          return response.json();
+        } else {
+          return response.json().then(err => Promise.reject(err.message));
+        }
+      }) 
+      .then(data => {
+        alert("Thank you!");
+        const jsConfetti = new JSConfetti();
+        jsConfetti.addConfetti({
+          confettiColors: ['yellow'],
+       })
+        if (typeof document !== 'undefined')  {
+          let ScoutName = document.querySelector("input[name='scoutname']").value;
+          let ScoutTeam = document.querySelector("input[name='scoutteam']").value;
+          let Match = document.querySelector("input[name='match']").value;
+          let scoutProfile = { 
+            scoutname: ScoutName, 
+            scoutteam: ScoutTeam, 
+            match: Number(Match)+1 
+          };
+          localStorage.setItem("ScoutProfile", JSON.stringify(scoutProfile));
+        }
+        setTimeout(() => {
+          location.reload()
+        }, 2000);
+      })
+      .catch(error => {
+        alert(error);
+        submitButton.disabled = false;
+      });
+
+    } else {
+      //user didn't want to submit
+      submitButton.disabled = false;
+    };
   }
 
   return (
@@ -80,43 +174,61 @@ export default function Home() {
               <Checkbox visibleName={"Leave"} internalName={"leave"} />
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
-                <div className={styles.L1}>
-                  <h2>L1</h2>
-                  <NumericInput 
-                    visibleName={"Success"}
-                    pieceType={"Success"}
-                    internalName={"autoL1success"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
-                    pieceType={"Fail"}
-                    internalName={"autoL1fail"}/>
-                </div>
-                <div className={styles.L2}>
-                  <h2>L2</h2>
-                  <NumericInput 
-                    pieceType={"Success"}
-                    internalName={"autoL2success"}/>
-                  <NumericInput 
-                    pieceType={"Fail"}
-                    internalName={"autoL2fail"}/>
-                </div>
-                <div className={styles.L3}>
-                  <h2>L3</h2>
-                  <NumericInput 
+                <table className={styles.Table}>
+                <thead >
+                <tr>
+                    <th></th>
+                      <th>Success</th>
+                      <th>Fail</th>
+                    </tr>
+                </thead>
+                  <tbody>
+                  <tr>
+                    <td><h2>L4</h2></td>
+                    <td><NumericInput 
+                      pieceType={"Success"}
+                      internalName={"autoL4success"}/>
+                      </td>
+                    <td><NumericInput 
+                      pieceType={"Fail"}
+                      internalName={"autoL4fail"}/>
+                      </td>
+                    </tr> 
+                  <tr>
+                  <td><h2>L3</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
                     internalName={"autoL3success"}/>
-                  <NumericInput 
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
                     internalName={"autoL3fail"}/>
-                </div>
-                <div className={styles.L4}>
-                  <h2>L4</h2>
-                  <NumericInput 
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L2</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL4success"}/>
-                  <NumericInput 
+                    internalName={"autoL2success"}/>
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL4fail"}/>
+                    internalName={"autoL2fail"}/>
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L1</h2></td>
+                  <td><NumericInput 
+                    pieceType={"Success"}
+                    internalName={"autoL1success"}/>
+                    </td>
+                  <td><NumericInput 
+                    pieceType={"Fail"}
+                    internalName={"autoL1fail"}/>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
                 </div>
               </div>
               <div className={styles.AlgaeRemoved}>
@@ -153,69 +265,65 @@ export default function Home() {
                     internalName={"autonetfail"}/>
                 </div>
               </div>
-            </div>
             <div className={styles.Auto}>
               <Header headerName={"Tele"}/>
               <div className={styles.Coral}>
                 <SubHeader subHeaderName={"Coral"}/>
-                <div className={styles.L1}>
-                  <h2>L1</h2>
-                  <NumericInput 
-                    visibleName={"Success"}
-                    pieceType={"Success"}
-                    internalName={"teleL1success"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
-                    pieceType={"Fail"}
-                    internalName={"teleL1fail"}/>
-                </div>
-                <div className={styles.L2}>
-                  <h2>L2</h2>
-                  <NumericInput 
-                    pieceType={"Success"}
-                    internalName={"teleL2success"}/>
-                  <NumericInput 
-                    pieceType={"Fail"}
-                    internalName={"teleL2fail"}/>
-                </div>
-                <div className={styles.L3}>
-                  <h2>L3</h2>
-                  <NumericInput 
+                <table className={styles.Table}>
+                <thead>
+                <tr>
+                    <th></th>
+                      <th>Success</th>
+                      <th>Fail</th>
+                    </tr>
+                </thead>
+                  <tbody>
+                  <tr>
+                    <td><h2>L4</h2></td>
+                    <td><NumericInput 
+                      pieceType={"Success"}
+                      internalName={"teleL4success"}/>
+                      </td>
+                    <td><NumericInput 
+                      pieceType={"Fail"}
+                      internalName={"teleL4fail"}/>
+                      </td>
+                    </tr> 
+                  <tr>
+                  <td><h2>L3</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
                     internalName={"teleL3success"}/>
-                  <NumericInput 
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
                     internalName={"teleL3fail"}/>
-                </div>
-                <div className={styles.L4}>
-                  <h2>L4</h2>
-                  <NumericInput 
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L2</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL4success"}/>
-                  <NumericInput 
+                    internalName={"teleL2success"}/>
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL4fail"}/>
-                </div>
-              </div>
-              <div className={styles.AlgaeRemoved}>
-                <SubHeader subHeaderName={"Algae Removed"}/>
-                <div className={styles.HBox}>
-                  <NumericInput 
-                    pieceType={"Counter"}
-                    internalName={"telealgaeremoved"}/>
-                </div>
-              </div>
-              <div className={styles.Processor}>
-                <SubHeader subHeaderName={"Processor"} />
-                <div className={styles.HBox}>
-                  <NumericInput 
-                    visibleName={"Success"}
+                    internalName={"teleL2fail"}/>
+                    </td>
+                  </tr>
+                   <tr>
+                  <td><h2>L1</h2></td>
+                  <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleprocessorsuccess"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
+                    internalName={"teleL1success"}/>
+                    </td>
+                  <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleprocessorfail"}/>
+                    internalName={"teleL1fail"}/>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
                 </div>
               </div>
               <div className={styles.Net}>
@@ -247,7 +355,6 @@ export default function Home() {
                 </div>
               }
               </div>
-            </div>
             <div className={styles.Endgame}>
               <Header headerName={"Endgame"}/>
               <EndPlacement/>
