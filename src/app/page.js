@@ -14,6 +14,7 @@ import MatchType from "./form-components/MatchType";
 
 export default function Home() {
   const [noShow, setNoShow] = useState(false);
+  const [humanplayer, setHumanPlayer] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
   const form = useRef();
@@ -22,6 +23,12 @@ export default function Home() {
     let checked = e.target.checked;
     setNoShow(checked);
   }
+
+  function onHumanPlayerChange(e) {
+    let checked = e.target.checked;
+    setHumanPlayer(checked);
+  }
+
   function onBreakdownChange(e) {
     let checked = e.target.checked;
     setBreakdown(checked);
@@ -226,17 +233,19 @@ export default function Home() {
               </div>
               <div className={styles.HumanPlayer}>
               <SubHeader subHeaderName={"Human Player"}/>
-              <Checkbox visibleName={"Human Player From Team?"} internalName={"humanplayer"}/>
-              <div className={styles.HBox}>
-                <NumericInput 
-                  visibleName={"Success"}
-                  pieceType={"Success"}
-                  internalName={"hpsuccess"}/>
-                <NumericInput 
-                  visibleName={"Fail"}
-                  pieceType={"Fail"}
-                  internalName={"hpfail"}/>
+              <Checkbox visibleName={"Human Player From Team?"} internalName={"humanplayer"} changeListener={onHumanPlayerChange}/>
+              { humanplayer &&
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    visibleName={"Success"}
+                    pieceType={"Success"}
+                    internalName={"hpsuccess"}/>
+                  <NumericInput 
+                    visibleName={"Fail"}
+                    pieceType={"Fail"}
+                    internalName={"hpfail"}/>
                 </div>
+              }
               </div>
             </div>
             <div className={styles.Endgame}>

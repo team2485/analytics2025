@@ -4,12 +4,6 @@ import styles from './EndPlacement.module.css'
 export default function EndPlacement () {
 
     const [endLocation, setEndLocation] = useState(0);
-    const [multicage, setMultiCage] = useState(false);
-
-    useEffect(() => {
-        if (multicage && (endLocation != 3 ||endLocation != 4)) setMultiCage(false);
-        console.log(endLocation);
-    }, [multicage, endLocation]);
 
     return (
         <div className={styles.endPossibilities}>
@@ -33,14 +27,6 @@ export default function EndPlacement () {
                 <input name="endlocation" type="radio" id="DeepSuccess" value={4} onChange={(e) => setEndLocation(e.target.value)}></input>
                 <label htmlFor="DeepSuccess">Deep Cage</label>
             </div>
-            { (endLocation == 3 || endLocation == 4) &&
-                <>
-                    <div className={styles.checkOption} onClick={(e) => {e.target.querySelector("input")?.click();}}>
-                        <input type="checkbox" id="MultiCage" name="multicage" onChange={(e) => {setMultiCage(e.target.checked)}}></input>
-                        <label htmlFor="multicage">Multi-Cage Climb?</label>
-                    </div>
-                </>
-            }
         </div>
     )
 }
