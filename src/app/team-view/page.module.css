@@ -1,6 +1,15 @@
 .MainDiv {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    /* 
+    justify-content: center;
+    text-align: center; 
+    possible addition */
 }
 
 .leftColumn {
@@ -10,6 +19,9 @@
     justify-content: flex-start;
     padding-right: 20px;
     width: 32%;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 4px solid lightgray;
 }
 
 .rightColumn {
@@ -17,7 +29,7 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-start;
-    padding-right: 20px;
+    padding-left: 20px;
     width: 32%;
 }
 
@@ -138,6 +150,9 @@
     font-weight: 800;
     margin-top: 20px;
     background-color: #eef5ff;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 4px solid lightgray;
 }
 
 .valueBoxes {
@@ -160,13 +175,19 @@
 }
 
 .auto {
-    display: flex;
-    flex-direction: row;
+    border-bottom: 4px solid lightgray;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 4px solid lightgray;
+    border-left: 4px solid lightgray;
 }
-
 .tele {
-    display: flex;
-    flex-direction: row;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 4px solid lightgray;
+    border-left: 4px solid lightgray;
+    padding-top: 10px;
 }
 
 .endgame {
@@ -182,23 +203,28 @@
 .twoByTwoContainer {
     display: flex;
     flex-direction: row;
-    border-bottom: 4px solid lightgray;
+    /*border-bottom: 4px solid lightgray;
     padding-bottom: 10px;
     padding-right: 10px;
     padding-left: 10px;
     border-right: 4px solid lightgray;
     border-left: 4px solid lightgray;
+    */
 }
 
 .fourByTwoContainer {
     display: flex;
     flex-direction: row;
-    border-bottom: 4px solid lightgray;
+    padding-left: 15px;
+    border-left: 4px solid lightgray ;
+    
+    /*border-bottom: 4px solid lightgray;
     padding-bottom: 10px;
     padding-right: 10px;
-    padding-left: 10px;
+    
     border-right: 4px solid lightgray;
     border-left: 4px solid lightgray;
+    */
 }
 
 .radarContainer {
@@ -208,4 +234,8 @@
     align-items: center;
     min-width: 30%;
     margin-bottom: 10px;
+}
+
+.L1, .L2, .L3, .L4 {
+    color: purple;
 }
