@@ -16,6 +16,7 @@ export default function Home() {
   const [noShow, setNoShow] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
+  const [HP, setHP] = useState(false);
   const form = useRef();
   
   function onNoShowChange(e) {
@@ -29,6 +30,10 @@ export default function Home() {
   function onDefenseChange(e) {
     let checked = e.target.checked;
     setDefense(checked);
+  }
+  function onHPChange(e) {
+    let checked = e.target.checked;
+    setHP(checked);
   }
 
 
