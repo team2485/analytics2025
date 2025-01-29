@@ -26,6 +26,54 @@ export default function Qualitative ({ visibleName, internalName, description, s
                 })}
             </div>
             
+            {rating === -1 && (description == "Coral Speed" || description == "Processor Speed" || description == "Robot Net Speed") && (
+                <div>
+                    Not Applicable
+                </div>
+            )}
+
+            {rating === -1 && description == "Algae Removal Speed" && (
+                <div>
+                    Did Not Try to Remove Algae
+                </div>
+            )}
+
+            {rating === -1 && description == "Climb Speed" && (
+                <div>
+                    Did Not Try to Climb
+                </div>
+            )}
+
+            {rating === -1 && description == "Manuverability" && (
+                <div>
+                    Did Not Move
+                </div>
+            )}
+
+            {rating === -1 && description == "Defense Played" && (
+                <div>
+                    Did Not Defend
+                </div>
+            )}
+
+            {rating === -1 && description == "Defense Evasion" && (
+                <div>
+                    Was Not Defended Against
+                </div>
+            )}
+
+            {rating === -1 && description == "Aggresion" && (
+                <div>
+                    Did Not Move
+                </div>
+            )}
+
+            {rating === -1 && description == "Cage Hazard" && (
+                <div>
+                    Did Not Interact With Teammates in the Barge
+                </div>
+            )}
+
             {rating >= 0 && (
 
                 <div>
