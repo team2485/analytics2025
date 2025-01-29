@@ -13,15 +13,23 @@ import EPALineChart from './components/EPALineChart';
 import PiecePlacement from "./components/PiecePlacement";
 import Endgame from "./components/Endgame";
 import Qualitative from "./components/Qualitative";
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, ResponsiveContainer, Cell, LineChart, Line, RadarChart, PolarRadiusAxis, PolarAngleAxis, PolarGrid, Radar, Legend, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, RadarChart, PolarRadiusAxis, PolarAngleAxis, PolarGrid, Radar, Legend } from 'recharts';
 
 export default function TeamViewPage() {
-    return <Suspense>
-        <TeamView/>
-      </Suspense>
-  }
+    return (
+        <Suspense>
+            <TeamView />
+        </Suspense>
+    );
+}
 
-  function TeamView() {
+function TeamView() {
+    // const [data, setData] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+    // const searchParams = useSearchParams();
+    // const team = searchParams.get("team");
+    
     let data={
       team: 2485,
       name: "Overclocked",
@@ -119,203 +127,177 @@ export default function TeamViewPage() {
       algaeLowReefIntake: false,
       algaeHighReefIntake: true,
     }
-    
+    // Fetch team data from backend
+    // function fetchTeamData(team) {
+    //     setLoading(true);
+    //     setError(null);
+
+    //     fetch(`/api/get-team-data?team=${team}`)
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error("Failed to fetch data");
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             setData(data);
+    //             setLoading(false);
+    //         })
+    //         .catch(error => {
+    //             console.error("Fetch error:", error);
+    //             setError(error.message);
+    //             setLoading(false);
+    //         });
+    // }
+
+    // useEffect(() => {
+    //     if (team) {
+    //         fetchTeamData(team);
+    //     }
+    // }, [team]);
+
+    // if (!team) {
+    //     return (
+    //         <div>
+    //             <form className={styles.teamInputForm}>
+    //                 <span>{error}</span>
+    //                 <label htmlFor="team">Team: </label>
+    //                 <input id="team" name="team" placeholder="Team #" type="number"></input>
+    //                 <br></br>
+    //                 <button>Go!</button>
+    //             </form>
+    //         </div>
+    //     );
+    // }
+
+    // if (loading) {
+    //     return (
+    //         <div>
+    //             <h1>Loading...</h1>
+    //         </div>
+    //     );
+    // }
+
+    // if (!data) {
+    //     return (
+    //         <div>
+    //             <h1>No data found for team {team}</h1>
+    //         </div>
+    //     );
+    // }
+
     const Colors = [
-      ["#116677", "#84C9D7", "#8CCCD9", "#C4EEF6"],
-      ["#003F7E", "#84AED7", "#A2C8ED", "#D8EAFB"],
-      ["#15007E", "#9D8CF3", "#BFB2FF", "#DDD6FF"],
-      ["#9F5EB5", "#C284D7", "#DBA2ED", "#F3D8FB"],
-    ]
+        ["#116677", "#84C9D7", "#8CCCD9", "#C4EEF6"],
+        ["#003F7E", "#84AED7", "#A2C8ED", "#D8EAFB"],
+        ["#15007E", "#9D8CF3", "#BFB2FF", "#DDD6FF"],
+        ["#9F5EB5", "#C284D7", "#DBA2ED", "#F3D8FB"],
+    ];
 
-    const endgamePieData = [{ x: 'None', y: data.endPlacement.none },
-      { x: 'Park', y: data.endPlacement.park },
-      { x: 'Fail', y: data.endPlacement.parkandFail},
-      { x: 'Shallow', y: data.endPlacement.shallow },
-      { x: 'Deep', y: data.endPlacement.deep }];
-console.log(endgamePieData);
+    const endgamePieData = [
+        { x: 'None', y: data.endPlacement.none },
+        { x: 'Park', y: data.endPlacement.park },
+        { x: 'Fail', y: data.endPlacement.parkandFail },
+        { x: 'Shallow', y: data.endPlacement.shallow },
+        { x: 'Deep', y: data.endPlacement.deep }
+    ];
+
     return (
-      <div className={styles.MainDiv}>
-        <div className={styles.leftColumn}>
-          <h1 style={{color: Colors[0][0]}}>Team {data.team} View</h1>
-          <h3>{data.name}</h3>
-          <div className={styles.EPAS}>
-            <div className={styles.EPA}>
-              <div className={styles.scoreBreakdownContainer}>
-                <div style={{background: Colors[0][1]}} className={styles.epaBox}>{data.avgEpa}</div>
-                <div className={styles.epaBreakdown}>
-                  <div style={{background: Colors[0][3]}}>A: {data.avgAuto}</div>
-                  <div style={{background: Colors[0][3]}}>T: {data.avgTele}</div>
-                  <div style={{background: Colors[0][3]}}>E: {data.avgEnd}</div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.Last3EPA}>
-              <div className={styles.scoreBreakdownContainer}>
-                <div style={{background: "orange"}} className={styles.Last3EpaBox}>{data.last3Epa}</div>
-                <div className={styles.epaBreakdown}>
-                  <div style={{background: "yellow"}}>A: {data.last3Auto}</div>
-                  <div style={{background: "green"}}>T: {data.last3Tele}</div>
-                  <div style={{background: "red"}}>E: {data.last3End}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.graphContainer}>
-            <h4 className={styles.graphTitle}>EPA Over Time</h4>
-            <EPALineChart 
-              data={data.epaOverTime} 
-              color={Colors[0][0]} 
-            />
-          </div>
-          <div className={styles.graphContainer}>
-            <h4 className={styles.graphTitle}>Piece Placement</h4>
-            <PiecePlacement 
-              L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
-              L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
-              L3={data.auto.coral.avgL3 + data.tele.coral.avgL3}
-              L4={data.auto.coral.avgL4 + data.tele.coral.avgL4}
-              net={data.auto.algae.avgNet + data.tele.algae.avgNet}
-              processor={data.auto.algae.avgProcessor + data.tele.algae.avgProcessor}
-              HP={data.tele.avgHp}
-            />
-          </div>
-          <div className={styles.valueBoxes}>
-            <VBox title={"Matches Scouted"} value={data.matchesScouted}/>
-            <VBox title={"No Show"} value={data.noShow}/>
-            <VBox title={"Defense"} value={data.defense}/>
-            <VBox title={"Consistancy"} value={data.consistancy}/>
-            <VBox title={"Breakdown"} value={data.breakdown}/>
-            <VBox title={"Last Breakdown"} value={data.lastBreakdown}/>
-            <Comments title={"General Comments"} value={(data.generalComments).join(" | ")}/>
-            <Comments title={"Breakdown Comments"} value={(data.breakdownComments).join(" | ")}/>
-            <Comments title={"Defense Comments"} value={(data.defenseComments).join(" | ")}/>
-          </div>
-          <HBox title={"Scouts"} value={(data.scouts).join(" | ")}/>
-        </div>
+        <div className={styles.MainDiv}>
+            <div className={styles.leftColumn}>
+                <h1 style={{ color: Colors[0][0] }}>Team {data.team} View</h1>
+                <h3>{data.name}</h3>
 
-      <div className={styles.RightColumn}>
-        <div className={styles.fourByTwoContainer}>
-          <div className={styles.auto}>
-          <FourByTwo
-            HC1="Success"
-            HC2="Avg Coral"
-            HR1="L4"
-            R1C1={`${data.auto.coral.successL4}%`}
-            R1C2={data.auto.coral.avgL4}
-            HR2="L3"
-            R2C1={`${data.auto.coral.successL3}%`}
-            R2C2={data.auto.coral.avgL3}
-            HR3="L2"
-            R3C1={`${data.auto.coral.successL2}%`}
-            R3C2={data.auto.coral.avgL2}
-            HR4="L1"
-            R4C1={`${data.auto.coral.successL1}%`}
-            R4C2={data.auto.coral.avgL1}
-          />
-        </div>
-          <div className={styles.graphContainer}>
-                <h4 className={styles.graphTitle}>Auto Over Time</h4>
-                <EPALineChart 
-                  data={data.autoOverTime} 
-                  color={Colors[0][0]} 
-                />
-          </div>
-            <div className={styles.valueBoxes}>
-              <VBox title={"Leave"} value={data.leave} />
-              <VBox title={"Total"} value={data.auto.coral.total} />
-              <VBox title={"Success"} value={data.auto.coral.success} />
-              <VBox title={"Algae Removed"} value={data.auto.algae.removed} />
-          </div>
-        </div>
-          <div className={styles.auto}>
-            <div className={styles.twoByTwoContainer}>
-              <TwoByTwo
-                HC1="Success"
-                HC2="Avg Algae"
-                HR1="Processor"
-                R1C1={`${data.auto.algae.successProcessor}%`}
-                R1C2={data.auto.algae.avgProcessor}
-                HR2="Net"
-                R2C1={`${data.auto.algae.successNet}%`}
-                R2C2={data.auto.algae.avgNet}
-              />
-              </div>
-            </div>
-        <div className={styles.fourByTwoContainer}>
-          <div className={styles.tele}>
-            <FourByTwo
-              HC1="Success"
-              HC2="Avg Coral"
-              HR1="L4"
-              R1C1={`${data.tele.coral.successL4}%`}
-              R1C2={data.tele.coral.avgL4}
-              HR2="L3"
-              R2C1={`${data.tele.coral.successL3}%`}
-              R2C2={data.tele.coral.avgL3}
-              HR3="L2"
-              R3C1={`${data.tele.coral.successL2}%`}
-              R3C2={data.tele.coral.avgL2}
-              HR4="L1"
-              R4C1={`${data.tele.coral.successL1}%`}
-              R4C2={data.tele.coral.avgL1}
-            />
-            </div>
-          </div>
-        <div className={styles.graphContainer}>
-            <h4 className={styles.graphTitle}>Tele Over Time</h4>
-            <EPALineChart 
-              data={data.teleOverTime} 
-              color={Colors[0][0]} 
-            />
-          </div>
-            <div className={styles.valueBoxes}>
-              <VBox title={"HP Scored"} value={data.tele.avgHp} />
-              <VBox title={"Success"} value={data.tele.successHp} />
-              <VBox title={"Total"} value={data.tele.coral.total} />
-              <VBox title={"Success"} value={data.tele.coral.success} />
-              <VBox title={"Algae Removed"} value={data.tele.algae.removed} />
-            </div>
-            <div className={styles.tele}>
-              <div className={styles.twoByTwoContainer}>
-                <TwoByTwo
-                  HC1="Success"
-                  HC2="Avg Algae"
-                  HR1="Processor"
-                  R1C1={`${data.tele.algae.successProcessor}%`}
-                  R1C2={data.tele.algae.avgProcessor}
-                  HR2="Net"
-                  R2C1={`${data.tele.algae.successNet}%`}
-                  R2C2={data.tele.algae.avgNet}
-                />
-            </div>
-          </div>
-        <div className={styles.endgame}>
-          <div className={styles.twoByTwoContainer}>
-          <TwoByTwo
-            HC1="Attempt"
-            HC2="Success"
-            HR1="Cage"
-            R1C1={`${data.attemptCage}%`}
-            R1C2={`${data.successCage}%`}
-          />
-        </div> 
-        <div className={styles.graphContainer}>
-            <h4 className={styles.graphTitle}>Endgame Placement</h4>
-            <Endgame 
-              data={endgamePieData} 
-              color={Colors[0][0]} 
-            />
-          </div>
-        </div>
-        <div className={styles.qualitative}>
-        <div className={styles.radarContainer}>
-            <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-            <Qualitative data={data.qualitative}/>
-            <p>*Inverted so outside is good</p>
-          </div>
-        </div>
-      </div>
-    </div>
+                <div className={styles.EPAS}>
+                    <div className={styles.EPA}>
+                        <div className={styles.scoreBreakdownContainer}>
+                            <div style={{ background: Colors[0][1] }} className={styles.epaBox}>{data.avgEpa}</div>
+                            <div className={styles.epaBreakdown}>
+                                <div style={{ background: Colors[0][3] }}>A: {data.avgAuto}</div>
+                                <div style={{ background: Colors[0][3] }}>T: {data.avgTele}</div>
+                                <div style={{ background: Colors[0][3] }}>E: {data.avgEnd}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    )
-  }
+                <div className={styles.graphContainer}>
+                    <h4 className={styles.graphTitle}>EPA Over Time</h4>
+                    <EPALineChart data={data.epaOverTime} color={Colors[0][0]} />
+                </div>
+
+                <div className={styles.graphContainer}>
+                    <h4 className={styles.graphTitle}>Piece Placement</h4>
+                    <PiecePlacement
+                        L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
+                        L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
+                        L3={data.auto.coral.avgL3 + data.tele.coral.avgL3}
+                        L4={data.auto.coral.avgL4 + data.tele.coral.avgL4}
+                        net={data.auto.algae.avgNet + data.tele.algae.avgNet}
+                        processor={data.auto.algae.avgProcessor + data.tele.algae.avgProcessor}
+                        HP={data.tele.avgHp}
+                    />
+                </div>
+
+                <div className={styles.valueBoxes}>
+                    <VBox title={"Matches Scouted"} value={data.matchesScouted} />
+                    <VBox title={"No Show"} value={data.noShow} />
+                    <VBox title={"Defense"} value={data.defense} />
+                    <VBox title={"Consistency"} value={data.consistancy} />
+                    <VBox title={"Breakdown"} value={data.breakdown} />
+                    <VBox title={"Last Breakdown"} value={data.lastBreakdown} />
+                    <Comments title={"General Comments"} value={data.generalComments.join(" | ")} />
+                    <Comments title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
+                    <Comments title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
+                </div>
+
+                <HBox title={"Scouts"} value={data.scouts.join(" | ")} />
+            </div>
+
+            <div className={styles.RightColumn}>
+                <div className={styles.fourByTwoContainer}>
+                    <div className={styles.auto}>
+                        <FourByTwo
+                            HC1="Success"
+                            HC2="Avg Coral"
+                            HR1="L4"
+                            R1C1={`${data.auto.coral.successL4}%`}
+                            R1C2={data.auto.coral.avgL4}
+                            HR2="L3"
+                            R2C1={`${data.auto.coral.successL3}%`}
+                            R2C2={data.auto.coral.avgL3}
+                            HR3="L2"
+                            R3C1={`${data.auto.coral.successL2}%`}
+                            R3C2={data.auto.coral.avgL2}
+                            HR4="L1"
+                            R4C1={`${data.auto.coral.successL1}%`}
+                            R4C2={data.auto.coral.avgL1}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.endgame}>
+                    <div className={styles.twoByTwoContainer}>
+                        <TwoByTwo
+                            HC1="Attempt"
+                            HC2="Success"
+                            HR1="Cage"
+                            R1C1={`${data.attemptCage}%`}
+                            R1C2={`${data.successCage}%`}
+                        />
+                    </div>
+                    <div className={styles.graphContainer}>
+                        <h4 className={styles.graphTitle}>Endgame Placement</h4>
+                        <Endgame data={endgamePieData} color={Colors[0][0]} />
+                    </div>
+                </div>
+
+                <div className={styles.qualitative}>
+                    <div className={styles.radarContainer}>
+                        <h4 className={styles.graphTitle}>Qualitative Ratings</h4>
+                        <Qualitative data={data.qualitative} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
