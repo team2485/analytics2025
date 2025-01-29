@@ -194,25 +194,26 @@ console.log(endgamePieData);
         </div>
 
       <div className={styles.RightColumn}>
-        <div className={styles.fourByTwoContainer}>
-          <div className={styles.auto}>
-          <FourByTwo
-            HC1="Success"
-            HC2="Avg Coral"
-            HR1="L4"
-            R1C1={`${data.auto.coral.successL4}%`}
-            R1C2={data.auto.coral.avgL4}
-            HR2="L3"
-            R2C1={`${data.auto.coral.successL3}%`}
-            R2C2={data.auto.coral.avgL3}
-            HR3="L2"
-            R3C1={`${data.auto.coral.successL2}%`}
-            R3C2={data.auto.coral.avgL2}
-            HR4="L1"
-            R4C1={`${data.auto.coral.successL1}%`}
-            R4C2={data.auto.coral.avgL1}
-          />
-        </div>
+        <h1 style={{color: Colors[0][0]}}>Auto</h1>
+          <div className={styles.fourByTwoContainer}>
+            <FourByTwo
+              HC1="Success"
+              HC2="Avg Coral"
+              HR1="L4"
+              R1C1={`${data.auto.coral.successL4}%`}
+              R1C2={data.auto.coral.avgL4}
+              HR2="L3"
+              R2C1={`${data.auto.coral.successL3}%`}
+              R2C2={data.auto.coral.avgL3}
+              HR3="L2"
+              R3C1={`${data.auto.coral.successL2}%`}
+              R3C2={data.auto.coral.avgL2}
+              HR4="L1"
+              R4C1={`${data.auto.coral.successL1}%`}
+              R4C2={data.auto.coral.avgL1}
+            />
+          </div>
+        <div className={styles.auto}>
           <div className={styles.graphContainer}>
                 <h4 className={styles.graphTitle}>Auto Over Time</h4>
                 <EPALineChart 
@@ -227,7 +228,6 @@ console.log(endgamePieData);
               <VBox title={"Algae Removed"} value={data.auto.algae.removed} />
           </div>
         </div>
-          <div className={styles.auto}>
             <div className={styles.twoByTwoContainer}>
               <TwoByTwo
                 HC1="Success"
@@ -239,83 +239,83 @@ console.log(endgamePieData);
                 R2C1={`${data.auto.algae.successNet}%`}
                 R2C2={data.auto.algae.avgNet}
               />
-              </div>
             </div>
-        <div className={styles.fourByTwoContainer}>
           <div className={styles.tele}>
-            <FourByTwo
-              HC1="Success"
-              HC2="Avg Coral"
-              HR1="L4"
-              R1C1={`${data.tele.coral.successL4}%`}
-              R1C2={data.tele.coral.avgL4}
-              HR2="L3"
-              R2C1={`${data.tele.coral.successL3}%`}
-              R2C2={data.tele.coral.avgL3}
-              HR3="L2"
-              R3C1={`${data.tele.coral.successL2}%`}
-              R3C2={data.tele.coral.avgL2}
-              HR4="L1"
-              R4C1={`${data.tele.coral.successL1}%`}
-              R4C2={data.tele.coral.avgL1}
+            <h1 style={{color: Colors[0][0]}}>Tele</h1>
+              <div className={styles.fourByTwoContainer}>
+                  <FourByTwo
+                    HC1="Success"
+                    HC2="Avg Coral"
+                    HR1="L4"
+                    R1C1={`${data.tele.coral.successL4}%`}
+                    R1C2={data.tele.coral.avgL4}
+                    HR2="L3"
+                    R2C1={`${data.tele.coral.successL3}%`}
+                    R2C2={data.tele.coral.avgL3}
+                    HR3="L2"
+                    R3C1={`${data.tele.coral.successL2}%`}
+                    R3C2={data.tele.coral.avgL2}
+                    HR4="L1"
+                    R4C1={`${data.tele.coral.successL1}%`}
+                    R4C2={data.tele.coral.avgL1}
+                  />
+                  </div>
+              </div>
+          <div className={styles.graphContainer}>
+              <h4 className={styles.graphTitle}>Tele Over Time</h4>
+              <EPALineChart 
+                data={data.teleOverTime} 
+                color={Colors[0][0]} 
+              />
+            </div>
+              <div className={styles.valueBoxes}>
+                <VBox title={"HP Scored"} value={data.tele.avgHp} />
+                <VBox title={"Success"} value={data.tele.successHp} />
+                <VBox title={"Total"} value={data.tele.coral.total} />
+                <VBox title={"Success"} value={data.tele.coral.success} />
+                <VBox title={"Algae Removed"} value={data.tele.algae.removed} />
+              </div>
+                <div className={styles.twoByTwoContainer}>
+                  <TwoByTwo
+                    HC1="Success"
+                    HC2="Avg Algae"
+                    HR1="Processor"
+                    R1C1={`${data.tele.algae.successProcessor}%`}
+                    R1C2={data.tele.algae.avgProcessor}
+                    HR2="Net"
+                    R2C1={`${data.tele.algae.successNet}%`}
+                    R2C2={data.tele.algae.avgNet}
+                  />
+              </div>
+            <h1 style={{color: Colors[0][0]}}>Endgame</h1>
+          <div className={styles.endgame}>
+            <div className={styles.twoByTwoContainer}>
+            <TwoByTwo
+              HC1="Attempt"
+              HC2="Success"
+              HR1="Cage"
+              R1C1={`${data.attemptCage}%`}
+              R1C2={`${data.successCage}%`}
             />
+          </div> 
+          <div className={styles.graphContainer}>
+              <h4 className={styles.graphTitle}>Endgame Placement</h4>
+              <Endgame 
+                data={endgamePieData} 
+                color={Colors[0][0]} 
+              />
             </div>
           </div>
-        <div className={styles.graphContainer}>
-            <h4 className={styles.graphTitle}>Tele Over Time</h4>
-            <EPALineChart 
-              data={data.teleOverTime} 
-              color={Colors[0][0]} 
-            />
-          </div>
-            <div className={styles.valueBoxes}>
-              <VBox title={"HP Scored"} value={data.tele.avgHp} />
-              <VBox title={"Success"} value={data.tele.successHp} />
-              <VBox title={"Total"} value={data.tele.coral.total} />
-              <VBox title={"Success"} value={data.tele.coral.success} />
-              <VBox title={"Algae Removed"} value={data.tele.algae.removed} />
+          <h1 style={{color: Colors[0][0]}}>Qualitative</h1>
+          <div className={styles.qualitative}>
+          <div className={styles.radarContainer}>
+              <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
+              <Qualitative data={data.qualitative}/>
+              <p>*Inverted so outside is good</p>
             </div>
-            <div className={styles.tele}>
-              <div className={styles.twoByTwoContainer}>
-                <TwoByTwo
-                  HC1="Success"
-                  HC2="Avg Algae"
-                  HR1="Processor"
-                  R1C1={`${data.tele.algae.successProcessor}%`}
-                  R1C2={data.tele.algae.avgProcessor}
-                  HR2="Net"
-                  R2C1={`${data.tele.algae.successNet}%`}
-                  R2C2={data.tele.algae.avgNet}
-                />
-            </div>
-          </div>
-        <div className={styles.endgame}>
-          <div className={styles.twoByTwoContainer}>
-          <TwoByTwo
-            HC1="Attempt"
-            HC2="Success"
-            HR1="Cage"
-            R1C1={`${data.attemptCage}%`}
-            R1C2={`${data.successCage}%`}
-          />
-        </div> 
-        <div className={styles.graphContainer}>
-            <h4 className={styles.graphTitle}>Endgame Placement</h4>
-            <Endgame 
-              data={endgamePieData} 
-              color={Colors[0][0]} 
-            />
-          </div>
-        </div>
-        <div className={styles.qualitative}>
-        <div className={styles.radarContainer}>
-            <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-            <Qualitative data={data.qualitative}/>
-            <p>*Inverted so outside is good</p>
           </div>
         </div>
       </div>
-    </div>
 
     )
-  }
+ }
