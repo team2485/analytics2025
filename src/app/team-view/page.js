@@ -12,6 +12,7 @@ import FourByTwo from "./components/FourByTwo";
 import EPALineChart from './components/EPALineChart';
 import PiecePlacement from "./components/PiecePlacement";
 import Endgame from "./components/Endgame";
+import Qualitative from "./components/Qualitative";
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, ResponsiveContainer, Cell, LineChart, Line, RadarChart, PolarRadiusAxis, PolarAngleAxis, PolarGrid, Radar, Legend, ReferenceLine } from 'recharts';
 
 export default function TeamViewPage() {
@@ -44,7 +45,7 @@ export default function TeamViewPage() {
       generalComments: ["pretty good", "fragile intake","hooray!"],
       breakdownComments: ["stopped moving"],
       defenseComments: ["defended coral human player station"],
-      autoOverTime: [{match: 8, score: 60},{match: 10, score: 10},{match: 13, score: 2}],
+      autoOverTime: [{match: 8, epa: 60},{match: 10, epa: 10},{match: 13, epa: 2}],
       leave: 93,
       auto: {
         coral: {
@@ -67,6 +68,7 @@ export default function TeamViewPage() {
           successNet: 100,
         },
       },
+      teleOverTime: [{match: 8, epa: 30}, {match: 10, epa: 78}, {match: 13, epa: 42}],
       tele: {
         coral: {
           total: 15,
@@ -96,26 +98,26 @@ export default function TeamViewPage() {
         deep: 12,
         shallow: 38,
         parkandFail: 10,
-        multi: 20,
       },
       attemptCage: 94,
       successCage: 68,
-      qualitative: {
-        coralSpeed: 6,
-        processorSpeed: 4,
-        netSpeed: 3,
-        algaeRemovalSpeed: 5,
-        climbSpeed: 3,
-        maneuverability: 4,
-        defensePlayed: 5,
-        defenseEvasion: 0,
-        aggression: 1,
-        cageHazard: 2
-      },
+      qualitative: [
+        {name: "Coral Speed", rating: 5},
+        {name: "Processor Speed", rating: 4},
+        {name: "Net Speed", rating: 3},
+        {name: "Algae Removal Speed", rating: 5},
+        {name: "Climb Speed", rating: 3},
+        {name: "Maneuverability", rating: 4},
+        {name: "Defense Played", rating: 5},
+        {name: "Defense Evasion", rating: 0},
+        {name: "Aggression*", rating: 1},
+        {name: "Cage Hazard*", rating: 2},
+      ],
       coralGroundIntake: true,
       coralStationIntake: true,
       algaeGroundIntake: false,
-      algaeReefIntake: false,
+      algaeLowReefIntake: false,
+      algaeHighReefIntake: true,
     }
     
     const Colors = [
@@ -125,8 +127,12 @@ export default function TeamViewPage() {
       ["#9F5EB5", "#C284D7", "#DBA2ED", "#F3D8FB"],
     ]
 
-
-
+    const endgamePieData = [{ x: 'None', y: data.endPlacement.none },
+      { x: 'Park', y: data.endPlacement.park },
+      { x: 'Fail', y: data.endPlacement.parkandFail},
+      { x: 'Shallow', y: data.endPlacement.shallow },
+      { x: 'Deep', y: data.endPlacement.deep }];
+console.log(endgamePieData);
     return (
       <div className={styles.MainDiv}>
         <div className={styles.leftColumn}>
@@ -163,7 +169,15 @@ export default function TeamViewPage() {
           </div>
           <div className={styles.graphContainer}>
             <h4 className={styles.graphTitle}>Piece Placement</h4>
-            <PiecePlacement />
+            <PiecePlacement 
+              L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
+              L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
+              L3={data.auto.coral.avgL3 + data.tele.coral.avgL3}
+              L4={data.auto.coral.avgL4 + data.tele.coral.avgL4}
+              net={data.auto.algae.avgNet + data.tele.algae.avgNet}
+              processor={data.auto.algae.avgProcessor + data.tele.algae.avgProcessor}
+              HP={data.tele.avgHp}
+            />
           </div>
           <div className={styles.valueBoxes}>
             <VBox title={"Matches Scouted"} value={data.matchesScouted}/>
@@ -275,8 +289,8 @@ export default function TeamViewPage() {
                 />
             </div>
           </div>
-        <div className={styles.twoByTwoContainer}>
-          <div className={styles.endgame}>
+        <div className={styles.endgame}>
+          <div className={styles.twoByTwoContainer}>
           <TwoByTwo
             HC1="Attempt"
             HC2="Success"
@@ -288,9 +302,16 @@ export default function TeamViewPage() {
         <div className={styles.graphContainer}>
             <h4 className={styles.graphTitle}>Endgame Placement</h4>
             <Endgame 
-              data={data.endgame} 
+              data={endgamePieData} 
               color={Colors[0][0]} 
             />
+          </div>
+        </div>
+        <div className={styles.qualitative}>
+        <div className={styles.radarContainer}>
+            <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
+            <Qualitative data={data.qualitative}/>
+            <p>*Inverted so outside is good</p>
           </div>
         </div>
       </div>
