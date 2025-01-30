@@ -13,6 +13,7 @@ export default function Picklist() {
   const [teamRatings, setTeamRatings] = useState({});
   const [weightsChanged, setWeightsChanged] = useState(false);
   const [rankAdjustments, setRankAdjustments] = useState({});
+  const [originalPositions, setOriginalPositions] = useState({});
 
   const weightsFormRef = useRef();
   const alliancesFormRef = useRef();
@@ -116,6 +117,11 @@ export default function Picklist() {
     setPicklist(staticPicklist);
     setMaxScore(staticPicklist[0].score);
     setWeightsChanged(false);
+    const originalPos = {};
+      staticPicklist.forEach((team, index) => {
+      originalPos[team.team] = index;
+    });
+    setOriginalPositions(originalPos);
 };
 
   function updateAlliancesData(allianceNumber, allianceTeams) {
@@ -225,16 +231,19 @@ export default function Picklist() {
     function handleUp(team, currentIndex) {
       if (currentIndex > 0) {
         const newPicklist = [...picklist];
-        // Swap current team with the team above
+        // Perform the swap
         [newPicklist[currentIndex], newPicklist[currentIndex - 1]] = 
         [newPicklist[currentIndex - 1], newPicklist[currentIndex]];
         
-        // Update rank adjustments
-        setRankAdjustments(prev => ({
-          ...prev,
-          [team]: (prev[team] || 0) + 1 // Moving up increases the rank adjustment
-        }));
+        // Update rank adjustments for all teams
+        const newRankAdjustments = {};
+        newPicklist.forEach((teamData, idx) => {
+          // Compare current index to original index
+          const originalIndex = originalPositions[teamData.team];
+          newRankAdjustments[teamData.team] = originalIndex - idx;
+        });
         
+        setRankAdjustments(newRankAdjustments);
         setPicklist(newPicklist);
       }
     }
@@ -242,16 +251,19 @@ export default function Picklist() {
     function handleDown(team, currentIndex) {
       if (currentIndex < picklist.length - 1) {
         const newPicklist = [...picklist];
-        // Swap current team with the team below
+        // Perform the swap
         [newPicklist[currentIndex], newPicklist[currentIndex + 1]] = 
         [newPicklist[currentIndex + 1], newPicklist[currentIndex]];
         
-        // Update rank adjustments
-        setRankAdjustments(prev => ({
-          ...prev,
-          [team]: (prev[team] || 0) - 1 // Moving down decreases the rank adjustment
-        }));
+        // Update rank adjustments for all teams
+        const newRankAdjustments = {};
+        newPicklist.forEach((teamData, idx) => {
+          // Compare current index to original index
+          const originalIndex = originalPositions[teamData.team];
+          newRankAdjustments[teamData.team] = originalIndex - idx;
+        });
         
+        setRankAdjustments(newRankAdjustments);
         setPicklist(newPicklist);
       }
     }
@@ -283,7 +295,7 @@ export default function Picklist() {
             <th>Tele</th>
             <th>End</th>
             <th>Cage</th>
-            <th>Consistency</th>
+            <th>Cnstcy</th>
             <th>Coral</th>
             <th>Algae</th>
             <th>Defense</th>
@@ -295,19 +307,11 @@ export default function Picklist() {
               if (teamsToExclude.includes(teamData.team)) {
                 return <tr key={teamData.team} style={{display: "none"}}></tr>
               } else {
-                  /*const adjustment = rankAdjustments[teamData.team] || 0;
-                const adjustmentText = adjustment !== 0 ? ` (${adjustment > 0 ? `+${adjustment}` : adjustment})` : '';
-                const displayRank = adjustment !== 0 ? `#${index + 1}${adjustmentText}` : `#${index + 1}`;*/
-                
-                
-                const originalRank = index + 1;
-                const adjustedRank = originalRank - (rankAdjustments[teamData.team] || 0);
-                const adjustmentValue = adjustedRank - originalRank;
-                const adjustmentText = adjustedRank !== originalRank 
-                ? ` (${originalRank - adjustedRank > 0 ? `+${originalRank - adjustedRank}` : originalRank - adjustedRank})`
-                : '';
-              
-                const displayRank = `#${originalRank}${adjustmentText}`;
+                const originalRank = originalPositions[teamData.team] + 1;
+                const currentRank = index + 1;
+                const adjustment = rankAdjustments[teamData.team] || 0;
+                const adjustmentText = adjustment !== 0 ? ` (${adjustment > 0 ? `+${adjustment}` : adjustment})` : '   ';
+                const displayRank = `#${currentRank}${adjustmentText}`;
                 
 
 
@@ -315,9 +319,13 @@ export default function Picklist() {
                 return (
                   <tr key={teamData.team}>
                     <td>
-                      <button onClick={() => handleUp(teamData.team, index)}>⬆️</button>
-                      <button onClick={() => handleDown(teamData.team, index)}>⬇️</button>
-                      {displayRank}
+                      <div className={styles.picklistRank}>
+                        <div className={styles.arrows}>
+                          <button onClick={() => handleUp(teamData.team, index)}>⬆️</button>
+                          <button onClick={() => handleDown(teamData.team, index)}>⬇️</button>
+                        </div>
+                        {displayRank}
+                      </div>
                     </td>
                       <td>#{teamData.firstRanking}</td>
                       <td><a href={`/team-view?team=${teamData.team}`}>{teamData.team}

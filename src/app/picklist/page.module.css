@@ -106,6 +106,8 @@
 .picklistTable td:nth-child(2) {
     background-color: #0146A0;
     color: white;
+    width: 30px;
+    height: 30px;
 }
 
 .picklistTable td:nth-child(3) {
@@ -133,5 +135,22 @@ button.recalculateIsMad {
 
 .picklistTableContainer {
   overflow-x: auto;
+}
+
+.arrows {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.picklistRank {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    justify-content: space-between;
+    gap: 5px;
+    justify-self: left;
 }
 
