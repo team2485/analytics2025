@@ -31,6 +31,59 @@ function MatchView() {
     ["#FFD4AB", "#FABD7C", "#FFAF72", "#FFA75A", "#FF9F4B"], //orange
     
   ];
+  //to get from backend
+  // const [allData, setAllData] = useState(null);
+  // const [data, setData] = useState(false);
+  // const searchParams = useSearchParams();
+  // const COLORS = [
+  //   ["#B7F7F2", "#A1E7E1", "#75C6BF", "#58ada6", "#458782"],
+  //   ["#8AB8FD", "#7D99FF", "#6184DD", "#306BDD", "#2755b0"],
+  //   ["#E1BFFA", "#E1A6FE", "#CA91F2", "#b273d9", "#A546DF"],
+  //   ["#FFC6F6", "#ECA6E0", "#ED75D9", "#db51c5", "#C342AE"],
+  //   ["#FABFC4", "#FEA6AD", "#F29199", "#E67983", "#db606b"],
+  //   ["#FFE3D3", "#EBB291", "#E19A70", "#D7814F", "#c26d3c"],
+  // ];
+
+
+  // useEffect(() => {
+  //   if (searchParams && allData) {
+  //     if (searchParams.get('match') == null || searchParams.get('match') == "") {
+  //       //search by teams
+  //       let [team1, team2, team3, team4, team5, team6] = [searchParams.get("team1"), searchParams.get("team2"), searchParams.get("team3"), searchParams.get("team4"), searchParams.get("team5"), searchParams.get("team6")];
+  //       setData({team1: allData[team1], team2: allData[team2], team3: allData[team3], team4: allData[team4], team5: allData[team5], team6: allData[team6]});
+  //     } else {
+  //       //search by match
+  //       fetch('/api/get-teams-of-match?match=' + searchParams.get('match')).then(resp => resp.json()).then(data => {
+  //         if (data.message) {
+  //           console.log(data.message);
+  //         } else {
+  //           //update url with teams
+  //           const newParams = new URLSearchParams(searchParams);
+  //           newParams.set('team1', data.team1);
+  //           newParams.set('team2', data.team2);
+  //           newParams.set('team3', data.team3);
+  //           newParams.set('team4', data.team4);
+  //           newParams.set('team5', data.team5);
+  //           newParams.set('team6', data.team6);
+  //           newParams.delete('match');
+
+  //           const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+  //           window.history.replaceState(null, 'Picklist', newUrl);
+            
+  //           setData({team1: allData[data.team1], team2: allData[data.team2], team3: allData[data.team3], team4: allData[data.team4], team5: allData[data.team5], team6: allData[data.team6]});
+  //         }
+  //       })
+
+  //     }
+  //   }
+  // }, [searchParams, allData]);
+
+  // //until url loads show loading
+  // if (!data || searchParams == null) {
+  //   return <div>
+  //     <h1>Loading...</h1>
+  //   </div>
+  // }
 
   const defaultTeam = {
     team: 404,
