@@ -37,6 +37,7 @@ export default function Picklist() {
       setTeamRatings(JSON.parse(storedRatings));
     }
 
+
     const urlAlliances = {};
     let urlTeamsToExclude = teamsToExclude;
     for (const [key, value] of urlParams.entries()) {
@@ -353,6 +354,7 @@ export default function Picklist() {
             <th>Algae</th>
             <th>Defense</th>
             <th>Rating</th>
+            <th>Comments</th>
           </tr>
         </thead>
         <tbody>
@@ -403,6 +405,7 @@ export default function Picklist() {
                           <button onClick={() => handleMeh(teamData.team)}>🫳</button>
                         }
                       </td>
+                      <td><textarea></textarea></td>
                     </tr>
                   );
                 }
