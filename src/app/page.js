@@ -326,6 +326,27 @@ export default function Home() {
                 </table>
                 </div>
               </div>
+              <div className={styles.AlgaeRemoved}>
+                <SubHeader subHeaderName={"Algae Removed"}/>
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    pieceType={"Counter"}
+                    internalName={"telealgaeremoved"}/>
+                </div>
+              </div>
+              <div className={styles.Processor}>
+                <SubHeader subHeaderName={"Processor"} />
+                <div className={styles.HBox}>
+                  <NumericInput 
+                    visibleName={"Success"}
+                    pieceType={"Success"}
+                    internalName={"teleprocessorsuccess"}/>
+                  <NumericInput 
+                    visibleName={"Fail"}
+                    pieceType={"Fail"}
+                    internalName={"teleprocessorfail"}/>
+                </div>
+              </div>
               <div className={styles.Net}>
                 <SubHeader subHeaderName={"Net"} />
                 <div className={styles.HBox}>
@@ -418,12 +439,20 @@ export default function Home() {
                   internalName={"coralstationintake"}
                 />
                 <Checkbox
+                  visibleName={"Lollipop"}
+                  internalName={"algaegndintake"}
+                />
+                <Checkbox
                   visibleName={"Algae Ground"}
                   internalName={"algaegndintake"}
                 />
                 <Checkbox
-                  visibleName={"Algae Reef"}
-                  internalName={"algaereefintake"}
+                  visibleName={"Algae High Reef"}
+                  internalName={"algaehighreefintake"}
+                />
+                <Checkbox
+                  visibleName={"Algae Low Reef"}
+                  internalName={"algaelowreefintake"}
                 />
               </div>
               <Checkbox visibleName={"Broke down?"} internalName={"breakdown"} changeListener={onBreakdownChange} />

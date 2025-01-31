@@ -16,6 +16,7 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     gap: 5px;
+    width: 350px;
   }
 .Endgame {
   justify-items: center;
@@ -154,11 +155,13 @@ hr.subsubheading {
   border-radius: 8px;
   align-items: center;
   padding: 3px;
-  width: 200px;
-  height: 250px;
+  width: 250px;
+  height: 375px;
   justify-self: center;
   margin: 15px;
+  gap: -5px;
 }
+
 .MainDiv input:focus,
 .MainDiv textarea:focus {
     border-color: rgb(87, 171, 254);
