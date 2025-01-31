@@ -6,10 +6,8 @@
     margin-left: 10px;
     margin-top: 5px;
     margin-bottom: 5px; 
-    /* 
     justify-content: center;
     text-align: center; 
-    possible addition */
 }
 
 .leftColumn {
@@ -159,7 +157,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    /*gap: 10px;*/
     justify-content: center;
     text-align: center;
 }
@@ -175,6 +173,7 @@
 }
 
 .auto {
+    justify-content: left;
     border-bottom: 4px solid lightgray;
     padding-bottom: 10px;
     padding-right: 10px;
@@ -183,6 +182,7 @@
     border-left: 4px solid lightgray;
 }
 .tele {
+    justify-content: right;
     padding-right: 10px;
     padding-left: 10px;
     border-right: 4px solid lightgray;
@@ -237,5 +237,25 @@
 }
 
 .L1, .L2, .L3, .L4 {
-    color: purple;
+    font-display: purple;
+}
+
+.Intake {
+    width: auto;
+    align-self: center;
+    border: 2px solid black;
+    border-radius: 5px;
+    table-layout: fixed;
+}
+
+.intakeCheck {
+    align-self: center;
+    border: 2px solid black;
+    table-layout: fixed;
+}
+
+.intakeName {
+    align-self: center;
+    border: 2px solid black;
+    table-layout: fixed;
 }
