@@ -14,6 +14,7 @@ export default function Picklist() {
   const [weightsChanged, setWeightsChanged] = useState(false);
   const [rankAdjustments, setRankAdjustments] = useState({});
   const [originalPositions, setOriginalPositions] = useState({});
+  const [finalPositions, setFinalPositions] = useState({});
 
   const weightsFormRef = useRef();
   const alliancesFormRef = useRef();
@@ -24,6 +25,17 @@ export default function Picklist() {
     const urlParams = new URLSearchParams(window.location.search);
     const urlWeights = Object.fromEntries(urlParams);
     setWeights(urlWeights);
+
+    const storedFinalPositions = localStorage.getItem('finalPositions');
+    if (storedFinalPositions) {
+      const positions = JSON.parse(storedFinalPositions);
+      setFinalPositions(positions);
+    }
+
+    const storedRatings = localStorage.getItem('teamRatings');
+    if (storedRatings) {
+      setTeamRatings(JSON.parse(storedRatings));
+    }
 
     const urlAlliances = {};
     let urlTeamsToExclude = teamsToExclude;
@@ -39,17 +51,7 @@ export default function Picklist() {
     }
     setAllianceData(urlAlliances);
     setTeamsToExclude(urlTeamsToExclude);
-    const storedRatings = localStorage.getItem('teamRatings');
-    if (storedRatings) {
-      setTeamRatings(JSON.parse(storedRatings));
-    }
   }, []);
-
-  useEffect(() => {
-    if (Object.keys(teamRatings).length > 0) {
-      localStorage.setItem('teamRatings', JSON.stringify(teamRatings));
-    }
-  }, [teamRatings]);
 
   async function recalculate(event) {
     const formData = new FormData(weightsFormRef.current);
@@ -69,7 +71,7 @@ export default function Picklist() {
     */
 
     // Static data
-    const staticPicklist = [
+    const picklist = [
       {
         team: 2485,
         score: 0.95,
@@ -85,6 +87,20 @@ export default function Picklist() {
         defense: 0.7
       },
       {
+        team: 1678,
+        score: 0.75,
+        firstRanking: 3,
+        epa: 0.7,
+        auto: 0.8,
+        tele: 0.75,
+        end: 0.7,
+        cage: 0.8,
+        consistency: 0.75,
+        coral: 0.8,
+        algae: 0.7,
+        defense: 0.75
+      },
+      {
         team: 254,
         score: 0.85,
         firstRanking: 2,
@@ -98,31 +114,60 @@ export default function Picklist() {
         algae: 0.8,
         defense: 0.85
       },
-      {
-        team: 1678,
-        score: 0.75,
-        firstRanking: 3,
-        epa: 0.7,
-        auto: 0.8,
-        tele: 0.75,
-        end: 0.7,
-        cage: 0.8,
-        consistency: 0.75,
-        coral: 0.8,
-        algae: 0.7,
-        defense: 0.75
-      }
     ];
-
-    setPicklist(staticPicklist);
-    setMaxScore(staticPicklist[0].score);
-    setWeightsChanged(false);
+    
+     // First, set the original positions based on the calculated order
     const originalPos = {};
-      staticPicklist.forEach((team, index) => {
+    picklist.forEach((team, index) => {
       originalPos[team.team] = index;
     });
     setOriginalPositions(originalPos);
-};
+
+    // Create a new picklist that applies stored adjustments
+    let newPicklist = [...picklist];
+    const storedAdjustments = {};
+    
+    // Calculate current adjustments based on final positions
+    if (Object.keys(finalPositions).length > 0) {
+      newPicklist.forEach((teamData) => {
+        const originalIndex = originalPos[teamData.team];
+        const storedPosition = finalPositions[teamData.team];
+        if (storedPosition !== undefined) {
+          const currentAdjustment = originalIndex - storedPosition;
+          storedAdjustments[teamData.team] = currentAdjustment;
+        }
+      });
+
+      // Sort the picklist based on the stored adjustments
+      newPicklist.sort((a, b) => {
+        const adjA = storedAdjustments[a.team] || 0;
+        const adjB = storedAdjustments[b.team] || 0;
+        const baseA = originalPos[a.team];
+        const baseB = originalPos[b.team];
+        return (baseA - adjA) - (baseB - adjB);
+      });
+    }
+
+    // Update the rank adjustments state
+    const newRankAdjustments = {};
+    newPicklist.forEach((teamData, currentIndex) => {
+      const originalIndex = originalPos[teamData.team];
+      newRankAdjustments[teamData.team] = originalIndex - currentIndex;
+    });
+
+    setPicklist(newPicklist);
+    setMaxScore(picklist[0].score);
+    setWeightsChanged(false);
+    setRankAdjustments(newRankAdjustments);
+
+    // Update final positions based on new order
+    const newFinalPositions = {};
+    newPicklist.forEach((teamData, index) => {
+      newFinalPositions[teamData.team] = index;
+    });
+    setFinalPositions(newFinalPositions);
+    localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
+  }
 
   function updateAlliancesData(allianceNumber, allianceTeams) {
     let formData = new FormData(alliancesFormRef.current);
@@ -235,15 +280,19 @@ export default function Picklist() {
         [newPicklist[currentIndex], newPicklist[currentIndex - 1]] = 
         [newPicklist[currentIndex - 1], newPicklist[currentIndex]];
         
-        // Update rank adjustments for all teams
+        // Update rank adjustments and final positions for all teams
         const newRankAdjustments = {};
+        const newFinalPositions = {};
+
         newPicklist.forEach((teamData, idx) => {
-          // Compare current index to original index
+          newFinalPositions[teamData.team] = idx;
           const originalIndex = originalPositions[teamData.team];
           newRankAdjustments[teamData.team] = originalIndex - idx;
         });
         
         setRankAdjustments(newRankAdjustments);
+        setFinalPositions(newFinalPositions);
+        localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
         setPicklist(newPicklist);
       }
     }
@@ -255,15 +304,19 @@ export default function Picklist() {
         [newPicklist[currentIndex], newPicklist[currentIndex + 1]] = 
         [newPicklist[currentIndex + 1], newPicklist[currentIndex]];
         
-        // Update rank adjustments for all teams
+        // Update rank adjustments and final positions for all teams
         const newRankAdjustments = {};
+        const newFinalPositions = {};
+
         newPicklist.forEach((teamData, idx) => {
-          // Compare current index to original index
+          newFinalPositions[teamData.team] = idx;
           const originalIndex = originalPositions[teamData.team];
           newRankAdjustments[teamData.team] = originalIndex - idx;
         });
         
         setRankAdjustments(newRankAdjustments);
+        setFinalPositions(newFinalPositions);
+        localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
         setPicklist(newPicklist);
       }
     }
@@ -312,9 +365,6 @@ export default function Picklist() {
                 const adjustment = rankAdjustments[teamData.team] || 0;
                 const adjustmentText = adjustment !== 0 ? ` (${adjustment > 0 ? `+${adjustment}` : adjustment})` : '   ';
                 const displayRank = `#${currentRank}${adjustmentText}`;
-                
-
-
                 
                 return (
                   <tr key={teamData.team}>
