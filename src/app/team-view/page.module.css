@@ -14,21 +14,26 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
-    width: 64%;
-    padding-left: 20px;
+    width: 66%;
+    padding-left: 10px;
 }
 
 .leftColumn {
-    width: 32%;
-    padding-right: 20px;
-    border-bottom: solid 4px lightgray;
+    width: 33%;
+    padding-right: 10px;
 }
 
-.EPAS, .twoByTwoContainer, .fourByTwoContainer {
+.twoByTwoContainer, .fourByTwoContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.EPAS {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 .valueBoxes {
@@ -48,6 +53,7 @@
 .epaBreakdown {
     display: flex;
     flex-direction: row;
+    font-size: 1;
 }
 
 .epaBreakdown div {
@@ -56,6 +62,7 @@
     border: 1px solid black;
     padding: 5px;
     font-size: larger;
+
 }
 
 .epaBreakdown div:first-child {
@@ -73,16 +80,15 @@
     border-radius: 10px 10px 0 0;
     font-size: 30px;
     font-weight: 800;
-    background-color: #84C9D7;
-    color: #fff;
+    width: 160px;
 }
 
-.epaBox::before, .Last3EpaBox::before {
-    content: "Average EPA";
+.epaBox::before {
+    content: "Avg EPA";
     display: block;
     position: relative;
     top: 0;
-    width:150px;
+    width:120px;
     left: 50%;
     transform: translate(-50%, calc(-50% - 10px));
     border: 1px solid black;
@@ -91,7 +97,25 @@
     border-radius: 5px;
     padding: 5px;
     margin-bottom: -20px;
-    font-size: 20px;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.Last3EpaBox::before {
+    content: "Last 3 Epa";
+    display: block;
+    position: relative;
+    top: 0;
+    width: 120px;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 10px));
+    border: 1px solid black;
+    background: white;
+    padding: auto;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: -20px;
+    font-size: 19px;
     font-weight: 800;
 }
 
@@ -110,7 +134,7 @@
 .scoreBreakdownContainer {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    margin-top: 20px;
     text-align: center;
 }
 

@@ -38,9 +38,9 @@ function TeamView() {
       avgAuto: 20,
       avgTele: 56,
       avgEnd: 12,
-      last3Epa: 43,
-      last3Auto: 5,
-      last3Tele: 21,
+      last3Epa: 70,
+      last3Auto: 30,
+      last3Tele: 53,
       last3End: 2,
       epaOverTime: [{match: 3, epa: 60},{match: 10, epa: 43},{match: 13, epa: 12}],
       epaRegression: [{match: 3, epa: 60}, {match: 13, epa: 12}], //not sure how we should do this one
@@ -197,13 +197,34 @@ function TeamView() {
         ["#FFDDF3", "#EDA2DB", "#DD64C0", "#9C6392"], //pink
     ];
 
-    const epaColors = [
-      //green, yellow, red
-      ["#7FD689", "#E6B608", "#EF8A8A"], //overall
-      ["#8FF09A", "#FFFF9E", "#F7AFAF"], //auto, tele, end
-    ]
+    const epaColors = {
+      red1: "#fa8888",
+      red2: "#F7AFAF",
+      yellow1: "#ffe16b",
+      yellow2: "#ffff9e",
+      green1: "#7FD689",
+      green2: "#c4f19f",
+    }
 
     //overall last3epa
+    let overallLast3 = epaColors.yellow1;
+    if ((data.avgEpa + 5) < data.last3Epa) overallLast3 = epaColors.green1;
+    else if ((data.avgEpa - 5) > data.last3Epa) overallLast3 = epaColors.red1;
+
+    //auto last3epa
+    let autoLast3 = epaColors.yellow2;
+    if ((data.avgAuto + 5) < data.last3Auto) autoLast3 = epaColors.green2;
+    else if ((data.avgAuto - 5) > data.last3Auto) autoLast3 = epaColors.red2;
+
+    //tele last3epa
+    let teleLast3 = epaColors.yellow2;
+    if ((data.avgTele + 5) < data.last3Tele) teleLast3 = epaColors.green2;
+    else if ((data.avgTele - 5) > data.last3Tele) teleLast3 = epaColors.red2;
+
+    //tele last3epa
+    let endLast3 = epaColors.yellow2;
+    if ((data.avgEnd + 5) < data.last3End) endLast3 = epaColors.green2;
+    else if ((data.avgEnd - 5) > data.last3End) endLast3 = epaColors.red2;
 
     const endgamePieData = [
         { x: 'None', y: data.endPlacement.none },
@@ -227,16 +248,18 @@ function TeamView() {
                                 <div style={{ background: Colors[0][3] }}>T: {data.avgTele}</div>
                                 <div style={{ background: Colors[0][3] }}>E: {data.avgEnd}</div>
                             </div>
-                            <div className={styles.Last3EPA}> 
-                            <div style={{background: "orange"}} className={styles.Last3EpaBox}>{data.last3Epa}</div>
-                              <div className={styles.epaBreakdown}>
-                                <div style={{background: "yellow"}}>A: {data.last3Auto}</div>
-                                <div style={{background: "green"}}>T: {data.last3Tele}</div>
-                                <div style={{background: "red"}}>E: {data.last3End}</div>
-                              </div>
-                            </div>
                         </div>
                     </div>
+                    <div className={styles.Last3EPA}>
+                        <div className={styles.scoreBreakdownContainer}> 
+                            <div style={{background: overallLast3}} className={styles.Last3EpaBox}>{data.last3Epa}</div>
+                              <div className={styles.epaBreakdown}>
+                                <div style={{background: autoLast3}}>A: {data.last3Auto}</div>
+                                <div style={{background: teleLast3}}>T: {data.last3Tele}</div>
+                                <div style={{background: endLast3}}>E: {data.last3End}</div>
+                              </div>
+                            </div>
+                          </div>
                 </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
