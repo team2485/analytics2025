@@ -235,6 +235,7 @@ function TeamView() {
 
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
+                      
                     <PiecePlacement
                         L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
                         L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
@@ -245,7 +246,7 @@ function TeamView() {
                         HP={data.tele.avgHp}
                     />
                 </div>
-
+                 
                 <div className={styles.valueBoxes}>
                     <VBox title={"Matches Scouted"} value={data.matchesScouted} />
                     <VBox title={"No Show"} value={data.noShow} />
@@ -257,7 +258,6 @@ function TeamView() {
                     <Comments title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
                     <Comments title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
                 </div>
-
                 <HBox title={"Scouts"} value={data.scouts.join(" | ")} />
             </div>
 
