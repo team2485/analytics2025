@@ -189,10 +189,12 @@ function TeamView() {
     // }
 
     const Colors = [
-        ["#116677", "#84C9D7", "#8CCCD9", "#C4EEF6"],
-        ["#003F7E", "#84AED7", "#A2C8ED", "#D8EAFB"],
-        ["#15007E", "#9D8CF3", "#BFB2FF", "#DDD6FF"],
-        ["#9F5EB5", "#C284D7", "#DBA2ED", "#F3D8FB"],
+        //light to dark
+        ["#CCFBF7", "#76E3D3", "#63929C", "#117772"], //green
+        ["#D7F2FF", "#9EDCFB", "#6CC9F7", "#0A6D9F"], //blue
+        ["#D7D8FF", "#999CFC", "#8488FF", "#2022AA"], //blue-purple
+        ["#F3D8FB", "#DBA2ED", "#C37DDB", "#8E639C"], //pink-purple
+        ["#FFDDF3", "#EDA2DB", "#DD64C0", "#9C6392"], //pink
     ];
 
     const endgamePieData = [
