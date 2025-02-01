@@ -197,6 +197,14 @@ function TeamView() {
         ["#FFDDF3", "#EDA2DB", "#DD64C0", "#9C6392"], //pink
     ];
 
+    const epaColors = [
+      //green, yellow, red
+      ["#7FD689", "#E6B608", "#EF8A8A"], //overall
+      ["#8FF09A", "#FFFF9E", "#F7AFAF"], //auto, tele, end
+    ]
+
+    //overall last3epa
+
     const endgamePieData = [
         { x: 'None', y: data.endPlacement.none },
         { x: 'Park', y: data.endPlacement.park },
