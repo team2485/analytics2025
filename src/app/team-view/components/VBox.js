@@ -8,4 +8,4 @@ export default function VBox({title, value, color1, color2}) {
         <div className={styles.VBoxValue}>{value}</div>
       </div>
     )
-  }
+} 

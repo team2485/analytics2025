@@ -265,8 +265,8 @@ function TeamView() {
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
                     <EPALineChart data={data.epaOverTime} color={Colors[0][0]} />
                 </div>
-                <div className={styles.graphContainer}>
-                    <h4 className={styles.graphTitle}>Piece Placement</h4>
+              <h4 className={styles.graphTitle}>Piece Placement</h4>
+                <div className={styles.barGraphContainer}>
                     <PiecePlacement
                         L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
                         L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
@@ -278,18 +278,24 @@ function TeamView() {
                     />
                 </div>
                 <div className={styles.valueBoxes}>
-                    <VBox title={"Matches Scouted"} value={data.matchesScouted} />
-                    <VBox title={"No Show"} value={data.noShow} />
-                    <VBox title={"Defense"} value={data.defense} />
-                    <VBox title={"Consistency"} value={data.consistancy} />
-                    <VBox title={"Breakdown"} value={data.breakdown} />
-                    <VBox title={"Last Breakdown"} value={data.lastBreakdown} />
-                    <Comments title={"General Comments"} value={data.generalComments.join(" | ")} />
-                    <Comments title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
-                    <Comments title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
+                  <div className={styles.leftColumnBoxes}>
+                    <VBox className={styles.box1} color1={Colors[1][2]} color2={Colors[1][0]} title={"Matches Scouted"} value={data.matchesScouted} />
+                    <VBox className={styles.box2} color1={Colors[1][2]} color2={Colors[1][0]} title={"No Show"} value={data.noShow} />
+                    <VBox className={styles.box3} color1={Colors[1][2]} color2={Colors[1][0]} title={"Defense"} value={data.defense} />
+                    <VBox className={styles.box4} color1={Colors[1][2]} color2={Colors[1][0]} title={"Consistency"} value={data.consistancy} />
+                    <VBox className={styles.box5} color1={Colors[1][2]} color2={Colors[1][0]} title={"Breakdown"} value={data.breakdown} />
+                    <VBox className={styles.box6} color1={Colors[1][2]} color2={Colors[1][0]} title={"Last Breakdown"} value={data.lastBreakdown} />
+                  <div className={styles.allComments}>
+                    <Comments color1={Colors[1][2]} color2={Colors[1][0]} title={"General Comments"} value={data.generalComments.join(" | ")} />
+                    <Comments color1={Colors[1][2]} color2={Colors[1][0]} title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
+                    <Comments color1={Colors[1][2]} color2={Colors[1][0]} title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
                 </div>
-                <HBox title={"Scouts"} value={data.scouts.join(" | ")} />
+              </div>
             </div>
+              <div className={styles.scoutBox}>
+                <HBox color1={Colors[1][2]} color2={Colors[1][0]} title={"Scouts"} value={data.scouts.join(" | ")} />
+              </div>
+          </div>
       <div className={styles.rightColumn}>
         <div className={styles.topRow}>
         <div className={styles.auto}>
@@ -317,15 +323,18 @@ function TeamView() {
               HR4="L1"
               R4C1={`${data.auto.coral.successL1}%`}
               R4C2={data.auto.coral.avgL1}
+              color1={Colors[1][2]} color2={Colors[1][2]} color3={Colors[1][0]}
             />
           </div>
   
           <div className={styles.valueBoxes}>
-              <VBox title={"Leave"} value={data.leave} />
-              <VBox title={"Total"} value={data.auto.coral.total} />
-              <VBox title={"Success"} value={data.auto.coral.success} />
-              <VBox title={"Algae Removed"} value={data.auto.algae.removed} />
+           <div className={styles.rightColumnBoxes}>
+              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={data.leave} />
+              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Total"} value={data.auto.coral.total} />
+              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Success"} value={data.auto.coral.success} />
+              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={data.auto.algae.removed} />
           </div>
+        </div>
           <div className={styles.twoByTwoContainer}>
               <TwoByTwo
                 HC1="Success"
@@ -336,6 +345,7 @@ function TeamView() {
                 HR2="Net"
                 R2C1={`${data.auto.algae.successNet}%`}
                 R2C2={data.auto.algae.avgNet}
+                color1={Colors[1][2]} color2={Colors[1][2]} color3={Colors[1][0]}
               />
           </div>
         </div>
@@ -364,16 +374,19 @@ function TeamView() {
               HR4="L1"
               R4C1={`${data.tele.coral.successL1}%`}
               R4C2={data.tele.coral.avgL1}
+              color1={Colors[2][2]} color2={Colors[2][2]} color3={Colors[2][0]}
             />
           </div>
           
             <div className={styles.valueBoxes}>
-              <VBox title={"HP Scored"} value={data.tele.avgHp} />
-              <VBox title={"Success"} value={data.tele.successHp} />
-              <VBox title={"Total"} value={data.tele.coral.total} />
-              <VBox title={"Success"} value={data.tele.coral.success} />
-              <VBox title={"Algae Removed"} value={data.tele.algae.removed} />
+              <div className={styles.rightColumnBoxes}>
+              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"HP Scored"} value={data.tele.avgHp} />
+              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Success"} value={data.tele.successHp} />
+              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Total"} value={data.tele.coral.total} />
+              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Success"} value={data.tele.coral.success} />
+              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
             </div>
+              </div>
               <div className={styles.twoByTwoContainer}>
                 <TwoByTwo
                   HC1="Success" 
@@ -384,7 +397,7 @@ function TeamView() {
                   HR2="Net"
                   R2C1={`${data.tele.algae.successNet}%`}
                   R2C2={data.tele.algae.avgNet}
-                  color={Colors[0][2]} 
+                  color1={Colors[2][2]} color2={Colors[2][2]} color3={Colors[2][0]}
                 />
             </div>
           </div>
@@ -396,7 +409,7 @@ function TeamView() {
             <h4 className={styles.graphTitle}>Endgame Placement</h4>
             <Endgame 
               data={endgamePieData} 
-              color={Colors[0][0]} 
+              color={Colors[3][2]} 
             />
           </div>
           <div className={styles.twoByTwoContainer}>
@@ -406,6 +419,7 @@ function TeamView() {
               HR1="Cage"
               R1C1={`${data.attemptCage}%`}
               R1C2={`${data.successCage}%`}
+              color1={Colors[3][2]} color2={Colors[3][2]} color3={Colors[4][0]}
             />
           </div> 
         </div>
@@ -419,31 +433,31 @@ function TeamView() {
           <table className={styles.Intake}> 
             <tbody>
               <tr>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][1], width: "40px"}} rowSpan="2">Coral Intake</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][2], width: "50px", height: "10px"}}>Ground</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][2], width: "50px"}}>Source</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Coral Intake</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px"}}>Source</td>
               </tr>
               <tr>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[3][3], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.coralGroundIntake}></input></td>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[3][3], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.coralStationIntake}></input></td>
+                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.coralGroundIntake}></input></td>
+                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.coralStationIntake}></input></td>
               </tr>
               <tr>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][1], width: "40px"}} rowSpan="2">Algae Intake</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][2], width: "50px", height: "10px"}}>Ground</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][2], width: "50px"}}>Lollipop</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Algae Intake</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px"}}>Lollipop</td>
               </tr>
               <tr>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[3][3], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeGroundIntake}></input></td>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[3][3], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.lollipop}></input></td>
+                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeGroundIntake}></input></td>
+                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.lollipop}></input></td>
               </tr>
               <tr>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][1], width: "40px"}} rowSpan="2">Reef Intake</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][2], width: "50px", height: "10px"}}>Low</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[3][2], width: "50px"}}>High</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Reef Intake</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Low</td>
+                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px"}}>High</td>
               </tr>
               <tr>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[3][3], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeLowReefIntake}></input></td>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[3][3], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.algaeHighReefIntake}></input></td>
+                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeLowReefIntake}></input></td>
+                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.algaeHighReefIntake}></input></td>
               </tr>
             </tbody>
           </table>

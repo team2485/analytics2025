@@ -11,3 +11,6 @@ export default function Comments({title, value, color1, color2}) {
       </div>
     )
   }
+
+
+      
