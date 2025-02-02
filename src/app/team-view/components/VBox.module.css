@@ -16,3 +16,9 @@
 .VBoxValue {
     border-top: 1px solid black;
 }
+
+.EPAS {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+}
