@@ -360,7 +360,7 @@ function TeamView() {
         </div>
           <div className={styles.bottomRow}>
         <div className={styles.endgame}>
-        <h1 style={{ color: Colors[3][1] }}>Endgame</h1>
+        <div className={styles.header}><h1 style={{ color: Colors[3][1] }}>Endgame</h1></div>
           <div className={styles.graphContainer}>
             <h4 className={styles.graphTitle}>Endgame Placement</h4>
             <Endgame 
@@ -379,7 +379,7 @@ function TeamView() {
           </div> 
         </div>
         <div className={styles.qualitative}>
-        <h1 style={{ color: Colors[4][1] }}>Qualitative</h1>
+        <div className={styles.header}><h1 style={{ color: Colors[4][1] }}>Qualitative</h1></div>
           <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
             <Qualitative data={data.qualitative}/>
