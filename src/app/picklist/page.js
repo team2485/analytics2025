@@ -1,7 +1,7 @@
 'use client';
 
 import styles from "./page.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 
 export default function Picklist() {
   const [fields, setFields] = useState([]);
@@ -15,6 +15,7 @@ export default function Picklist() {
   const [rankAdjustments, setRankAdjustments] = useState({});
   const [originalPositions, setOriginalPositions] = useState({});
   const [finalPositions, setFinalPositions] = useState({});
+
 
   const weightsFormRef = useRef();
   const alliancesFormRef = useRef();
@@ -222,6 +223,36 @@ export default function Picklist() {
     </table>
   }
 
+  
+  function CommentCell ({ team }){
+    const [comment, setComment] = useState('');
+  
+    useEffect(() => {
+      const savedComments = localStorage.getItem('teamComments');
+      if (savedComments) {
+        const comments = JSON.parse(savedComments);
+        setComment(comments[team] || '');
+      }
+    }, [team]);
+  
+    const handleChange = (e) => {
+      const newComment = e.target.value;
+      setComment(newComment);
+      
+      const savedComments = JSON.parse(localStorage.getItem('teamComments') || '{}');
+      savedComments[team] = newComment;
+      localStorage.setItem('teamComments', JSON.stringify(savedComments));
+    };
+  
+    return (
+      <textarea 
+        value={comment}
+        onChange={handleChange}
+        className={styles.commentBox}
+      />
+    );
+  };
+
   const AllianceRow = ({ allianceNumber, allianceData, handleAllianceChange }) => {
     const firstValue = allianceData ? allianceData[0] : '';
     const secondValue = allianceData ? allianceData[1] : '';
@@ -405,7 +436,9 @@ export default function Picklist() {
                           <button onClick={() => handleMeh(teamData.team)}>🫳</button>
                         }
                       </td>
-                      <td><textarea></textarea></td>
+                      <td>  
+                        <CommentCell team={teamData.team} />
+                      </td>
                     </tr>
                   );
                 }
