@@ -466,6 +466,7 @@ export default function Picklist() {
         <div className={styles.alliances}>
           <h1>Alliances</h1>
           <form ref={alliancesFormRef}>
+            <div className={styles.wholeAlliance}>
             <table className={styles.allianceTable}>
               <thead>
                 <tr key="head">
@@ -486,6 +487,20 @@ export default function Picklist() {
                 <AllianceRow allianceNumber={"8"} allianceData={allianceData["8"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
               </tbody>
             </table>
+            <form>
+              <div className={styles.allianceMatchView}>
+                <div className={styles.red}>
+                  <label style={{color: "red"}} htmlFor="redAlliance">Red:</label>
+                  <input className={styles.redInput} name="redAlliance" type="number"></input>
+                </div>
+                <div className={styles.blue}>
+                  <label style={{color: "blue"}} htmlFor="blueAlliance">Blue:</label>
+                  <input className={styles.blueInput} name="blueAlliance" type="number"></input>
+                </div>
+                <button>Go!</button>
+              </div>
+            </form>
+            </div>
           </form>
         </div>
       </div>
