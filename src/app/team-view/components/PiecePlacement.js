@@ -25,8 +25,8 @@ export default function PiecePlacement({ L1, L2, L3, L4, net, processor, HP }) {
             datasets: [{
               label: 'Piece Placement',
               data: [L1, L2, L3, L4, net, processor, HP],
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',
-              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: "#76E3D3",
+              borderColor: "#18a9a2",
               borderWidth: 1
             }]
           },

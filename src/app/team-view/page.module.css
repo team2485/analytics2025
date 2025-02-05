@@ -38,6 +38,7 @@
 
 .valueBoxes {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
@@ -47,9 +48,22 @@
 
 .leftColumnBoxes {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
 }
+
+.leftColumn .VBox {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 100px;
+    font-size: 14px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 5px;
+}
+
 
 .rightColumnBoxes {
     display: flex;
@@ -65,8 +79,6 @@
     text-align: center;
     align-content: center;
     transform: translateY(-25px);
-    border: 1px solid black;
-    border-radius: left;
 }
 
 .scoutBox {
