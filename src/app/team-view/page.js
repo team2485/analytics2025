@@ -190,7 +190,7 @@ function TeamView() {
 
     const Colors = [
         //light to dark
-        ["#CCFBF7", "#76E3D3", "#63929C", "#117772"], //green
+        ["#CCFBF7", "#76E3D3", "#18a9a2", "#117772"], //green
         ["#D7F2FF", "#9EDCFB", "#6CC9F7", "#0A6D9F"], //blue
         ["#D7D8FF", "#999CFC", "#8488FF", "#2022AA"], //blue-purple
         ["#F3D8FB", "#DBA2ED", "#C37DDB", "#8E639C"], //pink-purple
@@ -237,16 +237,16 @@ function TeamView() {
     return (
         <div className={styles.MainDiv}>
             <div className={styles.leftColumn}>
-                <h1 style={{ color: Colors[0][0] }}>Team {data.team} View</h1>
+                <h1 style={{ color: Colors[0][3] }}>Team {data.team} View</h1>
                 <h3>{data.name}</h3>
                 <div className={styles.EPAS}>
                     <div className={styles.EPA}>
                         <div className={styles.scoreBreakdownContainer}>
                             <div style={{ background: Colors[0][1] }} className={styles.epaBox}>{data.avgEpa}</div>
                             <div className={styles.epaBreakdown}>
-                                <div style={{ background: Colors[0][3] }}>A: {data.avgAuto}</div>
-                                <div style={{ background: Colors[0][3] }}>T: {data.avgTele}</div>
-                                <div style={{ background: Colors[0][3] }}>E: {data.avgEnd}</div>
+                                <div style={{ background: Colors[0][0] }}>A: {data.avgAuto}</div>
+                                <div style={{ background: Colors[0][0] }}>T: {data.avgTele}</div>
+                                <div style={{ background: Colors[0][0] }}>E: {data.avgEnd}</div>
                             </div>
                         </div>
                     </div>
@@ -260,10 +260,10 @@ function TeamView() {
                               </div>
                             </div>
                           </div>
-                </div>
+                    </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
-                    <EPALineChart data={data.epaOverTime} color={Colors[0][0]} />
+                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} />
                 </div>
               <h4 className={styles.graphTitle}>Piece Placement</h4>
                 <div className={styles.barGraphContainer}>
@@ -279,21 +279,25 @@ function TeamView() {
                 </div>
                 <div className={styles.valueBoxes}>
                   <div className={styles.leftColumnBoxes}>
-                    <VBox className={styles.box1} color1={Colors[1][2]} color2={Colors[1][0]} title={"Matches Scouted"} value={data.matchesScouted} />
-                    <VBox className={styles.box2} color1={Colors[1][2]} color2={Colors[1][0]} title={"No Show"} value={data.noShow} />
-                    <VBox className={styles.box3} color1={Colors[1][2]} color2={Colors[1][0]} title={"Defense"} value={data.defense} />
-                    <VBox className={styles.box4} color1={Colors[1][2]} color2={Colors[1][0]} title={"Consistency"} value={data.consistancy} />
-                    <VBox className={styles.box5} color1={Colors[1][2]} color2={Colors[1][0]} title={"Breakdown"} value={data.breakdown} />
-                    <VBox className={styles.box6} color1={Colors[1][2]} color2={Colors[1][0]} title={"Last Breakdown"} value={data.lastBreakdown} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={data.consistancy} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={data.defense} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown} />
+
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={data.noShow} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={data.breakdown} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={data.matchesScouted} />
+                  </div>
                   <div className={styles.allComments}>
-                    <Comments color1={Colors[1][2]} color2={Colors[1][0]} title={"General Comments"} value={data.generalComments.join(" | ")} />
-                    <Comments color1={Colors[1][2]} color2={Colors[1][0]} title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
-                    <Comments color1={Colors[1][2]} color2={Colors[1][0]} title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"General Comments"} value={data.generalComments.join(" | ")} />
+                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
+                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
+                  </div>
                 </div>
-              </div>
-            </div>
               <div className={styles.scoutBox}>
-                <HBox color1={Colors[1][2]} color2={Colors[1][0]} title={"Scouts"} value={data.scouts.join(" | ")} />
+                <HBox color1={Colors[0][1]} color2={Colors[0][0]} title={"Scouts"} value={data.scouts.join(" | ")} />
               </div>
           </div>
       <div className={styles.rightColumn}>

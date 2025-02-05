@@ -38,6 +38,7 @@
 
 .valueBoxes {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
@@ -48,8 +49,26 @@
 
 .leftColumnBoxes {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-content: space-evenly;
+
     gap: 10px;
+    width: 100%;
+    height: 200px;
+}
+
+.leftColumn .VBox {
+    width: 200px !important;
+}
+
+.leftColumn .VBox .boxes {
+    min-width: 200px !important;
+}
+
+#box {
+    min-width: 200px;
 }
 
 .rightColumnBoxes {
@@ -66,8 +85,6 @@
     text-align: center;
     align-content: center;
     transform: translateY(-25px);
-    border: 1px solid black;
-    border-radius: left;
 }
 
 .scoutBox {
@@ -220,7 +237,7 @@
     justify-content: center;
     align-items: center;
     width: 350px;
-    font-family: "Belleza", sans-serif;
+    font-family: "Belleza", sans-serif; 
 }
 
 .auto {
