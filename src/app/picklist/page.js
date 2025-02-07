@@ -1,7 +1,7 @@
 'use client';
 
 import styles from "./page.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 
 export default function Picklist() {
   const [fields, setFields] = useState([]);
@@ -15,6 +15,7 @@ export default function Picklist() {
   const [rankAdjustments, setRankAdjustments] = useState({});
   const [originalPositions, setOriginalPositions] = useState({});
   const [finalPositions, setFinalPositions] = useState({});
+
 
   const weightsFormRef = useRef();
   const alliancesFormRef = useRef();
@@ -222,6 +223,36 @@ export default function Picklist() {
     </table>
   }
 
+  
+  function CommentCell ({ team }){
+    const [comment, setComment] = useState('');
+  
+    useEffect(() => {
+      const savedComments = localStorage.getItem('teamComments');
+      if (savedComments) {
+        const comments = JSON.parse(savedComments);
+        setComment(comments[team] || '');
+      }
+    }, [team]);
+  
+    const handleChange = (e) => {
+      const newComment = e.target.value;
+      setComment(newComment);
+      
+      const savedComments = JSON.parse(localStorage.getItem('teamComments') || '{}');
+      savedComments[team] = newComment;
+      localStorage.setItem('teamComments', JSON.stringify(savedComments));
+    };
+  
+    return (
+      <textarea 
+        value={comment}
+        onChange={handleChange}
+        className={styles.commentBox}
+      />
+    );
+  };
+
   const AllianceRow = ({ allianceNumber, allianceData, handleAllianceChange }) => {
     const firstValue = allianceData ? allianceData[0] : '';
     const secondValue = allianceData ? allianceData[1] : '';
@@ -405,7 +436,9 @@ export default function Picklist() {
                           <button onClick={() => handleMeh(teamData.team)}>🫳</button>
                         }
                       </td>
-                      <td><textarea></textarea></td>
+                      <td>  
+                        <CommentCell team={teamData.team} />
+                      </td>
                     </tr>
                   );
                 }
@@ -416,6 +449,50 @@ export default function Picklist() {
       </div>
     );
   };
+
+  function AllianceMatchView() {
+  
+    const handleMatchViewSubmit = (e) => {
+      e.preventDefault();
+      const redAlliance = e.target.redAlliance.value;
+      const blueAlliance = e.target.blueAlliance.value;
+  
+      // Find the teams for the selected red and blue alliances
+      const redTeams = allianceData[redAlliance] || [];
+      const blueTeams = allianceData[blueAlliance] || [];
+  
+      // Construct the URL with the teams
+      const matchViewParams = new URLSearchParams({
+        team1: redTeams[0] || '',
+        team2: redTeams[1] || '',
+        team3: redTeams[2] || '',
+        team4: blueTeams[0] || '',
+        team5: blueTeams[1] || '',
+        team6: blueTeams[2] || '',
+        go: 'go',
+        match: ''
+      });
+  
+      // Navigate to match view
+      window.location.href = `/match-view?${matchViewParams.toString()}`;
+    };
+  
+    return (
+      <form onSubmit={handleMatchViewSubmit}>
+        <div className={styles.allianceMatchView}>
+          <div className={styles.red}>
+            <label style={{color: "red"}} htmlFor="redAlliance">Red:</label>
+            <input className={styles.redInput} name="redAlliance" type="number" min="1" max="8" ></input>
+          </div>
+          <div className={styles.blue}>
+            <label style={{color: "blue"}} htmlFor="blueAlliance">Blue:</label>
+            <input className={styles.blueInput} name="blueAlliance" type="number" min="1" max="8" ></input>
+          </div>
+          <button type="submit">Go!</button>
+        </div>
+      </form>
+    );
+  }
 
   return (
     <div className={styles.MainDiv}>
@@ -432,28 +509,31 @@ export default function Picklist() {
         </form>
         <div className={styles.alliances}>
           <h1>Alliances</h1>
-          <form ref={alliancesFormRef}>
-            <table className={styles.allianceTable}>
-              <thead>
-                <tr key="head">
-                  <th></th>
-                  <th>T1</th>
-                  <th>T2</th>
-                  <th>T3</th>
-                </tr>
-              </thead>
-              <tbody>
-                <AllianceRow allianceNumber={"1"} allianceData={allianceData["1"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"2"} allianceData={allianceData["2"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"3"} allianceData={allianceData["3"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"4"} allianceData={allianceData["4"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"5"} allianceData={allianceData["5"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"6"} allianceData={allianceData["6"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"7"} allianceData={allianceData["7"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-                <AllianceRow allianceNumber={"8"} allianceData={allianceData["8"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
-              </tbody>
-            </table>
-          </form>
+          <div className={styles.wholeAlliance}>
+            <form ref={alliancesFormRef}>
+              <table className={styles.allianceTable}>
+                <thead>
+                  <tr key="head">
+                    <th></th>
+                    <th>T1</th>
+                    <th>T2</th>
+                    <th>T3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <AllianceRow allianceNumber={"1"} allianceData={allianceData["1"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"2"} allianceData={allianceData["2"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"3"} allianceData={allianceData["3"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"4"} allianceData={allianceData["4"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"5"} allianceData={allianceData["5"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"6"} allianceData={allianceData["6"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"7"} allianceData={allianceData["7"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                  <AllianceRow allianceNumber={"8"} allianceData={allianceData["8"]} handleAllianceChange={handleAllianceChange}></AllianceRow>
+                </tbody>
+              </table>
+            </form>
+            <AllianceMatchView/>
+          </div>
         </div>
       </div>
       <PicklistTable></PicklistTable>
