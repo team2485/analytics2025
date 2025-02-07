@@ -86,6 +86,10 @@
 .allianceMatchView input {
     width: 50px;
     height: 35px;
+    font-family: 'Philosopher', sans-serif;
+    font-size: larger;
+    font-weight: 200;
+    text-align: center;
 }
 
 .allianceMatchView label {
