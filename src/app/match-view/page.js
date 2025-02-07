@@ -44,6 +44,10 @@ function MatchView() {
   //   ["#FFE3D3", "#EBB291", "#E19A70", "#D7814F", "#c26d3c"],
   // ];
 
+  useEffect(() => {
+    fetch("/api/get-alliance-data").then(resp => resp.json()).then(data => setAllData(data));
+  }, []);
+
 
   // useEffect(() => {
   //   if (searchParams && allData) {
