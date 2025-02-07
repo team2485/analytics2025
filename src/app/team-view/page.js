@@ -334,13 +334,13 @@ function TeamView() {
             <table className={styles.differentTable}> 
                 <tbody>
                   <tr>
-                    <td style={{backgroundColor: Colors[1][2], width: "40px"}} rowSpan="2">Coral</td>
-                    <td style={{backgroundColor: Colors[1][1], width: "50px", height: "10px"}} >Success</td>
-                    <td style={{backgroundColor: Colors[1][1], width: "50px"}}>Total</td>
+                    <td style={{backgroundColor: Colors[1][2]}} rowSpan="2">Coral</td>
+                    <td style={{backgroundColor: Colors[1][1]}} >Success</td>
+                    <td style={{backgroundColor: Colors[1][1]}}>Total</td>
                   </tr>
                   <tr>
-                    <td style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{`${data.auto.coral.success}%`}</td>
-                    <td style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{data.auto.coral.total}</td>
+                    <td style={{backgroundColor: Colors[1][0]}}>{`${data.auto.coral.success}%`}</td>
+                    <td style={{backgroundColor: Colors[1][0]}}>{data.auto.coral.total}</td>
                   </tr>
             </tbody>
           </table>
@@ -392,16 +392,16 @@ function TeamView() {
               <div className={styles.rightColumnBoxes}>
                 <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
                   </div>
-                <table className={styles.valueBoxes}> 
+                <table className={styles.differentTable}> 
                     <tbody>
                       <tr>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "40px"}} rowSpan="2">Human Player</td>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "50px", height: "10px"}}>Scored</td>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "50px"}}>Success</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width:"34px"}} rowSpan="2">HP</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Success</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Scored</td>
                       </tr>
                       <tr>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{data.tele.avgHp}</td>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{`${data.tele.coral.success}%`}</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${data.tele.coral.success}%`}</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{data.tele.avgHp}</td>
                       </tr>
                   </tbody>
                 </table>
@@ -409,13 +409,13 @@ function TeamView() {
                 <table className={styles.differentTable}> 
                   <tbody>
                     <tr>
-                      <td style={{backgroundColor: Colors[2][2], width: "40px"}} rowSpan="2">Coral</td>
-                      <td style={{backgroundColor: Colors[2][1], width: "50px", height: "10px"}} >Success</td>
-                      <td style={{backgroundColor: Colors[2][1], width: "50px"}}>Total</td>
+                      <td style={{backgroundColor: Colors[2][2]}} rowSpan="2">Coral</td>
+                      <td style={{backgroundColor: Colors[2][1]}} >Success</td>
+                      <td style={{backgroundColor: Colors[2][1],  width:"44px"}} >Total</td>
                     </tr>
                       <tr>
-                        <td style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{`${data.tele.successHp}%`}</td>
-                        <td style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{data.tele.coral.total}</td>
+                        <td style={{backgroundColor: Colors[2][0]}}>{`${data.tele.successHp}%`}</td>
+                        <td style={{backgroundColor: Colors[2][0]}}>{data.tele.coral.total}</td>
                       </tr>
                   </tbody>
                 </table>
@@ -447,13 +447,13 @@ function TeamView() {
           <table className={styles.differentTable} style={{borderRadius: "5px"}}>
             <tbody>
               <tr>
-                <td style={{backgroundColor: Colors[3][2], width: "40px"}} rowSpan="2">Cage</td>
-                <td style={{backgroundColor: Colors[3][1], width: "50px", height: "10px"}}>Attempt</td>
-                <td style={{backgroundColor: Colors[3][1], width: "50px"}}>Success</td>
+                <td style={{backgroundColor: Colors[3][2]}} rowSpan="2">Cage</td>
+                <td style={{backgroundColor: Colors[3][1]}}>Attempt</td>
+                <td style={{backgroundColor: Colors[3][1]}}>Success</td>
               </tr>
               <tr>
-                <td style={{backgroundColor: Colors[3][0], width: "50px", height: "30px"}}>{`${data.attemptCage}%`}</td>
-                <td style={{backgroundColor: Colors[3][0], width: "50px", height: "30px"}}>{`${data.successCage}%`}</td>
+                <td style={{backgroundColor: Colors[3][0]}}>{`${data.attemptCage}%`}</td>
+                <td style={{backgroundColor: Colors[3][0]}}>{`${data.successCage}%`}</td>
               </tr>
             </tbody>
           </table>
