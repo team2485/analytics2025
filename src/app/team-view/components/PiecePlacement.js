@@ -21,7 +21,7 @@ export default function PiecePlacement({ L1, L2, L3, L4, net, processor, HP }) {
         chartInstance.current = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['L1', 'L2', 'L3', 'L4', 'Net', 'Proc', 'HP'],
+            labels: ['L1', 'L2', 'L3', 'L4', 'Net', 'Prcsr', 'HP'],
             datasets: [{
               label: 'Piece Placement',
               data: [L1, L2, L3, L4, net, processor, HP],

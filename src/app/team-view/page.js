@@ -50,7 +50,7 @@ function TeamView() {
       noShow: 1,
       breakdown: 9,
       matchesScouted: 3,
-      scouts: ["Yael", "Ella", "Max"],
+      scouts: ["Yael", "Ella", "Max",],
       generalComments: ["pretty good", "fragile intake","hooray!"],
       breakdownComments: ["stopped moving"],
       defenseComments: ["defended coral human player station"],
@@ -265,8 +265,8 @@ function TeamView() {
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
                     <EPALineChart data={data.epaOverTime} color={Colors[0][3]} />
                 </div>
-              <h4 className={styles.graphTitle}>Piece Placement</h4>
                 <div className={styles.barGraphContainer}>
+                    <h4 className={styles.graphTitle}>Piece Placement</h4>
                     <PiecePlacement
                         L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
                         L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
@@ -288,17 +288,12 @@ function TeamView() {
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={data.matchesScouted} />
                   </div>
                   <div className={styles.allComments}>
-                    <br></br>
-                    <br></br>
-                    <br></br>
                     <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"General Comments"} value={data.generalComments.join(" | ")} />
                     <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
                     <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
                   </div>
+                  <HBox color1={Colors[0][1]} color2={Colors[0][0]} title={"Scouts"} value={data.scouts.join(" | ")} />
                 </div>
-              <div className={styles.scoutBox}>
-                <HBox color1={Colors[0][1]} color2={Colors[0][0]} title={"Scouts"} value={data.scouts.join(" | ")} />
-              </div>
           </div>
       <div className={styles.rightColumn}>
         <div className={styles.topRow}>

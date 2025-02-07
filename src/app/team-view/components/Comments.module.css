@@ -5,3 +5,8 @@
     justify-self: center;
     padding-bottom: 1px;
 }
+
+.commentsBox table, .commentsBox td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
