@@ -332,16 +332,16 @@ function TeamView() {
               <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={data.auto.algae.removed} />
           </div>
             <table className={styles.valueBoxes}> 
-                <tbody>
-                  <tr>
-                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "40px"}} rowSpan="2">Coral</td>
-                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "50px", height: "10px"}} >Total</td>
-                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "50px"}}>Success</td>
-                  </tr>
-                  <tr>
-                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{data.auto.coral.total}</td>
-                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{`${data.auto.coral.success}%`}</td>
-                  </tr>
+              <tbody>
+                <tr>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "40px"}} rowSpan="2">Coral</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "50px", height: "10px"}} >Total</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "50px"}}>Success</td>
+                </tr>
+                <tr>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{data.auto.coral.total}</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{`${data.auto.coral.success}%`}</td>
+                </tr>
             </tbody>
           </table>
         </div>
@@ -390,10 +390,21 @@ function TeamView() {
           
             <div className={styles.valueBoxes}>
               <div className={styles.rightColumnBoxes}>
-              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"HP Scored"} value={data.tele.avgHp} />
-              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Success"} value={data.tele.coral.success} />
-              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
-            </div>
+                <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
+                  </div>
+                <table className={styles.valueBoxes}> 
+                    <tbody>
+                      <tr>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "40px"}} rowSpan="2">Human Player</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "50px", height: "10px"}}>Scored</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "50px"}}>Success</td>
+                      </tr>
+                      <tr>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{data.tele.avgHp}</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{`${data.tele.coral.success}%`}</td>
+                      </tr>
+                  </tbody>
+                </table>
               </div>
                 <table className={styles.valueBoxes}> 
                   <tbody>
@@ -425,7 +436,7 @@ function TeamView() {
         </div>
           <div className={styles.bottomRow}>
         <div className={styles.endgame}>
-        <div className={styles.header}><h1 style={{ color: Colors[3][3] }}>Endgame</h1></div>
+        <h1 className={styles.header} style={{ color: Colors[3][3] }}>Endgame</h1>
           <div className={styles.chartContainer}>
             <h4 className={styles.graphTitle}>Endgame Placement</h4>
             <Endgame 
@@ -448,7 +459,7 @@ function TeamView() {
           </table>
         </div>
         <div className={styles.qualitative}>
-        <div className={styles.header}><h1 style={{ color: Colors[4][3] }}>Qualitative</h1></div>
+        <h1 className={styles.header} style={{ color: Colors[4][3] }}>Qualitative</h1>
           <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
             <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
