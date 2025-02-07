@@ -290,7 +290,8 @@
 
 
 .differentTable {
-    height: 50px;
+    height: 25px;
+    width: 25px;
 }
 
 .differentTable, .differentTable td {
