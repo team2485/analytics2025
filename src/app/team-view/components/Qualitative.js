@@ -4,7 +4,7 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-export default function Qualitative({ color = "#116677", data }) {
+export default function Qualitative({ color1, color2, data }) {
   const [isClient, setIsClient] = useState(false);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -29,12 +29,12 @@ export default function Qualitative({ color = "#116677", data }) {
             datasets: [{
               data: data.map(item => item.rating),
               fill: true,
-              backgroundColor: color + '4D', // Adding transparency
-              borderColor: color,
-              pointBackgroundColor: color,
+              backgroundColor: color1 + '4D', // Adding transparency
+              borderColor: color2,
+              pointBackgroundColor: color2,
               pointBorderColor: '#fff',
               pointHoverBackgroundColor: '#fff',
-              pointHoverBorderColor: color
+              pointHoverBorderColor: color2
             }]
           },
           options: {
@@ -62,7 +62,7 @@ export default function Qualitative({ color = "#116677", data }) {
         chartInstance.current.destroy();
       }
     };
-  }, [isClient, data, color]);
+  }, [isClient, data, color1, color2]);
 
   if (!isClient) {
     return null;

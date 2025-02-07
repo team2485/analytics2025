@@ -1,6 +1,6 @@
-.TwoByTwo {
-    border: 1px solid black;
-    border-radius: 5px;
-    table-layout: fixed;
-    align-self: center;
+.TwoByTwo, .TwoByTwo td, .TwoByTwo th {
+    border: 1px black solid;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 4px;
 }

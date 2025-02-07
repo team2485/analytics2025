@@ -298,12 +298,12 @@ function TeamView() {
       <div className={styles.rightColumn}>
         <div className={styles.topRow}>
         <div className={styles.auto}>
-        <h1 style={{ color: Colors[1][2] }}>Auto</h1>
+        <h1 style={{ color: Colors[1][3] }}>Auto</h1>
           <div className={styles.graphContainer}>
               <h4 className={styles.graphTitle}>Auto Over Time</h4>
               <EPALineChart 
                 data={data.autoOverTime} 
-                color={Colors[0][0]} 
+                color={Colors[1][3]} 
               />
             </div>
           <div className={styles.fourByTwoContainer}>
@@ -360,12 +360,12 @@ function TeamView() {
           </div>
         </div>
         <div className={styles.tele}>
-        <h1 style={{ color: Colors[2][1] }}>Tele</h1>
+        <h1 style={{ color: Colors[2][3] }}>Tele</h1>
           <div className={styles.graphContainer}>
               <h4 className={styles.graphTitle}>Tele Over Time</h4>
               <EPALineChart 
                 data={data.teleOverTime} 
-                color={Colors[0][0]} 
+                color={Colors[2][3]} 
               />
             </div>
           <div className={styles.fourByTwoContainer}>
@@ -425,33 +425,36 @@ function TeamView() {
         </div>
           <div className={styles.bottomRow}>
         <div className={styles.endgame}>
-        <div className={styles.header}><h1 style={{ color: Colors[3][1] }}>Endgame</h1></div>
-          <div className={styles.graphContainer}>
+        <div className={styles.header}><h1 style={{ color: Colors[3][3] }}>Endgame</h1></div>
+          <div className={styles.chartContainer}>
             <h4 className={styles.graphTitle}>Endgame Placement</h4>
             <Endgame 
               data={endgamePieData} 
-              color={Colors[3][2]} 
+              color={Colors[3]} 
             />
           </div>
-          <div className={styles.twoByTwoContainer}>
-            <TwoByTwo
-              HC1="Attempt"
-              HC2="Success"
-              HR1="Cage"
-              R1C1={`${data.attemptCage}%`}
-              R1C2={`${data.successCage}%`}
-              color1={Colors[3][2]} color2={Colors[3][2]} color3={Colors[4][0]}
-            />
-          </div> 
+          <table className={styles.differentTable} style={{borderRadius: "5px"}}>
+            <tbody>
+              <tr>
+                <td style={{backgroundColor: Colors[3][3], width: "40px"}} rowSpan="2">Cage</td>
+                <td style={{backgroundColor: Colors[3][2], width: "50px", height: "10px"}}>Attempt</td>
+                <td style={{backgroundColor: Colors[3][2], width: "50px"}}>Success</td>
+              </tr>
+              <tr>
+                <td style={{backgroundColor: Colors[3][0], width: "50px", height: "30px"}}>{`${data.attemptCage}%`}</td>
+                <td style={{backgroundColor: Colors[3][0], width: "50px", height: "30px"}}>{`${data.successCage}%`}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div className={styles.qualitative}>
-        <div className={styles.header}><h1 style={{ color: Colors[4][1] }}>Qualitative</h1></div>
+        <div className={styles.header}><h1 style={{ color: Colors[4][3] }}>Qualitative</h1></div>
           <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-            <Qualitative data={data.qualitative}/>
+            <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
             <p>*Inverted so outside is good</p>
           </div>
-          <table className={styles.Intake}> 
+          <table className={styles.differentTable}> 
             <tbody>
               <tr>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Coral Intake</td>

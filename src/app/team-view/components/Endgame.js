@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { VictoryPie } from "victory";
 
-export default function Endgame({ data }) {
+export default function Endgame({ data, color }) {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -15,7 +15,7 @@ export default function Endgame({ data }) {
     <VictoryPie
       padding={100}
       data={data}
-      colorScale="blue"
+      colorScale={color}
       labels={({ datum }) => `${datum.x}: ${Math.round(datum.y)}%`}
     />
   );
