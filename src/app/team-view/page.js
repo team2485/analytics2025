@@ -329,10 +329,21 @@ function TeamView() {
           <div className={styles.valueBoxes}>
            <div className={styles.rightColumnBoxes}>
               <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={data.leave} />
-              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Total"} value={data.auto.coral.total} />
-              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Success"} value={data.auto.coral.success} />
               <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={data.auto.algae.removed} />
           </div>
+            <table className={styles.valueBoxes}> 
+                <tbody>
+                  <tr>
+                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "40px"}} rowSpan="2">Coral</td>
+                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "50px", height: "10px"}} >Total</td>
+                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][2], width: "50px"}}>Success</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{data.auto.coral.total}</td>
+                    <td className={styles.coloredBoxes} style={{backgroundColor: Colors[1][0], width: "50px", height: "30px"}}>{`${data.auto.coral.success}%`}</td>
+                  </tr>
+            </tbody>
+          </table>
         </div>
           <div className={styles.twoByTwoContainer}>
               <TwoByTwo
@@ -380,12 +391,23 @@ function TeamView() {
             <div className={styles.valueBoxes}>
               <div className={styles.rightColumnBoxes}>
               <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"HP Scored"} value={data.tele.avgHp} />
-              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Success"} value={data.tele.successHp} />
-              <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Total"} value={data.tele.coral.total} />
               <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Success"} value={data.tele.coral.success} />
               <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
             </div>
               </div>
+                <table className={styles.valueBoxes}> 
+                  <tbody>
+                    <tr>
+                      <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "40px"}} rowSpan="2">Coral</td>
+                      <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "50px", height: "10px"}} >Total</td>
+                      <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width: "50px"}}>Success</td>
+                    </tr>
+                      <tr>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{data.tele.coral.total}</td>
+                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0], width: "50px", height: "30px"}}>{`${data.tele.successHp}%`}</td>
+                      </tr>
+                  </tbody>
+                </table>
               <div className={styles.twoByTwoContainer}>
                 <TwoByTwo
                   HC1="Success" 
@@ -432,31 +454,31 @@ function TeamView() {
           <table className={styles.Intake}> 
             <tbody>
               <tr>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Coral Intake</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px"}}>Source</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Coral Intake</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px"}}>Source</td>
               </tr>
               <tr>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.coralGroundIntake}></input></td>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.coralStationIntake}></input></td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.coralGroundIntake}></input></td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.coralStationIntake}></input></td>
               </tr>
               <tr>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Algae Intake</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px"}}>Lollipop</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Algae Intake</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px"}}>Lollipop</td>
               </tr>
               <tr>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeGroundIntake}></input></td>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.lollipop}></input></td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeGroundIntake}></input></td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.lollipop}></input></td>
               </tr>
               <tr>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Reef Intake</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Low</td>
-                  <td className={styles.intakeName} style={{backgroundColor: Colors[4][1], width: "50px"}}>High</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Reef Intake</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Low</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px"}}>High</td>
               </tr>
               <tr>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeLowReefIntake}></input></td>
-                  <td className={styles.intakeCheck} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.algaeHighReefIntake}></input></td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeLowReefIntake}></input></td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.algaeHighReefIntake}></input></td>
               </tr>
             </tbody>
           </table>
