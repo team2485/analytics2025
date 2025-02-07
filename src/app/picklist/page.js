@@ -63,7 +63,7 @@ export default function Picklist() {
     const urlParams = new URLSearchParams([...weightEntries, ...Object.entries(allianceData).flatMap(([allianceNumber, teams]) => teams.map((team, index) => [`T${allianceNumber}A${index + 1}`, team]))]);
     window.history.replaceState(null, '', `?${urlParams.toString()}`);
 
-    // Original fetch code commented out
+    // Original fetch code commented out --> uncomment when regionals are coming out
     /*
     const picklist = await fetch('/api/compute-picklist', {
       method: 'POST',
