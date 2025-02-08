@@ -51,7 +51,8 @@ export default function Home() {
     let submitButton = document.querySelector("#submit");//todo: get changed to a useRef
     submitButton.disabled = true;
     //import values from form to data variable
-    let data = {noshow: false, leave: false, harmony: false, gndintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null };
+
+    let data = {noshow: false, leave: false, algaelowreefintake: false, algaehighreefintake: false, lollipop: false, algaegndintake: false, coralgndintake: false, coralstationintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null, generalcomments: null };
     [...new FormData(form.current).entries()].forEach(([name, value]) => {
       if (value == 'on') {
         data[name] = true;
@@ -440,7 +441,7 @@ export default function Home() {
                 />
                 <Checkbox
                   visibleName={"Lollipop"}
-                  internalName={"algaegndintake"}
+                  internalName={"lollipop"}
                 />
                 <Checkbox
                   visibleName={"Algae Ground"}
