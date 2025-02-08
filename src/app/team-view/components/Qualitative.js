@@ -39,6 +39,11 @@ export default function Qualitative({ color1, color2, data }) {
           },
           options: {
             responsive: true,
+            layout: {
+              padding: {
+                top: 1
+              },
+            },
             scales: {
               r: {
                 angleLines: { display: true },
@@ -46,13 +51,14 @@ export default function Qualitative({ color1, color2, data }) {
                 suggestedMax: 5,
                 ticks: { stepSize: 1 }, 
                 pointLabels: {
-                  font: {size: 13},
+                  font: {size: 11},
               },
               }
             },
             plugins: {
               legend: {
-                display: false 
+                display: false ,
+                position: 'bottom',
               }
             }
           }
