@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/plots": "^2.1.12",
+    "@tidyjs/tidy": "^2.5.2",
+    "@vercel/postgres": "^0.7.2",
+    "antd": "^5.13.1",
+    "lodash": "^4.17.21",
     "next": "^15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
