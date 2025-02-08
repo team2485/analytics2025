@@ -8,24 +8,24 @@
         <label>
             <input
               type="radio"
-              name="matchtype"
-              value="precomp"
+              name="precomp"
+              value="0"
             />
             Pre-Comp
           </label>
           <label>
             <input
               type="radio"
-              name="matchtype"
-              value="practice"
+              name="practice"
+              value="1"
             />
             Practice
           </label>
           <label>
             <input
               type="radio"
-              name="matchtype"
-              value="qual"
+              name="qual"
+              value="2"
               defaultChecked
             />
             Qual
@@ -33,8 +33,8 @@
           <label>
             <input
               type="radio"
-              name="matchtype"
-              value="elim"
+              name="elim"
+              value="3"
             />
             Elim
           </label>
