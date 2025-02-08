@@ -88,32 +88,21 @@ export async function POST(req) {
   // Insert Data into Database**
   let resp = await sql`
     INSERT INTO phr2025 (
-      ScoutName, ScoutTeam, Team, Match, NoShow,
-      AutoCoralTotal, AutoCoralSuccess, AutoAlgaeRemoved, AutoAlgaeAvgProcessor, AutoAlgaeAvgNet, AutoAlgaeSuccessProcessor, AutoAlgaeSuccessNet,
-      TeleCoralTotal, TeleCoralSuccess, TeleAlgaeRemoved, TeleAlgaeAvgProcessor, TeleAlgaeAvgNet, TeleAlgaeSuccessProcessor, TeleAlgaeSuccessNet,
-      TeleAvgHp, TeleSuccessHp,
-      EndNone, EndPark, EndDeep, EndShallow, EndParkFail, AttemptCage, SuccessCage,
-      CoralSpeed, ProcessorSpeed, NetSpeed, AlgaeRemovalSpeed, ClimbSpeed, Maneuverability, DefensePlayed, DefenseEvasion, Aggression, CageHazard,
-      GeneralComments, BreakdownComments, DefenseComments
+        ScoutName, ScoutTeam, Team, Match, MatchType, Breakdown, NoShow, Leave, AutoL1Scored, AutoL1Failed, AutoL2Scored, AutoL2Failed, AutoL3Scored, AutoL3Failed, AutoL4Scored, AutoL4Failed, AutoCoralScored, AutoCoralFailed, AutoAlgaeRemoved, AutoProcessorScored, AutoProcessorFailed, AutoNetScored, AutoNetFailed, TeleL1Scored, TeleL1Failed, TeleL2Scored, TeleL2Failed, TeleL3Scored, TeleL3Failed, TeleL4Scored, TeleL4Failed, TeleCoralScored, TeleCoralFailed, TeleAlgaeRemoved, TeleProcessorScored, TeleProcessorFailed, TeleNetScored, TeleNetFailed, HPScored, HPFailed, EndLocation, CoralSpeed, ProcessorSpeed, NetSpeed, AlgaeRemovalSpeed, ClimbSpeed, Maneuverability, DefensePlayed, DefenseEvasion, Aggression, CageHazard, CoralGrndIntake, CoralStationIntake, Lollipop, AlgaeGrndIntake, AlgaeHighReefIntake, AlgaeLowReefIntake, GeneralComments, BreakdownComments, DefenseComments
     )
     VALUES (
-      ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.noshow},
-      ${body.auto.coral.total}, ${body.auto.coral.success}, ${body.auto.algae.removed}, ${body.auto.algae.avgProcessor}, ${body.auto.algae.avgNet}, ${body.auto.algae.successProcessor}, ${body.auto.algae.successNet},
-      ${body.tele.coral.total}, ${body.tele.coral.success}, ${body.tele.algae.removed}, ${body.tele.algae.avgProcessor}, ${body.tele.algae.avgNet}, ${body.tele.algae.successProcessor}, ${body.tele.algae.successNet},
-      ${body.tele.avgHp}, ${body.tele.successHp},
-      ${body.endPlacement.none}, ${body.endPlacement.park}, ${body.endPlacement.deep}, ${body.endPlacement.shallow}, ${body.endPlacement.parkandFail}, ${body.attemptCage}, ${body.successCage},
-      ${body.qualitative.find((q) => q.name === "Coral Speed")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Processor Speed")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Net Speed")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Algae Removal Speed")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Climb Speed")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Maneuverability")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Defense Played")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Defense Evasion")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Aggression*")?.rating || 0},
-      ${body.qualitative.find((q) => q.name === "Cage Hazard*")?.rating || 0},
-      ${body.generalComments}, ${body.breakdownComments}, ${body.defenseComments}
-    )`;
+        ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchtype}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
+        ${body.autol1scored}, ${body.autol1failed}, ${body.autol2scored}, ${body.autol2failed}, ${body.autol3scored}, ${body.autol3failed}, ${body.autol4scored}, ${body.autol4failed}, 
+        ${body.autocoralscored}, ${body.autocoralfail}, ${body.autoalgaeremoved}, ${body.autoprocessorscored}, ${body.autoprocessorfailed}, ${body.autonetscored}, ${body.autonetfailed}, 
+        ${body.telel1scored}, ${body.telel1failed}, ${body.telel2scored}, ${body.telel2failed}, ${body.telel3scored}, ${body.telel3failed}, ${body.telel4scored}, ${body.telel4failed}, 
+        ${body.telecoralscored}, ${body.telecoralfail}, ${body.telealgaeremoved}, ${body.teleprocessorscored}, ${body.teleprocessorfailed}, ${body.telenetscored}, ${body.telenetfailed}, 
+        ${body.hpscored}, ${body.hpfail}, ${body.endlocation}, ${body.coralspeed}, ${body.processorspeed}, ${body.netspeed}, ${body.algaeremovalspeed}, 
+        ${body.climbspeed}, ${body.maneuverability}, ${body.defenseplayed}, ${body.defenseevasion}, ${body.aggression}, ${body.cagehazard}, 
+        ${body.coralgrndintake}, ${body.coralstationintake}, ${body.lollipop}, ${body.algaegrndintake}, ${body.algaehighreefintake}, ${body.algaelowreefintake}, 
+        ${body.generalcomments}, ${body.breakdowncomments}, ${body.defensecomments}
+      )`;      
 
   return NextResponse.json({ message: "Success!" }, { status: 201 });
 }
+
+
