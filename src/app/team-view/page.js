@@ -44,7 +44,7 @@ function TeamView() {
       last3End: 2,
       epaOverTime: [{match: 3, epa: 60},{match: 10, epa: 43},{match: 13, epa: 12}],
       epaRegression: [{match: 3, epa: 60}, {match: 13, epa: 12}], //not sure how we should do this one
-      consistancy: 98,
+      consistency: 98,
       defense: 11,
       lastBreakdown: 2,
       noShow: 1,
@@ -279,11 +279,11 @@ function TeamView() {
                 </div>
                 <div className={styles.valueBoxes}>
                   <div className={styles.leftColumnBoxes}>
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={data.consistancy} />
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={data.defense} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={`${data.consistency}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={`${data.defense}%`} />
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown} />
 
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={data.noShow} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${data.noShow}%`} />
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={data.breakdown} />
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={data.matchesScouted} />
                   </div>

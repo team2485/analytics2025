@@ -43,7 +43,6 @@
     gap: 10px;
     justify-content: center;
     text-align: center;
-    margin-right: 20px;
 }
 
 .leftColumnBoxes {
@@ -53,7 +52,6 @@
     justify-content: center;
     gap: 5px;
     width: 100%;
-    height: 80px;
 }
 
 .leftColumn .VBox {
