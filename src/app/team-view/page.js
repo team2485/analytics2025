@@ -306,6 +306,26 @@ function TeamView() {
                 color={Colors[1][3]} 
               />
             </div>
+        <div className={styles.autoRightAlignment}>
+          <div className={styles.alignElements}>
+              <div className={styles.valueBoxes}>
+                <div className={styles.rightColumnBoxes}>
+                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={data.leave} />
+              </div>
+              <table className={styles.coralTable}> 
+                <tbody>
+                  <tr>
+                    <td style={{backgroundColor: Colors[1][2]}} rowSpan="2">Coral</td>
+                    <td style={{backgroundColor: Colors[1][1]}} >Success</td>
+                    <td style={{backgroundColor: Colors[1][1]}}>Total</td>
+                  </tr>
+                  <tr>
+                    <td style={{backgroundColor: Colors[1][0]}}>{`${data.auto.coral.success}%`}</td>
+                    <td style={{backgroundColor: Colors[1][0]}}>{data.auto.coral.total}</td>
+                  </tr>
+            </tbody>
+          </table>
+        </div>
           <div className={styles.fourByTwoContainer}>
             <FourByTwo
               HC1="Success"
@@ -325,38 +345,25 @@ function TeamView() {
               color1={Colors[1][2]} color2={Colors[1][1]} color3={Colors[1][0]}
             />
           </div>
-  
-          <div className={styles.valueBoxes}>
-           <div className={styles.rightColumnBoxes}>
-              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={data.leave} />
-              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={data.auto.algae.removed} />
-          </div>
-            <table className={styles.differentTable}> 
-                <tbody>
-                  <tr>
-                    <td style={{backgroundColor: Colors[1][2]}} rowSpan="2">Coral</td>
-                    <td style={{backgroundColor: Colors[1][1]}} >Success</td>
-                    <td style={{backgroundColor: Colors[1][1]}}>Total</td>
-                  </tr>
-                  <tr>
-                    <td style={{backgroundColor: Colors[1][0]}}>{`${data.auto.coral.success}%`}</td>
-                    <td style={{backgroundColor: Colors[1][0]}}>{data.auto.coral.total}</td>
-                  </tr>
-            </tbody>
-          </table>
         </div>
-          <div className={styles.twoByTwoContainer}>
-              <TwoByTwo
-                HC1="Success"
-                HC2="Avg Algae"
-                HR1="Processor"
-                R1C1={`${data.auto.algae.successProcessor}%`}
-                R1C2={data.auto.algae.avgProcessor}
-                HR2="Net"
-                R2C1={`${data.auto.algae.successNet}%`}
-                R2C2={data.auto.algae.avgNet}
-                color1={Colors[1][2]} color2={Colors[1][1]} color3={Colors[1][0]}
-              />
+          <div className={styles.alignElements}>
+            <div className={styles.rightColumnBoxesTwo}>
+              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={data.auto.algae.removed} />  
+            </div>
+              <div className={styles.twoByTwoContainer}>
+                  <TwoByTwo
+                    HC1="Success"
+                    HC2="Avg Algae"
+                    HR1="Processor"
+                    R1C1={`${data.auto.algae.successProcessor}%`}
+                    R1C2={data.auto.algae.avgProcessor}
+                    HR2="Net"
+                    R2C1={`${data.auto.algae.successNet}%`}
+                    R2C2={data.auto.algae.avgNet}
+                    color1={Colors[1][2]} color2={Colors[1][1]} color3={Colors[1][0]}
+                  />
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.tele}>
@@ -368,6 +375,38 @@ function TeamView() {
                 color={Colors[2][3]} 
               />
             </div>
+      <div className={styles.teleRightAlignment}>
+        <div className={styles.alignElements}>
+          <div className={styles.coralAndHP}>
+            <div className={styles.valueBoxes}>
+                  <table className={styles.differentTable}> 
+                      <tbody>
+                        <tr>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width:"34px"}} rowSpan="2">HP</td>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Success</td>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Scored</td>
+                        </tr>
+                        <tr>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${data.tele.coral.success}%`}</td>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{data.tele.avgHp}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+                  <table className={styles.coralTable}> 
+                    <tbody>
+                      <tr>
+                        <td style={{backgroundColor: Colors[2][2]}} rowSpan="2">Coral</td>
+                        <td style={{backgroundColor: Colors[2][1]}} >Success</td>
+                        <td style={{backgroundColor: Colors[2][1],  width:"44px"}} >Total</td>
+                      </tr>
+                        <tr>
+                          <td style={{backgroundColor: Colors[2][0]}}>{`${data.tele.successHp}%`}</td>
+                          <td style={{backgroundColor: Colors[2][0]}}>{data.tele.coral.total}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+              </div>
           <div className={styles.fourByTwoContainer}>
             <FourByTwo
               HC1="Success"
@@ -387,38 +426,11 @@ function TeamView() {
               color1={Colors[2][2]} color2={Colors[2][1]} color3={Colors[2][0]}
             />
           </div>
-          
-            <div className={styles.valueBoxes}>
-              <div className={styles.rightColumnBoxes}>
-                <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
-                  </div>
-                <table className={styles.differentTable}> 
-                    <tbody>
-                      <tr>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width:"34px"}} rowSpan="2">HP</td>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Success</td>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Scored</td>
-                      </tr>
-                      <tr>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${data.tele.coral.success}%`}</td>
-                        <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{data.tele.avgHp}</td>
-                      </tr>
-                  </tbody>
-                </table>
-              </div>
-                <table className={styles.differentTable}> 
-                  <tbody>
-                    <tr>
-                      <td style={{backgroundColor: Colors[2][2]}} rowSpan="2">Coral</td>
-                      <td style={{backgroundColor: Colors[2][1]}} >Success</td>
-                      <td style={{backgroundColor: Colors[2][1],  width:"44px"}} >Total</td>
-                    </tr>
-                      <tr>
-                        <td style={{backgroundColor: Colors[2][0]}}>{`${data.tele.successHp}%`}</td>
-                        <td style={{backgroundColor: Colors[2][0]}}>{data.tele.coral.total}</td>
-                      </tr>
-                  </tbody>
-                </table>
+            </div>
+            <div className={styles.alignElements}>
+              <div className={styles.rightColumnBoxesTwo}>
+            <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
+          </div>
               <div className={styles.twoByTwoContainer}>
                 <TwoByTwo
                   HC1="Success" 
@@ -434,35 +446,37 @@ function TeamView() {
             </div>
           </div>
         </div>
-          <div className={styles.bottomRow}>
-        <div className={styles.endgame}>
-        <h1 className={styles.header} style={{ color: Colors[3][3] }}>Endgame</h1>
-          <div className={styles.chartContainer}>
-            <h4 className={styles.graphTitle}>Endgame Placement</h4>
-            <Endgame 
-              data={endgamePieData} 
-              color={Colors[3]} 
-            />
+      </div>
+    </div>
+        <div className={styles.bottomRow}>
+          <div className={styles.endgame}>
+            <h1 className={styles.header} style={{ color: Colors[3][3] }}>Endgame</h1>
+              <div className={styles.chartContainer}>
+                <h4 className={styles.graphTitle}>Endgame Placement</h4>
+              <Endgame 
+                data={endgamePieData} 
+                color={Colors[3]} 
+              />
+            </div>
+            <table className={styles.differentTable} style={{borderRadius: "5px"}}>
+              <tbody>
+                <tr>
+                  <td style={{backgroundColor: Colors[3][2]}} rowSpan="2">Cage</td>
+                  <td style={{backgroundColor: Colors[3][1]}}>Attempt</td>
+                  <td style={{backgroundColor: Colors[3][1]}}>Success</td>
+                </tr>
+                <tr>
+                  <td style={{backgroundColor: Colors[3][0]}}>{`${data.attemptCage}%`}</td>
+                  <td style={{backgroundColor: Colors[3][0]}}>{`${data.successCage}%`}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <table className={styles.differentTable} style={{borderRadius: "5px"}}>
-            <tbody>
-              <tr>
-                <td style={{backgroundColor: Colors[3][2]}} rowSpan="2">Cage</td>
-                <td style={{backgroundColor: Colors[3][1]}}>Attempt</td>
-                <td style={{backgroundColor: Colors[3][1]}}>Success</td>
-              </tr>
-              <tr>
-                <td style={{backgroundColor: Colors[3][0]}}>{`${data.attemptCage}%`}</td>
-                <td style={{backgroundColor: Colors[3][0]}}>{`${data.successCage}%`}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className={styles.qualitative}>
-        <h1 className={styles.header} style={{ color: Colors[4][3] }}>Qualitative</h1>
-          <div className={styles.radarContainer}>
+          <div className={styles.qualitative}>
+          <h1 className={styles.header} style={{ color: Colors[4][3] }}>Qualitative</h1>
+            <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-            <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
+              <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
             <p>*Inverted so outside is good</p>
           </div>
           <table className={styles.differentTable}> 
