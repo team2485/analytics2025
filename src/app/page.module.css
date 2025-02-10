@@ -17,7 +17,15 @@
     justify-content: space-evenly;
     gap: 5px;
     width: 350px;
+    align-self: center;
   }
+.allMatchInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
 .Endgame {
   justify-items: center;
 }

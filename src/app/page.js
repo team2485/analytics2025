@@ -38,10 +38,6 @@ export default function Home() {
     let checked = e.target.checked;
     setDefense(checked);
   }
-  function onHPChange(e) {
-    let checked = e.target.checked;
-    setHP(checked);
-  }
 
 
   // added from last years code (still review)
@@ -137,6 +133,7 @@ export default function Home() {
     <div className={styles.MainDiv}>
       <form ref={form} name="Scouting Form" onSubmit={submit}>
         <Header headerName={"Match Info"} />
+        <div className={styles.allMatchInfo}>
         <div className={styles.MatchInfo}>
         <TextInput 
             visibleName={"Scout Name:"} 
@@ -168,6 +165,7 @@ export default function Home() {
           internalName={"noshow"}
           changeListener={onNoShowChange}
         />
+        </div>
         {!noShow && (
           <>
             <div className={styles.Auto}>
@@ -441,7 +439,7 @@ export default function Home() {
                 />
                 <Checkbox
                   visibleName={"Lollipop"}
-                  internalName={"lollipop"}
+                  internalName={"algaegndintake"}
                 />
                 <Checkbox
                   visibleName={"Algae Ground"}
