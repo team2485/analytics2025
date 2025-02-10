@@ -6,85 +6,89 @@ export async function POST(req) {
   let body = await req.json();
   console.log(body);
 
-  // **🔍 Pre-Match Validation**
-  if (
-    !(_.isString(body.scoutname) &&
-      _.isNumber(body.scoutteam) &&
-      _.isNumber(body.team) &&
-      _.isNumber(body.match))
-  ) {
+  if (!(_.isString(body.scoutname) && _.isNumber(body.scoutteam) && _.isNumber(body.team) && _.isNumber(body.match) && _.isNumber(body.matchtype))) {
     return NextResponse.json({ message: "Invalid Pre-Match Data!" }, { status: 400 });
   }
-
-  // **🚫 No-Show Case - Just Insert Basic Data**
+  
+  // If no-show, add a basic row
   if (body.noshow) {
     console.log("no show!");
     let resp = await sql`
-      INSERT INTO phr2025 (ScoutName, ScoutTeam, Team, Match, NoShow)
-      VALUES (${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.noshow})`;
+      INSERT INTO phr2025 (ScoutName, ScoutTeam, Team, Match, MatchType, NoShow)
+      VALUES (${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchtype}, ${body.noshow})
+    `;
     return NextResponse.json({ message: "Success!" }, { status: 201 });
   }
-
-  // **🔍 Auto Period Validation**
+  
+  // Check Auto Data
   if (
-    !(_.isNumber(body.auto.coral.total) &&
-      _.isNumber(body.auto.coral.success) &&
-      _.isNumber(body.auto.algae.removed) &&
-      _.isNumber(body.auto.algae.avgProcessor) &&
-      _.isNumber(body.auto.algae.avgNet) &&
-      _.isNumber(body.auto.algae.successProcessor) &&
-      _.isNumber(body.auto.algae.successNet))
+    !(
+      _.isNumber(body.autoL1success) &&
+      _.isNumber(body.autoL1fail) &&
+      _.isNumber(body.autoL2success) &&
+      _.isNumber(body.autoL2fail) &&
+      _.isNumber(body.autoL3success) &&
+      _.isNumber(body.autoL3fail) &&
+      _.isNumber(body.autoL4success) &&
+      _.isNumber(body.autoL4fail) &&
+      _.isNumber(body.autoprocessorsuccess) &&
+      _.isNumber(body.autoprocessorfail) &&
+      _.isNumber(body.autonetsuccess) &&
+      _.isNumber(body.autonetfail)
+    )
   ) {
     return NextResponse.json({ message: "Invalid Auto Data!" }, { status: 400 });
   }
-
-  // **🔍 Teleop Period Validation**
+  
+  // Check Tele Data
   if (
-    !(_.isNumber(body.tele.coral.total) &&
-      _.isNumber(body.tele.coral.success) &&
-      _.isNumber(body.tele.algae.removed) &&
-      _.isNumber(body.tele.algae.avgProcessor) &&
-      _.isNumber(body.tele.algae.avgNet) &&
-      _.isNumber(body.tele.algae.successProcessor) &&
-      _.isNumber(body.tele.algae.successNet) &&
-      _.isNumber(body.tele.avgHp) &&
-      _.isNumber(body.tele.successHp))
+    !(
+      _.isNumber(body.teleL1success) &&
+      _.isNumber(body.teleL1fail) &&
+      _.isNumber(body.teleL2success) &&
+      _.isNumber(body.teleL2fail) &&
+      _.isNumber(body.teleL3success) &&
+      _.isNumber(body.teleL3fail) &&
+      _.isNumber(body.teleL4success) &&
+      _.isNumber(body.teleL4fail) &&
+      _.isNumber(body.telealgaeremoved) &&
+      _.isNumber(body.teleprocessorsuccess) &&
+      _.isNumber(body.teleprocessorfail) &&
+      _.isNumber(body.telenetsuccess) &&
+      _.isNumber(body.telenetfail)
+    )
   ) {
     return NextResponse.json({ message: "Invalid Tele Data!" }, { status: 400 });
   }
-
-  // **🔍 Endgame Validation**
+  
+  // Check Endgame Data
   if (
-    !(_.isNumber(body.endPlacement.none) &&
-      _.isNumber(body.endPlacement.park) &&
-      _.isNumber(body.endPlacement.deep) &&
-      _.isNumber(body.endPlacement.shallow) &&
-      _.isNumber(body.endPlacement.parkandFail) &&
-      _.isNumber(body.attemptCage) &&
-      _.isNumber(body.successCage))
+    !(
+      _.isNumber(body.endlocation) &&
+      _.isNumber(body.coralspeed) &&
+      _.isNumber(body.processorspeed) &&
+      _.isNumber(body.netspeed) &&
+      _.isNumber(body.algaeremovalspeed) &&
+      _.isNumber(body.climbspeed)    )
   ) {
     return NextResponse.json({ message: "Invalid Endgame Data!" }, { status: 400 });
   }
-
-  // Qualitative Metrics Validation**
+  
+  // Check Qualitative Data
+  
+  // Check Comments
   if (
-    !(_.isArray(body.qualitative) &&
-      body.qualitative.every((q) => _.isString(q.name) && _.isNumber(q.rating)))
-  ) {
-    return NextResponse.json({ message: "Invalid Qualitative Data!" }, { status: 400 });
-  }
-
-  // Comments Validation**
-  if (
-    !(_.isString(body.generalComments) &&
-      (_.isString(body.breakdownComments) || _.isNull(body.breakdownComments)) &&
-      (_.isString(body.defenseComments) || _.isNull(body.defenseComments)))
+    !(
+      _.isString(body.generalcomments) &&
+      (_.isString(body.breakdowncomments) || _.isNull(body.breakdowncomments)) &&
+      (_.isString(body.defensecomments) || _.isNull(body.defensecomments))
+    )
   ) {
     return NextResponse.json({ message: "Invalid Comments!" }, { status: 400 });
   }
-
-  console.log(body.defenseComments);
-
+  
+  console.log(body.defensecomments);
+  
   // Insert Data into Database**
   let resp = await sql`
     INSERT INTO phr2025 (
