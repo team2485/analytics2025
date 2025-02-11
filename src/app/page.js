@@ -17,7 +17,8 @@ export default function Home() {
   const [humanplayer, setHumanPlayer] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
-  const [HP, setHP] = useState(false);
+  const [matchType, setMatchType] = useState("2"); // Default to Qual
+
   const form = useRef();
   
   function onNoShowChange(e) {
@@ -38,6 +39,12 @@ export default function Home() {
     let checked = e.target.checked;
     setDefense(checked);
   }
+
+  
+  function handleMatchTypeChange(value){
+    setMatchType(value);
+    console.log("Selected match type:", value);
+};
 
 
   // added from last years code (still review)
@@ -73,17 +80,24 @@ export default function Home() {
         return;
       } 
     }
-    //check team and match
-    // if (data.match < 200) {
-    //   let valid = await fetch("/api/get-valid-team?team=" + data.team + "&match=" + data.match)
-    //     .then((resp) => resp.json())
-    //     .then((data) => data.valid)
-    //   if (valid == false) {
-    //     alert("Invalid Team and Match Combination!");
-    //     submitButton.disabled = false;
-    //     return;
-    //   }
-    // }
+    //check team and match for quals
+    if (matchType = 2) {
+      try {
+        const response = await fetch(`/api/get-valid-team?team=${data.team}&match=${data.match}`)
+        const validationData = await response.json();
+        
+        if (!validationData.valid) {
+          alert("Invalid Team and Match Combination!");
+          submitButton.disabled = false;
+          return;
+        }
+      } catch (error) {
+        console.error("Validation error:", error);
+        alert("Error validating team and match. Please try again.");
+        submitButton.disabled = false;
+        return;
+      }
+    }
 
     //confirm and submit
     if (confirm("Are you sure you want to submit?") == true) {
@@ -107,10 +121,12 @@ export default function Home() {
           let ScoutName = document.querySelector("input[name='scoutname']").value;
           let ScoutTeam = document.querySelector("input[name='scoutteam']").value;
           let Match = document.querySelector("input[name='match']").value;
+          let MatchType = matchType;
           let scoutProfile = { 
             scoutname: ScoutName, 
             scoutteam: ScoutTeam, 
-            match: Number(Match)+1 
+            match: Number(Match)+1,
+            matchType: MatchType 
           };
           localStorage.setItem("ScoutProfile", JSON.stringify(scoutProfile));
         }
@@ -159,7 +175,7 @@ export default function Home() {
             type={"number"}
           />
         </div>
-        <MatchType />
+        <MatchType onMatchTypeChange={handleMatchTypeChange}/>
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
