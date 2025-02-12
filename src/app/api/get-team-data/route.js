@@ -17,6 +17,7 @@ export async function GET(request) {
   let data = await sql`SELECT * FROM phr2025 WHERE team = ${team};`;
   const rows = data.rows;
 
+
   if (rows.length === 0) {
     return NextResponse.json({ message: `ERROR: No data for team ${team}` }, { status: 404 });
   }
@@ -41,11 +42,15 @@ export async function GET(request) {
 
   // Compute auto, tele, endgame
   teamTable = tidy(teamTable, mutate({
-    auto: rec => rec.auto || 0,
-    tele: rec => rec.tele || 0,
-    end: rec => rec.end || 0,
-    epa: rec => rec.auto + rec.tele + rec.end || 0
-  }), arrange([asc('match')]));
+    auto: rec => rec.autol1success + rec.autol2success + rec.autol3success + rec.autol4success + rec.autoprocessorsuccess + rec.autonetsuccess || 0,
+    tele: rec => rec.telel1success + rec.telel2success + rec.telel3success + rec.telel4success + rec.teleprocessorsuccess + rec.telenetsuccess || 0,
+    end: rec => rec.endlocation || 0,
+    epa: rec => (rec.autol1success + rec.autol2success + rec.autol3success + rec.autol4success + 
+                 rec.autoprocessorsuccess + rec.autonetsuccess + 
+                 rec.telel1success + rec.telel2success + rec.telel3success + rec.telel4success +
+                 rec.teleprocessorsuccess + rec.telenetsuccess) || 0
+}));
+
 
   function rowsToArray(rows, index) {
     return rows.map(row => row[index]).filter(val => val != null);
@@ -77,6 +82,7 @@ export async function GET(request) {
     return data.nickname;
   });
 
+  console.log("Processed Team Table:", teamTable);
 
   const matchesScouted = teamTable.length;
 
@@ -89,6 +95,8 @@ export async function GET(request) {
     avgEnd: mean('end'),
     matchesScouted: () => matchesScouted,
     epaOverTime: arr => tidy(arr, select(['epa', 'match'])),
+    autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
+    teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
     noShow: arr => percentValue(arr, 'noshow', true),
     defense: arr => percentValue(arr, 'defenseplayed', true),
     breakdown: arr => percentValue(arr, 'breakdown', true),
@@ -99,25 +107,23 @@ export async function GET(request) {
     defenseComments: arr => rowsToArray(arr, 'defensecomments'),
 
     auto: arr => ({
-      leave: percentValue(arr, 'leave', true),
-      autoOverTime: tidy(arr, select(['auto', 'match'])),
+      leave: percentValue(arr, 'leave', true) || 0,
       coral: {
-        total: median('autoL1success') + median('autoL2success') + median('autoL3success') + median('autoL4success'),
-        success: percentValue(arr, 'autoL1success', true),
-        avgL1: median('autoL1success'),
-        avgL2: median('autoL2success'),
-        avgL3: median('autoL3success'),
-        avgL4: median('autoL4success'),
+        total: (median('autoL1success') || 0) + (median('autoL2success') || 0) + (median('autoL3success') || 0) + (median('autoL4success') || 0),
+        success: percentValue(arr, 'autoL1success', true) || 0,
+        avgL1: median('autoL1success') || 0,
+        avgL2: median('autoL2success') || 0,
+        avgL3: median('autoL3success') || 0,
+        avgL4: median('autoL4success') || 0,
       },
       algae: {
-        removed: median('autoalgaeremoved'),
-        avgProcessor: median('autoprocessorsuccess'),
-        avgNet: median('autonetsuccess'),
+        removed: median('autoalgaeremoved') || 0,
+        avgProcessor: median('autoprocessorsuccess') || 0,
+        avgNet: median('autonetsuccess') || 0,
       },
     }),
 
     tele: arr => ({
-      teleOverTime: tidy(arr, select(['tele', 'match'])),
       coral: {
         total: median('teleL1success') + median('teleL2success') + median('teleL3success') + median('teleL4success'),
         success: percentValue(arr, 'teleL1success', true),
@@ -147,18 +153,20 @@ export async function GET(request) {
 
 
     qualitative: arr => [
-      { name: "Coral Speed", rating: mean(rowsToArray(arr, 'coralspeed')) },
-      { name: "Processor Speed", rating: mean(rowsToArray(arr, 'processorspeed')) },
-      { name: "Net Speed", rating: mean(rowsToArray(arr, 'netspeed')) },
-      { name: "Algae Removal Speed", rating: mean(rowsToArray(arr, 'algaeremovalspeed')) },
-      { name: "Climb Speed", rating: mean(rowsToArray(arr, 'climbspeed')) },
-      { name: "Maneuverability", rating: mean(rowsToArray(arr, 'maneuverability')) },
-      { name: "Defense Played", rating: mean(rowsToArray(arr, 'defenseplayed')) },
-      { name: "Defense Evasion", rating: mean(rowsToArray(arr, 'defenseevasion')) },
-      { name: "Aggression*", rating: 5 - mean(rowsToArray(arr, 'aggression')) },
-      { name: "Cage Hazard*", rating: 5 - mean(rowsToArray(arr, 'cagehazard')) },
+      { name: "Coral Speed", rating: mean(rowsToArray(arr, 'coralspeed')) || 0 },
+      { name: "Processor Speed", rating: mean(rowsToArray(arr, 'processorspeed')) || 0 },
+      { name: "Net Speed", rating: mean(rowsToArray(arr, 'netspeed')) || 0 },
+      { name: "Algae Removal Speed", rating: mean(rowsToArray(arr, 'algaeremovalspeed')) || 0 },
+      { name: "Climb Speed", rating: mean(rowsToArray(arr, 'climbspeed')) || 0 },
+      { name: "Maneuverability", rating: mean(rowsToArray(arr, 'maneuverability')) || 0 },
+      { name: "Defense Played", rating: mean(rowsToArray(arr, 'defenseplayed')) || 0 },
+      { name: "Defense Evasion", rating: mean(rowsToArray(arr, 'defenseevasion')) || 0 },
+      { name: "Aggression*", rating: 5 - (mean(rowsToArray(arr, 'aggression')) || 0) },
+      { name: "Cage Hazard*", rating: 5 - (mean(rowsToArray(arr, 'cagehazard')) || 0) },
     ],
   }));
+  console.log("Graph Data:", returnObject[0].autoOverTime);
+
 
   return NextResponse.json(returnObject[0], { status: 200 });
 }

@@ -32,7 +32,7 @@ function TeamView() {
     const [error, setError] = useState(null);
     const searchParams = useSearchParams();
     const team = searchParams.get("team");
-    
+
     // let data={
     //   team: 2485,
     //   name: "Overclocked",
@@ -133,29 +133,35 @@ function TeamView() {
     // }
     // Fetch team data from backend
     function fetchTeamData(team) {
-        setLoading(true);
-        setError(null);
-
-        fetch(`/api/get-team-data?team=${team}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch data");
-                }
-                return response.json();
-            })
-            .then(data => {
-                setData(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error("Fetch error:", error);
-                setError(error.message);
-                setLoading(false);
-            });
-    }
+      setLoading(true);
+      setError(null);
+  
+      fetch(`/api/get-team-data?team=${team}`)
+          .then(response => {
+            console.log("hello");
+              if (!response.ok) {
+                  throw new Error("Failed to fetch data");
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log("hello");
+              console.log("Fetched Data:", data);  // <-- Log the data received
+              setData(data);
+              setLoading(false);
+          })
+          .catch(error => {
+              console.error("Fetch error:", error);
+              
+              setError(error.message);
+              setLoading(false);
+          });
+  }
+  
 
     useEffect(() => {
         if (team) {
+            console.log("hello");
             fetchTeamData(team);
         }
     }, [team]);
@@ -249,6 +255,8 @@ function TeamView() {
         { x: 'Shallow', y: data.endPlacement.shallow },
         { x: 'Deep', y: data.endPlacement.deep }
     ];
+    console.log("Frontend Graph Data:", data.autoOverTime);
+
 
     return (
         <div className={styles.MainDiv}>
