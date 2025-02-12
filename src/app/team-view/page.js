@@ -25,168 +25,190 @@ export default function TeamViewPage() {
 }
 
 function TeamView() {
-    // const [data, setData] = useState(null);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
-    // const searchParams = useSearchParams();
-    // const team = searchParams.get("team");
-    
-    let data={
-      team: 2485,
-      name: "Overclocked",
-      avgEpa: 73,
-      avgAuto: 20,
-      avgTele: 56,
-      avgEnd: 12,
-      last3Epa: 70,
-      last3Auto: 30,
-      last3Tele: 53,
-      last3End: 2,
-      epaOverTime: [{match: 3, epa: 60},{match: 10, epa: 43},{match: 13, epa: 12}],
-      epaRegression: [{match: 3, epa: 60}, {match: 13, epa: 12}], //not sure how we should do this one
-      consistancy: 98,
-      defense: 11,
-      lastBreakdown: 2,
-      noShow: 1,
-      breakdown: 9,
-      matchesScouted: 3,
-      scouts: ["Yael", "Ella", "Max",],
-      generalComments: ["pretty good", "fragile intake","hooray!"],
-      breakdownComments: ["stopped moving"],
-      defenseComments: ["defended coral human player station"],
-      autoOverTime: [{match: 8, epa: 60},{match: 10, epa: 10},{match: 13, epa: 2}],
-      leave: 93,
-      auto: {
-        coral: {
-          total: 7,
-          success: 88,
-          avgL1: 3,
-          avgL2: 4,
-          avgL3: 7,
-          avgL4: 1,
-          successL1: 90,
-          successL2: 87,
-          successL3: 23,
-          successL4: 100
-        },
-        algae: {
-          removed: 1,
-          avgProcessor: 0,
-          avgNet: 1,
-          successProcessor: 0,
-          successNet: 100,
-        },
-      },
-      teleOverTime: [{match: 8, epa: 30}, {match: 10, epa: 78}, {match: 13, epa: 42}],
-      tele: {
-        coral: {
-          total: 15,
-          success: 82,
-          avgL1: 9,
-          avgL2: 3,
-          avgL3: 6,
-          avgL4: 2,
-          successL1: 93,
-          successL2: 81,
-          successL3: 29,
-          successL4: 80
-        },
-        algae: {
-          removed: 3,
-          avgProcessor: 2,
-          avgNet: 4,
-          successProcessor: 76,
-          successNet: 11,
-        },
-        avgHp: 3,
-        successHp: 13,
-      },
-      endPlacement: {
-        none: 10,
-        park: 20,
-        deep: 12,
-        shallow: 38,
-        parkandFail: 10,
-      },
-      attemptCage: 94,
-      successCage: 68,
-      qualitative: [
-        {name: "Coral Speed", rating: 5},
-        {name: "Processor Speed", rating: 4},
-        {name: "Net Speed", rating: 3},
-        {name: "Algae Removal Speed", rating: 5},
-        {name: "Climb Speed", rating: 3},
-        {name: "Maneuverability", rating: 4},
-        {name: "Defense Played", rating: 5},
-        {name: "Defense Evasion", rating: 0},
-        {name: "Aggression*", rating: 1},
-        {name: "Cage Hazard*", rating: 2},
-      ],
-      coralGroundIntake: true,
-      coralStationIntake: true,
-      algaeGroundIntake: false,
-      algaeLowReefIntake: false,
-      algaeHighReefIntake: true,
-      lollipop: true,
-    }
+
+    //for backend
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const searchParams = useSearchParams();
+    const team = searchParams.get("team");
+
+    // let data={
+    //   team: 2485,
+    //   name: "Overclocked",
+    //   avgEpa: 73,
+    //   avgAuto: 20,
+    //   avgTele: 56,
+    //   avgEnd: 12,
+    //   last3Epa: 70,
+    //   last3Auto: 30,
+    //   last3Tele: 53,
+    //   last3End: 2,
+    //   epaOverTime: [{match: 3, epa: 60},{match: 10, epa: 43},{match: 13, epa: 12}],
+    //   epaRegression: [{match: 3, epa: 60}, {match: 13, epa: 12}], //not sure how we should do this one
+    //   consistency: 98,
+    //   defense: 11,
+    //   lastBreakdown: 2,
+    //   noShow: 1,
+    //   breakdown: 9,
+    //   matchesScouted: 3,
+    //   scouts: ["Yael", "Ella", "Max",],
+    //   generalComments: ["pretty good", "fragile intake","hooray!"],
+    //   breakdownComments: ["stopped moving"],
+    //   defenseComments: ["defended coral human player station"],
+    //   autoOverTime: [{match: 8, epa: 60},{match: 10, epa: 10},{match: 13, epa: 2}],
+    //   leave: 93,
+    //   auto: {
+    //     coral: {
+    //       total: 7,
+    //       success: 88,
+    //       avgL1: 3,
+    //       avgL2: 4,
+    //       avgL3: 7,
+    //       avgL4: 1,
+    //       successL1: 90,
+    //       successL2: 87,
+    //       successL3: 23,
+    //       successL4: 100
+    //     },
+    //     algae: {
+    //       removed: 1,
+    //       avgProcessor: 0,
+    //       avgNet: 1,
+    //       successProcessor: 0,
+    //       successNet: 100,
+    //     },
+    //   },
+    //   teleOverTime: [{match: 8, epa: 30}, {match: 10, epa: 78}, {match: 13, epa: 42}],
+    //   tele: {
+    //     coral: {
+    //       total: 15,
+    //       success: 82,
+    //       avgL1: 9,
+    //       avgL2: 3,
+    //       avgL3: 6,
+    //       avgL4: 2,
+    //       successL1: 93,
+    //       successL2: 81,
+    //       successL3: 29,
+    //       successL4: 80
+    //     },
+    //     algae: {
+    //       removed: 3,
+    //       avgProcessor: 2,
+    //       avgNet: 4,
+    //       successProcessor: 76,
+    //       successNet: 11,
+    //     },
+    //     avgHp: 3,
+    //     successHp: 13,
+    //   },
+    //   endPlacement: {
+    //     none: 10,
+    //     park: 20,
+    //     deep: 12,
+    //     shallow: 38,
+    //     parkandFail: 10,
+    //   },
+    //   attemptCage: 94,
+    //   successCage: 68,
+    //   qualitative: [
+    //     {name: "Coral Speed", rating: 5},
+    //     {name: "Processor Speed", rating: 4},
+    //     {name: "Net Speed", rating: 3},
+    //     {name: "Algae Removal Speed", rating: 5},
+    //     {name: "Climb Speed", rating: 3},
+    //     {name: "Maneuverability", rating: 4},
+    //     {name: "Defense Played", rating: 5},
+    //     {name: "Defense Evasion", rating: 0},
+    //     {name: "Aggression*", rating: 1},
+    //     {name: "Cage Hazard*", rating: 2},
+    //   ],
+    //   coralGroundIntake: true,
+    //   coralStationIntake: true,
+    //   algaeGroundIntake: false,
+    //   algaeLowReefIntake: false,
+    //   algaeHighReefIntake: true,
+    //   lollipop: true,
+    // }
     // Fetch team data from backend
-    // function fetchTeamData(team) {
-    //     setLoading(true);
-    //     setError(null);
+    function fetchTeamData(team) {
+      setLoading(true);
+      setError(null);
+  
+      fetch(`/api/get-team-data?team=${team}`)
+          .then(response => {
+            console.log("hello");
+              if (!response.ok) {
+                  throw new Error("Failed to fetch data");
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log("hello");
+              console.log("Fetched Data:", data);  // <-- Log the data received
+              setData(data);
+              setLoading(false);
+          })
+          .catch(error => {
+              console.error("Fetch error:", error);
+              
+              setError(error.message);
+              setLoading(false);
+          });
+  }
+  
 
-    //     fetch(`/api/get-team-data?team=${team}`)
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error("Failed to fetch data");
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             setData(data);
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error("Fetch error:", error);
-    //             setError(error.message);
-    //             setLoading(false);
-    //         });
-    // }
+    useEffect(() => {
+        if (team) {
+            console.log("hello");
+            fetchTeamData(team);
+        }
+    }, [team]);
 
-    // useEffect(() => {
-    //     if (team) {
-    //         fetchTeamData(team);
-    //     }
-    // }, [team]);
+    if (!team) {
+        return (
+            <div>
+                <form className={styles.teamInputForm}>
+                    <span>{error}</span>
+                    <label htmlFor="team">Team: </label>
+                    <input id="team" name="team" placeholder="Team #" type="number"></input>
+                    <br></br>
+                    <button>Go!</button>
+                </form>
+            </div>
+        );
+    }
 
-    // if (!team) {
-    //     return (
-    //         <div>
-    //             <form className={styles.teamInputForm}>
-    //                 <span>{error}</span>
-    //                 <label htmlFor="team">Team: </label>
-    //                 <input id="team" name="team" placeholder="Team #" type="number"></input>
-    //                 <br></br>
-    //                 <button>Go!</button>
-    //             </form>
-    //         </div>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        );
+    }
 
-    // if (loading) {
-    //     return (
-    //         <div>
-    //             <h1>Loading...</h1>
-    //         </div>
-    //     );
-    // }
+    if (!data) {
+        return (
+            <div>
+                <h1>No data found for team {team}</h1>
+            </div>
+        );
+    }
 
-    // if (!data) {
-    //     return (
-    //         <div>
-    //             <h1>No data found for team {team}</h1>
-    //         </div>
-    //     );
-    // }
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     const Colors = [
         //light to dark
@@ -233,6 +255,8 @@ function TeamView() {
         { x: 'Shallow', y: data.endPlacement.shallow },
         { x: 'Deep', y: data.endPlacement.deep }
     ];
+    console.log("Frontend Graph Data:", data.autoOverTime);
+
 
     return (
         <div className={styles.MainDiv}>
@@ -263,7 +287,7 @@ function TeamView() {
                     </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
-                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} />
+                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={epa}/>
                 </div>
                 <div className={styles.barGraphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
@@ -279,11 +303,11 @@ function TeamView() {
                 </div>
                 <div className={styles.valueBoxes}>
                   <div className={styles.leftColumnBoxes}>
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={data.consistancy} />
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={data.defense} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={`${data.consistency}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={`${data.defense}%`} />
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown} />
 
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={data.noShow} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${data.noShow}%`} />
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={data.breakdown} />
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={data.matchesScouted} />
                   </div>
@@ -304,6 +328,7 @@ function TeamView() {
               <EPALineChart 
                 data={data.autoOverTime} 
                 color={Colors[1][3]} 
+                label={auto}
               />
             </div>
         <div className={styles.autoRightAlignment}>
@@ -373,6 +398,7 @@ function TeamView() {
               <EPALineChart 
                 data={data.teleOverTime} 
                 color={Colors[2][3]} 
+                label={tele}
               />
             </div>
       <div className={styles.teleRightAlignment}>
