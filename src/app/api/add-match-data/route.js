@@ -6,7 +6,7 @@ export async function POST(req) {
   let body = await req.json();
   console.log(body);
 
-  if (!(_.isString(body.scoutname) && _.isNumber(body.scoutteam) && _.isNumber(body.team) && _.isNumber(body.match) && _.isNumber(body.matchtype))) {
+  if (!(_.isString(body.scoutname) && _.isNumber(body.scoutteam) && _.isNumber(body.team) && _.isNumber(body.match) && _.isNumber(body.matchType))) {
     return NextResponse.json({ message: "Invalid Pre-Match Data!" }, { status: 400 });
   }
   
