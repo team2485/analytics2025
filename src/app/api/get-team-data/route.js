@@ -14,7 +14,7 @@ export async function GET(request) {
   }
 
   // Fetch team data from database
-  let data = await sql`SELECT * FROM reefscape2025 WHERE team = ${team};`;
+  let data = await sql`SELECT * FROM phr2025 WHERE team = ${team};`;
   const rows = data.rows;
 
   if (rows.length === 0) {
@@ -55,7 +55,7 @@ export async function GET(request) {
     return arr.filter(e => e[index] === value).length / arr.length;
   }
 
-  // fetch team name from blue alliance api
+  // fetch team name from blue alliance api, commented our for now while testing getting from the backend
   const teamName = await fetch(`https://www.thebluealliance.com/api/v3/team/frc${team}/simple`, {
     headers: {
       "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,

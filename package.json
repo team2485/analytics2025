@@ -11,8 +11,10 @@
   "dependencies": {
     "chart.js": "^4.4.7",
     "next": "^15.2.0-canary.30",
+    "pg": "^8.13.2",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
+    "@vercel/postgres": "^0.7.2",
     "react-dom": "^19.0.0",
     "recharts": "^2.15.1",
     "victory": "^37.3.6"
