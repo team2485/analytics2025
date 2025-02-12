@@ -128,7 +128,10 @@ export default function Home() {
         alert("Thank you!");
         const jsConfetti = new JSConfetti();
         jsConfetti.addConfetti({
-          confettiColors: ['yellow'],
+        emojis: ['🐟', '🐠', '🐡', '🦀', '🐚', '🪸'],
+        emojiSize: 100,
+        confettiRadius: 6,
+        confettiNumber: 500,
        })
         if (typeof document !== 'undefined')  {
           let ScoutName = document.querySelector("input[name='scoutname']").value;
