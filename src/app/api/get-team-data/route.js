@@ -61,12 +61,22 @@ export async function GET(request) {
       "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
       "Accept": "application/json"
     },
-  }).then(resp => {
+  })
+  .then(resp => {
     if (resp.status !== 200) {
-      return {teams: [{nickname: ""}]};
+      console.error(`TBA API Error: Received status ${resp.status}`);
+      return null;  // Return null if the request fails
     }
     return resp.json();
-  }).then(data => data.teams[0].nickname );
+  })
+  .then(data => {
+    if (!data || !data.nickname) { 
+      console.warn(`TBA API Warning: No nickname found for team ${team}`);
+      return "Unknown Team";  // Provide a default fallback
+    }
+    return data.nickname;
+  });
+
 
   const matchesScouted = teamTable.length;
 
@@ -132,8 +142,9 @@ export async function GET(request) {
       parkandFail: percentValue(arr, 'endlocation', 4),
     }),
 
-    attemptCage: percentValue(arr, 'cageattempt', true),
-    successCage: percentValue(arr, 'cagesuccess', true),
+    attemptCage: arr => percentValue(arr, 'cageattempt', true),
+    successCage: arr => percentValue(arr, 'cagesuccess', true),
+
 
     qualitative: arr => [
       { name: "Coral Speed", rating: mean(rowsToArray(arr, 'coralspeed')) },
