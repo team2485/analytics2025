@@ -9,25 +9,19 @@ export async function POST(request) {
   let data = await sql`SELECT * FROM new_game_table;`; // Update with new database table name
   let rows = data.rows;
 
-  // ============================
-  //  FRC API FETCH - COMMENTED OUT FOR NOW 
-  // ============================
-
-  /*
-  const frcAPITeamRankings = await fetch("https://frc-api.firstinspires.org/v3.0/2025/rankings/CURIE", {
+  // get rankings from blue alliance
+  const frcAPITeamRankings = await fetch("https://www.thebluealliance.com/api/v3/event/2024casd/rankings", {
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + process.env.FIRST_AUTH_TOKEN, // Make sure to store the API key in .env
-    }
+      "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
+      "Accept": "application/json"
+  }
   }).then(resp => {
     if (resp.status !== 200) {
       return { Rankings: [] }; // Return an empty array if the API fails
     }
     return resp.json();
   }).then(data => data.Rankings);
-  */
 
-  /*
   // Add FRC API Rankings to team data
   teamTable = teamTable.map(teamData => {
     let firstRanking = -1;
@@ -40,7 +34,7 @@ export async function POST(request) {
       firstRanking,
     };
   });
-  */
+
 
   function byAveragingNumbers(index) {
     if (['breakdown', 'leave', 'noshow'].includes(index)) {
