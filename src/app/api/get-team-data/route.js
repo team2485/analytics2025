@@ -55,15 +55,18 @@ export async function GET(request) {
     return arr.filter(e => e[index] === value).length / arr.length;
   }
 
-  // Fetch team name from FIRST API
-  const teamName = await fetch(`https://frc-api.firstinspires.org/v3.0/2025/teams?teamNumber=${team}`, {
+  // fetch team name from blue alliance api
+  const teamName = await fetch(`https://www.thebluealliance.com/api/v3/team/frc${team}/simple`, {
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + process.env.FIRST_AUTH_TOKEN,
+      "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
+      "Accept": "application/json"
     },
-  })
-  .then(resp => resp.ok ? resp.json() : { teams: [{ nameShort: "" }] })
-  .then(data => data.teams[0].nameShort);
+  }).then(resp => {
+    if (resp.status !== 200) {
+      return {teams: [{nickname: ""}]};
+    }
+    return resp.json();
+  }).then(data => data.teams[0].nickname );
 
   const matchesScouted = teamTable.length;
 
