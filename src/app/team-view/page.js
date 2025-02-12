@@ -287,7 +287,7 @@ function TeamView() {
                     </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
-                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} />
+                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={epa}/>
                 </div>
                 <div className={styles.barGraphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
@@ -328,6 +328,7 @@ function TeamView() {
               <EPALineChart 
                 data={data.autoOverTime} 
                 color={Colors[1][3]} 
+                label={auto}
               />
             </div>
         <div className={styles.autoRightAlignment}>
@@ -397,6 +398,7 @@ function TeamView() {
               <EPALineChart 
                 data={data.teleOverTime} 
                 color={Colors[2][3]} 
+                label={tele}
               />
             </div>
       <div className={styles.teleRightAlignment}>
