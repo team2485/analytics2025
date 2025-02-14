@@ -52,8 +52,8 @@ export async function GET(request) {
 }));
 
 
-  function rowsToArray(rows, index) {
-    return rows.map(row => row[index]).filter(val => val != null);
+  function rowsToArray(x, index) {
+    return x.map(row => row[index]).filter(val => val != null);
   }
 
   function percentValue(arr, index, value) {
@@ -266,25 +266,54 @@ export async function GET(request) {
       deep: percentValue(rows, 'endlocation', 3),
       parkandFail: percentValue(rows, 'endlocation', 4),
     }),
+    //do we still want?
+    //do we still want
+    //do we still want
+    //do we still want
+    //do we still want
+    //do we still want
+    //do we still want
+    //do we still want
 
-    attemptCage: arr => percentValue(arr, 'cageattempt', true),
-    successCage: arr => percentValue(arr, 'cagesuccess', true),
-
+    attemptCage: arr => percentValue(rows, 'cageattempt', true),
+    successCage: arr => percentValue(rows, 'cagesuccess', true),
+    
 
     qualitative: arr => [
-      { name: "Coral Speed", rating: mean(rowsToArray(arr, 'coralspeed')) || 0 },
-      { name: "Processor Speed", rating: mean(rowsToArray(arr, 'processorspeed')) || 0 },
-      { name: "Net Speed", rating: mean(rowsToArray(arr, 'netspeed')) || 0 },
-      { name: "Algae Removal Speed", rating: mean(rowsToArray(arr, 'algaeremovalspeed')) || 0 },
-      { name: "Climb Speed", rating: mean(rowsToArray(arr, 'climbspeed')) || 0 },
-      { name: "Maneuverability", rating: mean(rowsToArray(arr, 'maneuverability')) || 0 },
-      { name: "Defense Played", rating: mean(rowsToArray(arr, 'defenseplayed')) || 0 },
-      { name: "Defense Evasion", rating: mean(rowsToArray(arr, 'defenseevasion')) || 0 },
-      { name: "Aggression*", rating: 5 - (mean(rowsToArray(arr, 'aggression')) || 0) },
-      { name: "Cage Hazard*", rating: 5 - (mean(rowsToArray(arr, 'cagehazard')) || 0) },
+      { name: "Coral Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.coralspeed || 0), 0) / rows.length : 0 },
+      { name: "Processor Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.processorspeed || 0), 0) / rows.length : 0 },
+      { name: "Net Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.netspeed || 0), 0) / rows.length : 0 },
+      { name: "Algae Removal Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.algaeremovalspeed || 0), 0) / rows.length : 0 },
+      { name: "Climb Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.climbspeed || 0), 0) / rows.length : 0 },
+      { name: "Maneuverability", rating: rows.length ? rows.reduce((sum, row) => sum + (row.maneuverability || 0), 0) / rows.length : 0 },
+      { name: "Defense Played", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseplayed || 0), 0) / rows.length : 0 },
+      { name: "Defense Evasion", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseevasion || 0), 0) / rows.length : 0 },
+      { name: "Aggression*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.aggression || 0), 0) / rows.length) : 0 },
+      { name: "Cage Hazard*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.cagehazard || 0), 0) / rows.length) : 0 },
     ],
+
+    // coralGroundIntake: rows.some(row => row.coralgrndintake === true) ? true : false,
+    // coralStationIntake: rows.some(row => row.coralstationintake === true) ? true : false,
+    // algaeGroundIntake: rows.some(row => row.algaegrndintake === true) ? true : false,
+    // algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true) ? true : false,
+    // algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true) ? true : false,
+    // lollipop: rows.some(row => row.lollipop === true) ? true : false,
+
+
+
+    
   }));
-  console.log("Backend End Placement:", returnObject[0].endPlacement);
+  returnObject[0] = {
+    ...returnObject[0],
+    coralGroundIntake: rows.some(row => row.coralgrndintake === true),
+    coralStationIntake: rows.some(row => row.coralstationintake === true),
+    algaeGroundIntake: rows.some(row => row.algaegrndintake === true),
+    algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true),
+    algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true),
+    lollipop: rows.some(row => row.lollipop === true),
+  };
+
+  console.log("Backend End Placement:", returnObject[0]);
 
 
   return NextResponse.json(returnObject[0], { status: 200 });
