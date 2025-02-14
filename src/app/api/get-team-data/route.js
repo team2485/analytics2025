@@ -16,7 +16,7 @@ export async function GET(request) {
   // Fetch team data from database
   let data = await sql`SELECT * FROM phr2025 WHERE team = ${team};`;
   const rows = data.rows;
-
+  console.log(rows)
 
   if (rows.length === 0) {
     return NextResponse.json({ message: `ERROR: No data for team ${team}` }, { status: 404 });
@@ -82,70 +82,189 @@ export async function GET(request) {
     return data.nickname;
   });
 
-  console.log("Processed Team Table:", teamTable);
 
   const matchesScouted = teamTable.length;
+  console.log(rows[0].autol1success)
+
+  function standardDeviation(arr, key) {
+    const values = arr.map(row => row[key]).filter(v => v !== null && v !== undefined);
+    const avg = mean(values);
+    const variance = values.reduce((sum, value) => sum + Math.pow(value - avg, 2), 0) / values.length;
+    return Math.sqrt(variance) || 0; // Avoid NaN if only one value
+  }
 
   let returnObject = tidy(teamTable, summarize({
     team: first('team'),
-    teamName: () => teamName,
+    name: () => teamName,
     avgEpa: mean('epa'),
     avgAuto: mean('auto'),
     avgTele: mean('tele'),
     avgEnd: mean('end'),
-    matchesScouted: () => matchesScouted,
+    //add real data (mabe need to do calculations)
+    last3Epa: arr => arr.slice(-3).reduce((sum, row) => sum + row.epa, 0) / Math.min(3, arr.length),
+    last3Auto: arr => arr.slice(-3).reduce((sum, row) => sum + row.auto, 0) / Math.min(3, arr.length),
+    last3Tele: arr => arr.slice(-3).reduce((sum, row) => sum + row.tele, 0) / Math.min(3, arr.length),
+    last3End: arr => arr.slice(-3).reduce((sum, row) => sum + row.end, 0) / Math.min(3, arr.length),
+
+
     epaOverTime: arr => tidy(arr, select(['epa', 'match'])),
-    autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
-    teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
-    noShow: arr => percentValue(arr, 'noshow', true),
+  
+    consistency: arr => {
+      let breakdownRate = percentValue(arr, 'breakdown', true) * 100;
+      let epaStdDev = standardDeviation(arr, 'epa');
+      return 100 - (breakdownRate + epaStdDev);
+    },
+
     defense: arr => percentValue(arr, 'defenseplayed', true),
-    breakdown: arr => percentValue(arr, 'breakdown', true),
     lastBreakdown: arr => arr.filter(e => e.breakdowncomments !== null).reduce((a, b) => b.match, "N/A"),
+    noShow: arr => percentValue(arr, 'noshow', true),
+    breakdown: arr => percentValue(arr, 'breakdown', true),
+    matchesScouted: () => matchesScouted,
     scouts: arr => rowsToArray(arr, 'scoutname'),
     generalComments: arr => rowsToArray(arr, 'generalcomments'),
     breakdownComments: arr => rowsToArray(arr, 'breakdowncomments'),
     defenseComments: arr => rowsToArray(arr, 'defensecomments'),
+    autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
+    teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
+    leave: arr => arr.filter(e => e.leave === true).length / arr.length || 0,
+
 
     auto: arr => ({
-      leave: percentValue(arr, 'leave', true) || 0,
       coral: {
-        total: (median('autoL1success') || 0) + (median('autoL2success') || 0) + (median('autoL3success') || 0) + (median('autoL4success') || 0),
-        success: percentValue(arr, 'autoL1success', true) || 0,
-        avgL1: median('autoL1success') || 0,
-        avgL2: median('autoL2success') || 0,
-        avgL3: median('autoL3success') || 0,
-        avgL4: median('autoL4success') || 0,
+        
+        total: (() => rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0)), 0))(),
+
+        success: (() => {
+          const totalSuccess = rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0)), 0);
+          const totalAttempts = rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0) + (row.autol1fail || 0) + (row.autol2fail || 0) + (row.autol3fail || 0) + (row.autol4fail || 0)), 0);
+          return totalAttempts > 0 ? (totalSuccess / totalAttempts) * 100 : 0;
+        })(),
+        avgL1: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel1success || 0), 0) / rows.length : 0)(),
+        avgL2: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel2success || 0), 0) / rows.length : 0)(),
+        avgL3: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel3success || 0), 0) / rows.length : 0)(),
+        avgL4: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel4success || 0), 0) / rows.length : 0)(),
+
+        successL1: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel1success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel1fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        successL2: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel2success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel2fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        successL3: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel3success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel3fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        successL4: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel4success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel4fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        
       },
       algae: {
-        removed: median('autoalgaeremoved') || 0,
-        avgProcessor: median('autoprocessorsuccess') || 0,
-        avgNet: median('autonetsuccess') || 0,
+        removed: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autoalgaeremoved || 0), 0) / rows.length : 0)(),
+        avgProcessor: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autoprocessorsuccess || 0), 0) / rows.length : 0)(),
+        avgNet: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autonetsuccess || 0), 0) / rows.length : 0)(),
+      
+        successProcessor: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.autoprocessorsuccess || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.autoprocessorfail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+      
+        successNet: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.autonetsuccess || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.autonetfail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
       },
+      
     }),
 
     tele: arr => ({
       coral: {
-        total: median('teleL1success') + median('teleL2success') + median('teleL3success') + median('teleL4success'),
-        success: percentValue(arr, 'teleL1success', true),
-        avgL1: median('teleL1success'),
-        avgL2: median('teleL2success'),
-        avgL3: median('teleL3success'),
-        avgL4: median('teleL4success'),
+        total: (() => rows.reduce((sum, row) => sum + ((row.telel1success || 0) + (row.telel2success || 0) + (row.telel3success || 0) + (row.telel4success || 0)), 0))(),
+        success: (() => {
+          const totalSuccess = rows.reduce((sum, row) => sum + ((row.telel1success || 0) + (row.telel2success || 0) + (row.telel3success || 0) + (row.telel4success || 0)), 0);
+          const totalAttempts = rows.reduce((sum, row) => sum + ((row.telel1success || 0) + (row.telel2success || 0) + (row.telel3success || 0) + (row.telel4success || 0) + (row.telel1fail || 0) + (row.telel2fail || 0) + (row.telel3fail || 0) + (row.telel4fail || 0)), 0);
+          return totalAttempts > 0 ? (totalSuccess / totalAttempts) * 100 : 0;
+        })(),
+        
+        avgL1: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel1success || 0), 0) / rows.length : 0)(),
+        avgL2: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel2success || 0), 0) / rows.length : 0)(),
+        avgL3: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel3success || 0), 0) / rows.length : 0)(),
+        avgL4: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel4success || 0), 0) / rows.length : 0)(),
+
+        successL1: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel1success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel1fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        successL2: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel2success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel2fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        successL3: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel3success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel3fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        successL4: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telel4success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel4fail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+
+        
       },
       algae: {
-        removed: median('telealgaeremoved'),
-        avgProcessor: median('telealgaeprocessor'),
-        avgNet: median('telealgaenet'),
+        removed: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telealgaeremoved || 0), 0) / rows.length : 0)(),
+        avgProcessor: (() => rows.length ? rows.reduce((sum, row) => sum + (row.teleprocessorsuccess || 0), 0) / rows.length : 0)(),
+        avgNet: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telenetsuccess || 0), 0) / rows.length : 0)(),
+      
+        successProcessor: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.teleprocessorsuccess || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.teleprocessorfail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
+      
+        successNet: (() => {
+          const successes = rows.reduce((sum, row) => sum + (row.telenetsuccess || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telenetfail || 0), 0);
+          return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+        })(),
       },
-      avgHp: median('hpsuccess'),
+      
+      avgHp: (() => rows.length ? rows.reduce((sum, row) => sum + (row.hpsuccess || 0), 0) / rows.length : 0)(),
+
+      successHp: (() => {
+        const successes = rows.reduce((sum, row) => sum + (row.hpsuccess || 0), 0);
+        const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.hpfail || 0), 0);
+        return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
+      })(),
+
+
     }),
 
     endPlacement: arr => ({
-      none: percentValue(arr, 'endlocation', 0),
-      park: percentValue(arr, 'endlocation', 1),
-      shallow: percentValue(arr, 'endlocation', 2),
-      deep: percentValue(arr, 'endlocation', 3),
-      parkandFail: percentValue(arr, 'endlocation', 4),
+      none: percentValue(rows, 'endlocation', 0),
+      park: percentValue(rows, 'endlocation', 1),
+      shallow: percentValue(rows, 'endlocation', 2),
+      deep: percentValue(rows, 'endlocation', 3),
+      parkandFail: percentValue(rows, 'endlocation', 4),
     }),
 
     attemptCage: arr => percentValue(arr, 'cageattempt', true),
@@ -165,7 +284,7 @@ export async function GET(request) {
       { name: "Cage Hazard*", rating: 5 - (mean(rowsToArray(arr, 'cagehazard')) || 0) },
     ],
   }));
-  console.log("Graph Data:", returnObject[0].autoOverTime);
+  console.log("Backend End Placement:", returnObject[0].endPlacement);
 
 
   return NextResponse.json(returnObject[0], { status: 200 });

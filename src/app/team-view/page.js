@@ -138,16 +138,16 @@ function TeamView() {
   
       fetch(`/api/get-team-data?team=${team}`)
           .then(response => {
-            console.log("hello");
               if (!response.ok) {
                   throw new Error("Failed to fetch data");
               }
               return response.json();
           })
           .then(data => {
-              console.log("hello");
               console.log("Fetched Data:", data);  // <-- Log the data received
               setData(data);
+              console.log("Coral Total (Frontend):", data.auto.coral.total);
+
               setLoading(false);
           })
           .catch(error => {
@@ -161,7 +161,6 @@ function TeamView() {
 
     useEffect(() => {
         if (team) {
-            console.log("hello");
             fetchTeamData(team);
         }
     }, [team]);
@@ -255,7 +254,6 @@ function TeamView() {
         { x: 'Shallow', y: data.endPlacement.shallow },
         { x: 'Deep', y: data.endPlacement.deep }
     ];
-    console.log("Frontend Graph Data:", data.autoOverTime);
 
 
     return (
@@ -287,7 +285,7 @@ function TeamView() {
                     </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
-                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={epa}/>
+                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={"epa"}/>
                 </div>
                 <div className={styles.barGraphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
@@ -328,7 +326,7 @@ function TeamView() {
               <EPALineChart 
                 data={data.autoOverTime} 
                 color={Colors[1][3]} 
-                label={auto}
+                label={"auto"}
               />
             </div>
         <div className={styles.autoRightAlignment}>
@@ -398,7 +396,7 @@ function TeamView() {
               <EPALineChart 
                 data={data.teleOverTime} 
                 color={Colors[2][3]} 
-                label={tele}
+                label={"tele"}
               />
             </div>
       <div className={styles.teleRightAlignment}>
@@ -413,7 +411,7 @@ function TeamView() {
                           <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Scored</td>
                         </tr>
                         <tr>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${data.tele.coral.success}%`}</td>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${data.tele.successHp}%`}</td>
                           <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{data.tele.avgHp}</td>
                         </tr>
                     </tbody>
@@ -427,7 +425,7 @@ function TeamView() {
                         <td style={{backgroundColor: Colors[2][1],  width:"44px"}} >Total</td>
                       </tr>
                         <tr>
-                          <td style={{backgroundColor: Colors[2][0]}}>{`${data.tele.successHp}%`}</td>
+                          <td style={{backgroundColor: Colors[2][0]}}>{`${data.tele.coral.success}%`}</td>
                           <td style={{backgroundColor: Colors[2][0]}}>{data.tele.coral.total}</td>
                         </tr>
                     </tbody>
