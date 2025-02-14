@@ -10,6 +10,7 @@ import EndPlacement from "./form-components/EndPlacement";
 import Qualitative from "./form-components/Qualitative";
 import SubHeader from "./form-components/SubHeader";
 import MatchType from "./form-components/MatchType";
+import JSConfetti from 'js-confetti';
 
 
 export default function Home() {
