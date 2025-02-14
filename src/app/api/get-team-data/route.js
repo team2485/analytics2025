@@ -16,7 +16,6 @@ export async function GET(request) {
   // Fetch team data from database
   let data = await sql`SELECT * FROM phr2025 WHERE team = ${team};`;
   const rows = data.rows;
-  console.log(rows)
 
   if (rows.length === 0) {
     return NextResponse.json({ message: `ERROR: No data for team ${team}` }, { status: 404 });
@@ -84,7 +83,6 @@ export async function GET(request) {
 
 
   const matchesScouted = teamTable.length;
-  console.log(rows[0].autol1success)
 
   function standardDeviation(arr, key) {
     const values = arr.map(row => row[key]).filter(v => v !== null && v !== undefined);
@@ -260,23 +258,25 @@ export async function GET(request) {
     }),
 
     endPlacement: arr => ({
-      none: percentValue(rows, 'endlocation', 0),
-      park: percentValue(rows, 'endlocation', 1),
-      shallow: percentValue(rows, 'endlocation', 2),
-      deep: percentValue(rows, 'endlocation', 3),
-      parkandFail: percentValue(rows, 'endlocation', 4),
+      none: percentValue(rows, 'endlocation', 0) * 100,
+      park: percentValue(rows, 'endlocation', 1) * 100,
+      shallow: percentValue(rows, 'endlocation', 2) * 100,
+      deep: percentValue(rows, 'endlocation', 3) * 100,
+      parkandFail: percentValue(rows, 'endlocation', 4) * 100,
     }),
-    //do we still want?
-    //do we still want
-    //do we still want
-    //do we still want
-    //do we still want
-    //do we still want
-    //do we still want
-    //do we still want
 
-    attemptCage: arr => percentValue(rows, 'cageattempt', true),
-    successCage: arr => percentValue(rows, 'cagesuccess', true),
+
+    attemptCage: arr => {
+      const attemptCount = arr.filter(row => [2, 3, 4].includes(row.endlocation)).length;
+      return arr.length > 0 ? attemptCount / arr.length * 100 : 0;
+    },
+    
+    successCage: arr => {
+      const successCount = arr.filter(row => [2, 3].includes(row.endlocation)).length;
+      return arr.length > 0 ? successCount / arr.length * 100: 0;
+    },
+    
+    
     
 
     qualitative: arr => [
@@ -292,13 +292,6 @@ export async function GET(request) {
       { name: "Cage Hazard*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.cagehazard || 0), 0) / rows.length) : 0 },
     ],
 
-    // coralGroundIntake: rows.some(row => row.coralgrndintake === true) ? true : false,
-    // coralStationIntake: rows.some(row => row.coralstationintake === true) ? true : false,
-    // algaeGroundIntake: rows.some(row => row.algaegrndintake === true) ? true : false,
-    // algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true) ? true : false,
-    // algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true) ? true : false,
-    // lollipop: rows.some(row => row.lollipop === true) ? true : false,
-
 
 
     
@@ -313,7 +306,7 @@ export async function GET(request) {
     lollipop: rows.some(row => row.lollipop === true),
   };
 
-  console.log("Backend End Placement:", returnObject[0]);
+  console.log("Backend End Placement:", returnObject[0].endPlacement);
 
 
   return NextResponse.json(returnObject[0], { status: 200 });
