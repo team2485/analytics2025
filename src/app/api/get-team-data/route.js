@@ -267,13 +267,13 @@ export async function GET(request) {
 
 
     attemptCage: arr => {
-      const attemptCount = arr.filter(row => [2, 3, 4].includes(row.endlocation)).length;
-      return arr.length > 0 ? attemptCount / arr.length * 100 : 0;
+      const attemptCount = rows.filter(row => [2, 3, 4].includes(row.endlocation)).length;
+      return rows.length > 0 ? attemptCount / rows.length * 100 : 0;
     },
     
     successCage: arr => {
-      const successCount = arr.filter(row => [2, 3].includes(row.endlocation)).length;
-      return arr.length > 0 ? successCount / arr.length * 100: 0;
+      const successCount = rows.filter(row => [2, 3].includes(row.endlocation)).length;
+      return rows.length > 0 ? successCount / rows.length * 100: 0;
     },
     
     
