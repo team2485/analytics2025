@@ -264,50 +264,50 @@ function TeamView() {
                 <div className={styles.EPAS}>
                     <div className={styles.EPA}>
                         <div className={styles.scoreBreakdownContainer}>
-                            <div style={{ background: Colors[0][1] }} className={styles.epaBox}>{data.avgEpa}</div>
+                            <div style={{ background: Colors[0][1] }} className={styles.epaBox}>{Math.round(10*data.avgEpa)/10}</div>
                             <div className={styles.epaBreakdown}>
-                                <div style={{ background: Colors[0][0] }}>A: {data.avgAuto}</div>
-                                <div style={{ background: Colors[0][0] }}>T: {data.avgTele}</div>
-                                <div style={{ background: Colors[0][0] }}>E: {data.avgEnd}</div>
+                                <div style={{ background: Colors[0][0] }}>A: {Math.round(10*data.avgAuto)/10}</div>
+                                <div style={{ background: Colors[0][0] }}>T: {Math.round(10*data.avgTele)/10}</div>
+                                <div style={{ background: Colors[0][0] }}>E: {Math.round(10*data.avgEnd)/10}</div>
                             </div>
                         </div>
                     </div>
                     <div className={styles.Last3EPA}>
                         <div className={styles.scoreBreakdownContainer}> 
-                            <div style={{background: overallLast3}} className={styles.Last3EpaBox}>{data.last3Epa}</div>
+                            <div style={{background: overallLast3}} className={styles.Last3EpaBox}>{Math.round(10*data.last3Epa)/10}</div>
                               <div className={styles.epaBreakdown}>
-                                <div style={{background: autoLast3}}>A: {data.last3Auto}</div>
-                                <div style={{background: teleLast3}}>T: {data.last3Tele}</div>
-                                <div style={{background: endLast3}}>E: {data.last3End}</div>
+                                <div style={{background: autoLast3}}>A: {Math.round(10*data.last3Auto)/10}</div>
+                                <div style={{background: teleLast3}}>T: {Math.round(10*data.last3Tele)/10}</div>
+                                <div style={{background: endLast3}}>E: {Math.round(10*data.last3End)/10}</div>
                               </div>
                             </div>
                           </div>
                     </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
-                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={"epa"}/>
+                    <EPALineChart data={Math.round(10*data.epaOverTime)/10} color={Colors[0][3]} label={"epa"}/>
                 </div>
                 <div className={styles.barGraphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
                     <PiecePlacement
-                        L1={data.auto.coral.avgL1 + data.tele.coral.avgL1}
-                        L2={data.auto.coral.avgL2 + data.tele.coral.avgL2}
-                        L3={data.auto.coral.avgL3 + data.tele.coral.avgL3}
-                        L4={data.auto.coral.avgL4 + data.tele.coral.avgL4}
-                        net={data.auto.algae.avgNet + data.tele.algae.avgNet}
-                        processor={data.auto.algae.avgProcessor + data.tele.algae.avgProcessor}
-                        HP={data.tele.avgHp}
+                        L1={Math.round(10*(data.auto.coral.avgL1 + data.tele.coral.avgL1))/10}
+                        L2={Math.round(10*(data.auto.coral.avgL2 + data.tele.coral.avgL2))/10}
+                        L3={Math.round(10*(data.auto.coral.avgL3 + data.tele.coral.avgL3))/10}
+                        L4={Math.round(10*(data.data.auto.coral.avgL4 + data.tele.coral.avgL4))/10}
+                        net={Math.round(10*(data.auto.algae.avgNet + data.tele.algae.avgNet))/10}
+                        processor={Math.round(10*(data.auto.algae.avgProcessor + data.tele.algae.avgProcessor))/10}
+                        HP={Math.round(10*data.tele.avgHp)/10}
                     />
                 </div>
                 <div className={styles.valueBoxes}>
                   <div className={styles.leftColumnBoxes}>
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={`${data.consistency}%`}/>
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={`${data.defense}%`} />
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={`${Math.round(10*data.consistency)/10}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={`${Math.round(10*data.defense)/10}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={Math.round(10*data.lastBreakdown)/10}/>
 
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${data.noShow}%`} />
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={data.breakdown} />
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={data.matchesScouted} />
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${Math.round(10*data.noShow)/10}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={Math.round(10*data.breakdown)/10}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={Math.round(10*data.matchesScouted)/10}/>
                   </div>
                   <div className={styles.allComments}>
                     <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"General Comments"} value={data.generalComments.join(" | ")} />
@@ -324,7 +324,7 @@ function TeamView() {
           <div className={styles.graphContainer}>
               <h4 className={styles.graphTitle}>Auto Over Time</h4>
               <EPALineChart 
-                data={data.autoOverTime} 
+                data={Math.round(10*data.autoOverTime)/10} 
                 color={Colors[1][3]} 
                 label={"auto"}
               />
@@ -333,18 +333,18 @@ function TeamView() {
           <div className={styles.alignElements}>
               <div className={styles.valueBoxes}>
                 <div className={styles.rightColumnBoxes}>
-                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={data.leave} />
+                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={Math.round(10*data.leave)/10}/>
               </div>
               <table className={styles.coralTable}> 
                 <tbody>
                   <tr>
                     <td style={{backgroundColor: Colors[1][2]}} rowSpan="2">Coral</td>
-                    <td style={{backgroundColor: Colors[1][1]}} >Success</td>
+                    <td style={{backgroundColor: Colors[1][1]}}>Success</td>
                     <td style={{backgroundColor: Colors[1][1]}}>Total</td>
                   </tr>
                   <tr>
-                    <td style={{backgroundColor: Colors[1][0]}}>{`${data.auto.coral.success}%`}</td>
-                    <td style={{backgroundColor: Colors[1][0]}}>{data.auto.coral.total}</td>
+                    <td style={{backgroundColor: Colors[1][0]}}>{`${Math.round(10*data.auto.coral.success)/10}%`}</td>
+                    <td style={{backgroundColor: Colors[1][0]}}>{Math.round(10*data.auto.coral.total)/10}</td>
                   </tr>
             </tbody>
           </table>
@@ -354,35 +354,35 @@ function TeamView() {
               HC1="Success"
               HC2="Avg Coral"
               HR1="L4"
-              R1C1={`${data.auto.coral.successL4}%`}
-              R1C2={data.auto.coral.avgL4}
+              R1C1={`${Math.round(10*data.auto.coral.successL4)/10}%`}
+              R1C2={Math.round(10*data.auto.coral.avgL4)/10}
               HR2="L3"
-              R2C1={`${data.auto.coral.successL3}%`}
-              R2C2={data.auto.coral.avgL3}
+              R2C1={`${Math.round(10*data.auto.coral.successL3)/10}%`}
+              R2C2={Math.round(10*data.auto.coral.avgL3)/10}
               HR3="L2"
-              R3C1={`${data.auto.coral.successL2}%`}
-              R3C2={data.auto.coral.avgL2}
+              R3C1={`${Math.round(10*data.auto.coral.successL2)/10}%`}
+              R3C2={Math.round(10*data.auto.coral.avgL2)/10}
               HR4="L1"
-              R4C1={`${data.auto.coral.successL1}%`}
-              R4C2={data.auto.coral.avgL1}
+              R4C1={`${Math.round(10*data.auto.coral.successL1)/10}%`}
+              R4C2={Math.round(10*data.auto.coral.avgL1)/10}
               color1={Colors[1][2]} color2={Colors[1][1]} color3={Colors[1][0]}
             />
           </div>
         </div>
           <div className={styles.alignElements}>
             <div className={styles.rightColumnBoxesTwo}>
-              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={data.auto.algae.removed} />  
+              <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Algae Removed"} value={Math.round(10*data.auto.algae.removed)/10} />  
             </div>
               <div className={styles.twoByTwoContainer}>
                   <TwoByTwo
                     HC1="Success"
                     HC2="Avg Algae"
                     HR1="Processor"
-                    R1C1={`${data.auto.algae.successProcessor}%`}
-                    R1C2={data.auto.algae.avgProcessor}
+                    R1C1={`${Math.round(10*data.auto.algae.successProcessor)/10}%`}
+                    R1C2={Math.round(10*data.auto.algae.avgProcessor)/10}
                     HR2="Net"
-                    R2C1={`${data.auto.algae.successNet}%`}
-                    R2C2={data.auto.algae.avgNet}
+                    R2C1={`${Math.round(10*data.auto.algae.successNet)/10}%`}
+                    R2C2={Math.round(10*data.auto.algae.avgNet)/10}
                     color1={Colors[1][2]} color2={Colors[1][1]} color3={Colors[1][0]}
                   />
               </div>
@@ -394,7 +394,7 @@ function TeamView() {
           <div className={styles.graphContainer}>
               <h4 className={styles.graphTitle}>Tele Over Time</h4>
               <EPALineChart 
-                data={data.teleOverTime} 
+                data={Math.round(10*data.teleOverTime)/10} 
                 color={Colors[2][3]} 
                 label={"tele"}
               />
@@ -411,8 +411,8 @@ function TeamView() {
                           <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Scored</td>
                         </tr>
                         <tr>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${data.tele.successHp}%`}</td>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{data.tele.avgHp}</td>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${Math.round(10*data.tele.successHp)/10}%`}</td>
+                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{Math.round(10*data.tele.avgHp)/10}</td>
                         </tr>
                     </tbody>
                   </table>
@@ -425,8 +425,8 @@ function TeamView() {
                         <td style={{backgroundColor: Colors[2][1],  width:"44px"}} >Total</td>
                       </tr>
                         <tr>
-                          <td style={{backgroundColor: Colors[2][0]}}>{`${data.tele.coral.success}%`}</td>
-                          <td style={{backgroundColor: Colors[2][0]}}>{data.tele.coral.total}</td>
+                          <td style={{backgroundColor: Colors[2][0]}}>{`${Math.round(10*data.tele.coral.success)/10}%`}</td>
+                          <td style={{backgroundColor: Colors[2][0]}}>{Math.round(10*data.tele.coral.total)/10}</td>
                         </tr>
                     </tbody>
                   </table>
@@ -436,35 +436,35 @@ function TeamView() {
               HC1="Success"
               HC2="Avg Coral"
               HR1="L4"
-              R1C1={`${data.tele.coral.successL4}%`}
-              R1C2={data.tele.coral.avgL4}
+              R1C1={`${Math.round(10*data.tele.coral.successL4)/10}%`}
+              R1C2={Math.round(10*data.tele.coral.avgL4)/10}
               HR2="L3"
-              R2C1={`${data.tele.coral.successL3}%`}
-              R2C2={data.tele.coral.avgL3}
+              R2C1={`${Math.round(10*data.tele.coral.successL3)/10}%`}
+              R2C2={Math.round(10*data.tele.coral.avgL3)/10}
               HR3="L2"
-              R3C1={`${data.tele.coral.successL2}%`}
-              R3C2={data.tele.coral.avgL2}
+              R3C1={`${Math.round(10*data.tele.coral.successL2)/10}%`}
+              R3C2={Math.round(10*data.tele.coral.avgL2)/10}
               HR4="L1"
-              R4C1={`${data.tele.coral.successL1}%`}
-              R4C2={data.tele.coral.avgL1}
+              R4C1={`${Math.round(10*data.tele.coral.successL1)/10}%`}
+              R4C2={Math.round(10*data.tele.coral.avgL1)/10}
               color1={Colors[2][2]} color2={Colors[2][1]} color3={Colors[2][0]}
             />
           </div>
             </div>
             <div className={styles.alignElements}>
               <div className={styles.rightColumnBoxesTwo}>
-            <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={data.tele.algae.removed} />
+            <VBox color1={Colors[2][2]} color2={Colors[2][0]} color3={Colors[2][2]} title={"Algae Removed"} value={Math.round(10*data.tele.algae.removed)/10} />
           </div>
               <div className={styles.twoByTwoContainer}>
                 <TwoByTwo
                   HC1="Success" 
                   HC2="Avg Algae"
                   HR1="Processor"
-                  R1C1={`${data.tele.algae.successProcessor}%`}
-                  R1C2={data.tele.algae.avgProcessor}
+                  R1C1={`${Math.round(10*data.tele.algae.successProcessor)/10}%`}
+                  R1C2={Math.round(10*data.tele.algae.avgProcessor)/10}
                   HR2="Net"
-                  R2C1={`${data.tele.algae.successNet}%`}
-                  R2C2={data.tele.algae.avgNet}
+                  R2C1={`${Math.round(10*data.tele.algae.successNet)/10}%`}
+                  R2C2={Math.round(10*data.tele.algae.avgNet)/10}
                   color1={Colors[2][2]} color2={Colors[2][1]} color3={Colors[2][0]}
                 />
             </div>
@@ -490,8 +490,8 @@ function TeamView() {
                   <td style={{backgroundColor: Colors[3][1]}}>Success</td>
                 </tr>
                 <tr>
-                  <td style={{backgroundColor: Colors[3][0]}}>{`${data.attemptCage}%`}</td>
-                  <td style={{backgroundColor: Colors[3][0]}}>{`${data.successCage}%`}</td>
+                  <td style={{backgroundColor: Colors[3][0]}}>{`${Math.round(10*data.attemptCage)/10}%`}</td>
+                  <td style={{backgroundColor: Colors[3][0]}}>{`${Math.round(10*data.successCage)/10}%`}</td>
                 </tr>
               </tbody>
             </table>
@@ -500,7 +500,7 @@ function TeamView() {
           <h1 className={styles.header} style={{ color: Colors[4][3] }}>Qualitative</h1>
             <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-              <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
+              <Qualitative data={Math.round(10*data.qualitative)/10} color1={Colors[4][2]} color2={Colors[4][2]}/>
             <p>*Inverted so outside is good</p>
           </div>
           <table className={styles.differentTable}> 
