@@ -128,11 +128,12 @@ export default function Home() {
         alert("Thank you!");
         const jsConfetti = new JSConfetti();
         jsConfetti.addConfetti({
-        emojis: ['🐟', '🐠', '🐡', '🦀', '🐚', '🪸'],
-        emojiSize: 100,
-        confettiRadius: 6,
-        confettiNumber: 500,
+        emojis: ['🐟', '🐠', '🐡', '🦀', '🐚', '🪸', '🌊'],
+        emojiSize: 250,
+        confettiRadius: 15,
+        confettiNumber: 1000,
        })
+       
         if (typeof document !== 'undefined')  {
           let ScoutName = document.querySelector("input[name='scoutname']").value;
           let ScoutTeam = document.querySelector("input[name='scoutteam']").value;
@@ -413,50 +414,51 @@ export default function Home() {
             </div>
             <div className={styles.PostMatch}>
               <br></br>
-              <div className={styles.Qual}>
-                <Qualitative                   
-                  visibleName={"Coral Speed"}
-                  internalName={"coralspeed"}
-                  description={"Coral Speed"}/>
-                <Qualitative                   
-                  visibleName={"Processor Speed"}
-                  internalName={"processorspeed"}
-                  description={"Processor Speed"}/>
-                <Qualitative                   
-                  visibleName={"Net Speed"}
-                  internalName={"netspeed"}
-                  description={"Net Speed"}/>
-                <Qualitative                   
-                  visibleName={"Algae Removal Speed"}
-                  internalName={"algaeremovalspeed"}
-                  description={"Algae Removal Speed"}/>
-                <Qualitative                   
-                  visibleName={"Climb Speed"}
-                  internalName={"climbspeed"}
-                  description={"Climb Speed"}/>
-                <Qualitative                   
-                  visibleName={"Maneuverability"}
-                  internalName={"maneuverability"}
-                  description={"Maneuverability"}/>
-                <Qualitative                   
-                  visibleName={"Defense Played"}
-                  internalName={"defenseplayed"}
-                  description={"Ability to Play Defense"}/>
-                <Qualitative                   
-                  visibleName={"Defense Evasion"}
-                  internalName={"defenseevasion"}
-                  description={"Defense Evasion Ability"}/>
-                <Qualitative
-                  visibleName={"Aggression"}
-                  internalName={"aggression"}
-                  description={"Aggression"}
-                  symbol={"ⵔ"}/>
-                <Qualitative
-                  visibleName={"Cage Hazard"}
-                  internalName={"cagehazard"}
-                  description={"Cage Hazard"}
-                  symbol={"ⵔ"}/>
-              </div>
+              <Header headerName={"Post-Match"}/>
+                <div className={styles.Qual}>
+                  <Qualitative                   
+                    visibleName={"Coral Speed"}
+                    internalName={"coralspeed"}
+                    description={"Coral Speed"}/>
+                  <Qualitative                   
+                    visibleName={"Processor Speed"}
+                    internalName={"processorspeed"}
+                    description={"Processor Speed"}/>
+                  <Qualitative                   
+                    visibleName={"Net Speed"}
+                    internalName={"netspeed"}
+                    description={"Net Speed"}/>
+                  <Qualitative                   
+                    visibleName={"Algae Removal Speed"}
+                    internalName={"algaeremovalspeed"}
+                    description={"Algae Removal Speed"}/>
+                  <Qualitative                   
+                    visibleName={"Climb Speed"}
+                    internalName={"climbspeed"}
+                    description={"Climb Speed"}/>
+                  <Qualitative                   
+                    visibleName={"Maneuverability"}
+                    internalName={"maneuverability"}
+                    description={"Maneuverability"}/>
+                  <Qualitative                   
+                    visibleName={"Defense Played"}
+                    internalName={"defenseplayed"}
+                    description={"Ability to Play Defense"}/>
+                  <Qualitative                   
+                    visibleName={"Defense Evasion"}
+                    internalName={"defenseevasion"}
+                    description={"Defense Evasion Ability"}/>
+                  <Qualitative
+                    visibleName={"Aggression"}
+                    internalName={"aggression"}
+                    description={"Aggression"}
+                    symbol={"ⵔ"}/>
+                  <Qualitative
+                    visibleName={"Cage Hazard"}
+                    internalName={"cagehazard"}
+                    description={"Cage Hazard"}
+                    symbol={"ⵔ"}/>
+                </div>
               <br></br>
               <span className={styles.subsubheading}>Intake</span>
               <hr className={styles.subsubheading}></hr>

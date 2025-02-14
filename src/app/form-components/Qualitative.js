@@ -26,7 +26,7 @@ export default function Qualitative ({ visibleName, internalName, description, s
                 })}
             </div>
             
-            {rating === -1 && (description == "Coral Speed" || description == "Processor Speed" || description == "Robot Net Speed") && (
+            {rating === -1 && (description == "Coral Speed" || description == "Processor Speed" || description == "Net Speed") && (
                 <div>
                     Not Applicable
                 </div>
@@ -44,25 +44,25 @@ export default function Qualitative ({ visibleName, internalName, description, s
                 </div>
             )}
 
-            {rating === -1 && description == "Manuverability" && (
+            {rating === -1 && description == "Maneuverability" && (
                 <div>
                     Did Not Move
                 </div>
             )}
 
-            {rating === -1 && description == "Defense Played" && (
+            {rating === -1 && description == "Ability to Play Defense" && (
                 <div>
                     Did Not Defend
                 </div>
             )}
 
-            {rating === -1 && description == "Defense Evasion" && (
+            {rating === -1 && description == "Defense Evasion Ability" && (
                 <div>
                     Was Not Defended Against
                 </div>
             )}
 
-            {rating === -1 && description == "Aggresion" && (
+            {rating === -1 && description == "Aggression" && (
                 <div>
                     Did Not Move
                 </div>
