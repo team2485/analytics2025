@@ -5,53 +5,34 @@ import { calcAuto, calcTele, calcEnd } from "@/util/calculations";
 export const revalidate = 300; // Cache for 5 minutes
 
 export async function GET() {
-    let data = await sql`SELECT * FROM phr2025;`;
-    const rows = data.rows;
-
+  try {
+    const { rows } = await sql`SELECT * FROM phr2025;`;
     let responseObject = {};
+
+
+    // fetch team name from blue alliance api, commented our for now while testing getting from the backend
+    // const teamName = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
+    //   headers: {
+    //     "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
+    //     "Accept": "application/json"
+    //   },
+    // })
+    // .then(resp => {
+    //   if (resp.status !== 200) {
+    //     return {teams: []};
+    //   }
+    //   return resp.json();
+    // }).then(data => data.teams);
 
     rows.forEach((row) => {
       if (!row.noshow) {
         let auto = calcAuto(row);
         let tele = calcTele(row);
         let end = calcEnd(row);
+        // let frcAPITeamInfo = frcAPITeamData.filter(teamData => teamData.teamNumber == row.team);
 
-        if (responseObject[row.team] == undefined) {
-          responseObject[row.team] = {
-            team: row.team,
-            teamName: "🤖", // Default name while FRC API is commented out
-            auto: [auto], 
-            tele: [tele], 
-            end: [end],
-            avgNotes: {
-              coral: [row.autoCoralSuccess + row.teleCoralSuccess],
-              algae: [row.autoAlgaeRemoved + row.teleAlgaeRemoved],
-              processor: [row.autoAlgaeAvgProcessor + row.teleAlgaeAvgProcessor],
-              net: [row.autoAlgaeAvgNet + row.teleAlgaeAvgNet],
-            },
-            passedNotes: [row.teleAvgHp],
-            endgame: {
-              none: row.endNone,
-              park: row.endPark,
-              deep: row.endDeep,
-              shallow: row.endShallow,
-              fail: row.endParkFail,
-            },
-            attemptCage: [row.attemptCage],
-            successCage: [row.successCage],
-            qualitative: {
-              coralSpeed: [row.coralSpeed],
-              processorSpeed: [row.processorSpeed],
-              netSpeed: [row.netSpeed],
-              algaeRemovalSpeed: [row.algaeRemovalSpeed],
-              climbSpeed: [row.climbSpeed],
-              maneuverability: [row.maneuverability],
-              defensePlayed: [row.defensePlayed],
-              defenseEvasion: [row.defenseEvasion],
-              aggression: [row.aggression],
-              cageHazard: [row.cageHazard],
-            }
-          };
+        if (!responseObject[row.team]) {
+          responseObject[row.team] = initializeTeamData(row, auto, tele, end);
         } else {
           accumulateTeamData(responseObject[row.team], row, auto, tele, end);
         }
@@ -72,6 +53,8 @@ function initializeTeamData(row, auto, tele, end) {
   return {
     team: row.team,
     teamName: "🤖", // Default name while FRC API is commented out
+    // teamName: frcAPITeamInfo.length == 0 ? "🤖" : frcAPITeamInfo[0].nickName,
+
     auto,
     tele,
     end,
