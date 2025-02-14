@@ -92,15 +92,15 @@ export async function POST(req) {
   // Insert Data into Database**
   let resp = await sql`
     INSERT INTO phr2025 (
-        ScoutName, ScoutTeam, Team, Match, MatchType, Breakdown, NoShow, Leave, AutoL1Scored, AutoL1Failed, AutoL2Scored, AutoL2Failed, AutoL3Scored, AutoL3Failed, AutoL4Scored, AutoL4Failed, AutoCoralScored, AutoCoralFailed, AutoAlgaeRemoved, AutoProcessorScored, AutoProcessorFailed, AutoNetScored, AutoNetFailed, TeleL1Scored, TeleL1Failed, TeleL2Scored, TeleL2Failed, TeleL3Scored, TeleL3Failed, TeleL4Scored, TeleL4Failed, TeleCoralScored, TeleCoralFailed, TeleAlgaeRemoved, TeleProcessorScored, TeleProcessorFailed, TeleNetScored, TeleNetFailed, HPScored, HPFailed, EndLocation, CoralSpeed, ProcessorSpeed, NetSpeed, AlgaeRemovalSpeed, ClimbSpeed, Maneuverability, DefensePlayed, DefenseEvasion, Aggression, CageHazard, CoralGrndIntake, CoralStationIntake, Lollipop, AlgaeGrndIntake, AlgaeHighReefIntake, AlgaeLowReefIntake, GeneralComments, BreakdownComments, DefenseComments
+        ScoutName, ScoutTeam, Team, Match, MatchType, Breakdown, NoShow, Leave, AutoL1Success, AutoL1fail, AutoL2Success, AutoL2fail, AutoL3Success, AutoL3fail, AutoL4Success, AutoL4fail, AutoCoralSuccess, AutoCoralfail, AutoAlgaeRemoved, AutoProcessorSuccess, AutoProcessorfail, AutoNetSuccess, AutoNetfail, TeleL1Success, TeleL1fail, TeleL2Success, TeleL2fail, TeleL3Success, TeleL3fail, TeleL4Success, TeleL4fail, TeleCoralSuccess, TeleCoralfail, TeleAlgaeRemoved, TeleProcessorSuccess, TeleProcessorfail, TeleNetSuccess, TeleNetfail, HPSuccess, HPfail, EndLocation, CoralSpeed, ProcessorSpeed, NetSpeed, AlgaeRemovalSpeed, ClimbSpeed, Maneuverability, DefensePlayed, DefenseEvasion, Aggression, CageHazard, CoralGrndIntake, CoralStationIntake, Lollipop, AlgaeGrndIntake, AlgaeHighReefIntake, AlgaeLowReefIntake, GeneralComments, BreakdownComments, DefenseComments
     )
     VALUES (
         ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchtype}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
-        ${body.autol1scored}, ${body.autol1failed}, ${body.autol2scored}, ${body.autol2failed}, ${body.autol3scored}, ${body.autol3failed}, ${body.autol4scored}, ${body.autol4failed}, 
-        ${body.autocoralscored}, ${body.autocoralfail}, ${body.autoalgaeremoved}, ${body.autoprocessorscored}, ${body.autoprocessorfailed}, ${body.autonetscored}, ${body.autonetfailed}, 
-        ${body.telel1scored}, ${body.telel1failed}, ${body.telel2scored}, ${body.telel2failed}, ${body.telel3scored}, ${body.telel3failed}, ${body.telel4scored}, ${body.telel4failed}, 
-        ${body.telecoralscored}, ${body.telecoralfail}, ${body.telealgaeremoved}, ${body.teleprocessorscored}, ${body.teleprocessorfailed}, ${body.telenetscored}, ${body.telenetfailed}, 
-        ${body.hpscored}, ${body.hpfail}, ${body.endlocation}, ${body.coralspeed}, ${body.processorspeed}, ${body.netspeed}, ${body.algaeremovalspeed}, 
+        ${body.autol1Success}, ${body.autol1fail}, ${body.autol2Success}, ${body.autol2fail}, ${body.autol3Success}, ${body.autol3fail}, ${body.autol4Success}, ${body.autol4fail}, 
+        ${body.autocoralSuccess}, ${body.autocoralfail}, ${body.autoalgaeremoved}, ${body.autoprocessorSuccess}, ${body.autoprocessorfail}, ${body.autonetSuccess}, ${body.autonetfail}, 
+        ${body.telel1Success}, ${body.telel1fail}, ${body.telel2Success}, ${body.telel2fail}, ${body.telel3Success}, ${body.telel3fail}, ${body.telel4Success}, ${body.telel4fail}, 
+        ${body.telecoralSuccess}, ${body.telecoralfail}, ${body.telealgaeremoved}, ${body.teleprocessorSuccess}, ${body.teleprocessorfail}, ${body.telenetSuccess}, ${body.telenetfail}, 
+        ${body.hpSuccess}, ${body.hpfail}, ${body.endlocation}, ${body.coralspeed}, ${body.processorspeed}, ${body.netspeed}, ${body.algaeremovalspeed}, 
         ${body.climbspeed}, ${body.maneuverability}, ${body.defenseplayed}, ${body.defenseevasion}, ${body.aggression}, ${body.cagehazard}, 
         ${body.coralgrndintake}, ${body.coralstationintake}, ${body.lollipop}, ${body.algaegrndintake}, ${body.algaehighreefintake}, ${body.algaelowreefintake}, 
         ${body.generalcomments}, ${body.breakdowncomments}, ${body.defensecomments}
