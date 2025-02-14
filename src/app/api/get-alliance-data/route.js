@@ -8,6 +8,20 @@ export async function GET() {
     let data = await sql`SELECT * FROM phr2025;`;
     const rows = data.rows;
 
+  // fetch team name from blue alliance api, commented our for now while testing getting from the backend
+  const teamName = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
+    headers: {
+      "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
+      "Accept": "application/json"
+    },
+  })
+  .then(resp => {
+    if (resp.status !== 200) {
+      return {teams: []};
+    }
+    return resp.json();
+  }).then(data => data.teams);
+
     let responseObject = {};
     rows.forEach((row) => {
       if (!row.noshow) {
@@ -16,9 +30,11 @@ export async function GET() {
         let end = calcEnd(row);
 
         if (responseObject[row.team] == undefined) {
+        let frcAPITeamInfo = frcAPITeamData.filter(teamData => teamData.teamNumber == row.team);
           responseObject[row.team] = {
             team: row.team,
-            teamName: "🤖", // Default name while FRC API is commented out
+            teamName: frcAPITeamInfo.length == 0 ? "🤖" : frcAPITeamInfo[0].nickName,
+            // teamName: "🤖", Default name while FRC API is commented out
             auto: [auto], 
             tele: [tele], 
             end: [end],
