@@ -1,0 +1,27 @@
+.VBox {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 110px;
+    font-size: 14px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 5px;
+    align-self: right;
+}
+
+.VBoxTitle {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+}
+.VBoxValue {
+    border-top: 1px solid black;
+}
+
+
+.EPAS {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+}

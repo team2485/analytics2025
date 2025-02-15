@@ -1,0 +1,14 @@
+.HBox, .HBox td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.HBox {
+    width: 350px;
+    align-self: center;
+}
+
+.HBox tbody tr :first-child {
+    width: 50px;
+    text-align: center;
+}

@@ -47,7 +47,6 @@ function calcAuto(record) {
     return endgamePoints + cageBonus;
   }
   
-  
   function calcEPA(record) {
     return calcAuto(record) + calcTele(record) + calcEnd(record);
   }
