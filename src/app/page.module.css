@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
+
+.MainDiv {
+    background: black;
+    color: white;
+    padding: 5px 40px;
+    padding-bottom: 50px;
+    min-height: calc(100vh - 45px);
+    font-family: "Belleza", sans-serif;
+    justify-items: center;
+}
+
+.MatchInfo {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 5px;
+    width: 350px;
+    align-self: center;
+  }
+.allMatchInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.Endgame {
+  justify-items: center;
+}
+.Coral {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.L1,.L2,.L3,.L4 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.Table {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Table td {
+  text-align: center; 
+  padding-right: 19px; 
+  position: relative; 
+}
+
+.Table td h2 {
+  padding-bottom: 15px;
+  position: absolute; 
+  right: 0px;
+  bottom: 15px;
+  margin: 0px;
+}
+
+.Table th {
+  padding-right: 19px;
+}
+
+.AlgaeRemoved {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Processor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Net {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.HumanPlayer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.MainDiv h2 {
+  text-align: center;
+}
+
+.HBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .HBox input {
+    width: 60px;
+  }
+  .MainDiv button[type=submit] {
+    background-color: #FFD900;
+    height: 50px;
+    width: 120px;
+    border-radius: 5px;
+    border: 1px solid #ffa200;
+    font-size: 30px;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+  }
+
+  .MainDiv button[type=submit]:hover {
+    background-color: #fcec91;
+  }
+  
+  .MainDiv button, .MainDiv input {
+    font-family: 'Belleza', sans-serif;
+  }
+
+  .MainDiv label {
+    font-size: 25px;
+  }
+
+  .Qual {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .MainDiv input[type=checkbox] {
+    justify-content: center;
+  }
+
+span.subsubheading {
+  display: block;
+  text-align: center;
+  font-size: 25px;
+}
+
+hr.subsubheading {
+  margin: 0px 20px;
+  background-color: white;
+}
+
+.Intake {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color:#3d3d3d;
+  color: black;
+  border-radius: 8px;
+  align-items: center;
+  padding: 3px;
+  width: 250px;
+  height: 375px;
+  justify-self: center;
+  margin: 15px;
+  gap: -5px;
+}
+
+.MainDiv input:focus,
+.MainDiv textarea:focus {
+    border-color: rgb(87, 171, 254);
+    outline: none;
+}
+.MainDiv input:focus:invalid,
+.MainDiv textarea:focus:invalid {
+    border-color: rgb(184, 0, 0);
+}
+
+
+
