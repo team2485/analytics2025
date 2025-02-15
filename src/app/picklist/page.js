@@ -65,58 +65,58 @@ export default function Picklist() {
     window.history.replaceState(null, '', `?${urlParams.toString()}`);
 
     // Original fetch code commented out --> uncomment when regionals are coming out
-    /*
+    
     const picklist = await fetch('/api/compute-picklist', {
       method: 'POST',
       body: JSON.stringify(weightEntries)
     }).then(resp => resp.json());
-    */
+    
 
     // Static data
-    const picklist = [
-      {
-        team: 2485,
-        score: 0.95,
-        firstRanking: 4,
-        epa: 0.9,
-        auto: 0.85,
-        tele: 0.95,
-        end: 0.8,
-        cage: 0.75,
-        consistency: 0.95,
-        coral: 0.9,
-        algae: 0.85,
-        defense: 0.7
-      },
-      {
-        team: 1678,
-        score: 0.75,
-        firstRanking: 3,
-        epa: 0.7,
-        auto: 0.8,
-        tele: 0.75,
-        end: 0.7,
-        cage: 0.8,
-        consistency: 0.75,
-        coral: 0.8,
-        algae: 0.7,
-        defense: 0.75
-      },
-      {
-        team: 254,
-        score: 0.85,
-        firstRanking: 2,
-        epa: 0.8,
-        auto: 0.75,
-        tele: 0.85,
-        end: 0.9,
-        cage: 0.85,
-        consistency: 0.8,
-        coral: 0.75,
-        algae: 0.8,
-        defense: 0.85
-      },
-    ];
+    // const picklist = [
+    //   {
+    //     team: 2485,
+    //     score: 0.95,
+    //     firstRanking: 4,
+    //     epa: 0.9,
+    //     auto: 0.85,
+    //     tele: 0.95,
+    //     end: 0.8,
+    //     cage: 0.75,
+    //     consistency: 0.95,
+    //     coral: 0.9,
+    //     algae: 0.85,
+    //     defense: 0.7
+    //   },
+    //   {
+    //     team: 1678,
+    //     score: 0.75,
+    //     firstRanking: 3,
+    //     epa: 0.7,
+    //     auto: 0.8,
+    //     tele: 0.75,
+    //     end: 0.7,
+    //     cage: 0.8,
+    //     consistency: 0.75,
+    //     coral: 0.8,
+    //     algae: 0.7,
+    //     defense: 0.75
+    //   },
+    //   {
+    //     team: 254,
+    //     score: 0.85,
+    //     firstRanking: 2,
+    //     epa: 0.8,
+    //     auto: 0.75,
+    //     tele: 0.85,
+    //     end: 0.9,
+    //     cage: 0.85,
+    //     consistency: 0.8,
+    //     coral: 0.75,
+    //     algae: 0.8,
+    //     defense: 0.85
+    //   },
+    // ];
     
      // First, set the original positions based on the calculated order
     const originalPos = {};
