@@ -414,8 +414,8 @@ if (searchParams.get("go") != "go") {
 
 
     return <div className={styles.lightBorderBox}>
-      <h1 style={{color: colors[3]}}>{teamData.team}</h1>
-      <h2 style={{color: colors[3]}}>{teamData.teamName}</h2>
+      <h1 style={{color: colors[3]}}>{Math.round(10*data.teamData.team)/10}</h1>
+      <h2 style={{color: colors[3]}}>{Math.round(10*data.teamData.teamName)/10}</h2>
       <div className={styles.scoreBreakdownContainer}>
         <div style={{background: colors[0]}} className={styles.EPABox}>
           {Math.round(10*(teamData.auto + teamData.tele + teamData.end))/10}
@@ -431,13 +431,13 @@ if (searchParams.get("go") != "go") {
         <PiecePlacement 
           colors={colors}
           matchMax={matchMax} 
-          L1={teamData.avgPieces.L1}
-          L2={teamData.avgPieces.L2}
-          L3={teamData.avgPieces.L3} 
-          L4={teamData.avgPieces.L4} 
-          net={teamData.avgPieces.net}
-          processor={teamData.avgPieces.processor}
-          HP={teamData.avgPieces.HP}
+          L1={Math.round(10*teamData.avgPieces.L1)/10}
+          L2={Math.round(10*teamData.avgPieces.L2)/10}
+          L3={Math.round(10*teamData.avgPieces.L3)/10} 
+          L4={Math.round(10*teamData.avgPieces.L4)/10} 
+          net={Math.round(10*teamData.avgPieces.net)/10}
+          processor={Math.round(10*teamData.avgPieces.processor)/10}
+          HP={Math.round(10*teamData.avgPieces.HP)/10}
         />
       </div>
       <div className={styles.chartContainer}>
