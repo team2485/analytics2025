@@ -1,0 +1,288 @@
+.teamForm {
+    margin: 20px;
+    padding: 25px;
+    background: #eee;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontalBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px;
+}
+
+.teamForm label {
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: -5px;
+    font-size: 40px;
+    font-family: "Teko", sans-serif;
+    text-align: center;
+    width: 100%;
+}
+
+.teamForm input {
+    padding: 5px;
+    border: none;
+    background: white;
+    box-shadow: 0px 0px 5px rgba(255, 255, 0, 0.8);
+    margin: 10px;
+}
+
+.teamForm button {
+    padding: 10px;
+    min-width: 30%;
+    background: linear-gradient(70deg, rgb(255, 242, 142), rgb(129, 216, 136));
+    font-size: 40px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    margin: 10px;
+}
+
+.matchNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.allianceBoard {
+    display: flex;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    flex-wrap: wrap;
+}
+
+.matchNav button {
+    border: 1px solid black;
+    padding: 3px 15px;
+    padding-bottom: 0px;
+    border-radius: 5px;
+    font-size: 45px;
+    font-family: "Teko", sans-serif;
+}
+
+.matchNav button:hover {
+    background: black !important;
+    color: yellow !important;
+}
+
+.allianceEPAs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.allianceGraphs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin: 10px;
+    margin-top: 0px;
+    gap: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.graphContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.lineGraphContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.lineGraphContainer svg {
+    transform: translateX(-20px);
+}
+.RPs {
+    display: flex;
+    margin: 10px 40px;
+    justify-content: space-around;
+}
+
+.RPs > div {
+    display: inline-block;
+    flex-grow: 1;
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px;
+}
+
+.RPs > div:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.RPs > div:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.matches {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px;
+}
+
+.matches * {
+    font-family: 'Teko', sans-serif;
+}
+
+.lightBorderBox {
+    flex-grow: 1;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+}
+
+.lightBorderBox h1, .lightBorderBox h2 {
+    text-align: center;
+}
+
+.lightBorderBox h1 {
+    font-size: 45px;
+    margin-bottom: -20px;
+}
+.lightBorderBox .EPABox {
+    height: 50px;
+    text-align: center;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+}
+.lightBorderBox .EPABreakdown {
+    height: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+}
+.lightBorderBox .EPABreakdown div {
+    padding: 2px;
+}
+
+.scoreBreakdownContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    text-align: center;
+}
+
+.EPABreakdown {
+    display: flex;
+    flex-direction: row;
+}
+
+.EPABreakdown div {
+    text-align: center;
+    flex-grow: 1;
+    border: 1px solid black;
+    padding: 5px;
+    font-size: larger;
+}
+
+.EPABreakdown div:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.EPABreakdown div:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.EPABox {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.EPABox::before {
+    content: "Last 3 EPA";
+    display: block;
+    position: relative;
+    top: 0;
+    width: 125px;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 10px));
+    border: 1px solid black;
+    background: white;
+    padding: auto;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: -25px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.chartContainer {
+    width: 30vw;
+    height: 300px;
+    margin: auto;
+    margin-bottom: -40px;
+}
+.barchartContainer {
+    width: 30vw;
+    height: 300px;
+    margin: auto;
+    margin-bottom: -30px;
+}
+.barchartContainer svg {
+    transform: translateX(-20px);
+}
+.lineGraphContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.lineGraphContainer svg {
+    transform: translateX(-20px);
+}
+
+@media screen and (max-width: 1150px) {
+    .MainDiv {
+        margin: 0px;
+    }
+    
+    .barchartContainer {
+        width: 400px;
+    }
+
+    .chartContainer {
+        width: 400px;
+    }
+}
