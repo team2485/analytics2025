@@ -293,7 +293,7 @@ function TeamView() {
                         L1={Math.round(10*(data.auto.coral.avgL1 + data.tele.coral.avgL1))/10}
                         L2={Math.round(10*(data.auto.coral.avgL2 + data.tele.coral.avgL2))/10}
                         L3={Math.round(10*(data.auto.coral.avgL3 + data.tele.coral.avgL3))/10}
-                        L4={Math.round(10*(data.data.auto.coral.avgL4 + data.tele.coral.avgL4))/10}
+                        L4={Math.round(10*(data.auto.coral.avgL4 + data.tele.coral.avgL4))/10}
                         net={Math.round(10*(data.auto.algae.avgNet + data.tele.algae.avgNet))/10}
                         processor={Math.round(10*(data.auto.algae.avgProcessor + data.tele.algae.avgProcessor))/10}
                         HP={Math.round(10*data.tele.avgHp)/10}
