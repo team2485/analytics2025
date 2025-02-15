@@ -20,6 +20,7 @@ export default function MatchViewPage() {
 
 function MatchView() {
   const [allData, setAllData] = useState(null);
+  const [data, setData] = useState(false);
   const searchParams = useSearchParams();
   //light to dark
   const COLORS = [
@@ -31,63 +32,58 @@ function MatchView() {
     ["#FFD4AB", "#FABD7C", "#FFAF72", "#FFA75A", "#FF9F4B"], //orange
     
   ];
-  //to get from backend
-  // const [allData, setAllData] = useState(null);
-  // const [data, setData] = useState(false);
-  // const searchParams = useSearchParams();
-  // const COLORS = [
-  //   ["#B7F7F2", "#A1E7E1", "#75C6BF", "#58ada6", "#458782"],
-  //   ["#8AB8FD", "#7D99FF", "#6184DD", "#306BDD", "#2755b0"],
-  //   ["#E1BFFA", "#E1A6FE", "#CA91F2", "#b273d9", "#A546DF"],
-  //   ["#FFC6F6", "#ECA6E0", "#ED75D9", "#db51c5", "#C342AE"],
-  //   ["#FABFC4", "#FEA6AD", "#F29199", "#E67983", "#db606b"],
-  //   ["#FFE3D3", "#EBB291", "#E19A70", "#D7814F", "#c26d3c"],
-  // ];
+  
 
   useEffect(() => {
-    fetch("/api/get-alliance-data").then(resp => resp.json()).then(data => setAllData(data));
-  }, []);
+    fetch("/api/get-alliance-data")
+      .then(resp => resp.json())
+      .then(data => {
+          console.log("Fetched Data from API:", data);  // <-- Check what the API returns
+          setAllData(data);
+      });
+}, []);
 
 
-  // useEffect(() => {
-  //   if (searchParams && allData) {
-  //     if (searchParams.get('match') == null || searchParams.get('match') == "") {
-  //       //search by teams
-  //       let [team1, team2, team3, team4, team5, team6] = [searchParams.get("team1"), searchParams.get("team2"), searchParams.get("team3"), searchParams.get("team4"), searchParams.get("team5"), searchParams.get("team6")];
-  //       setData({team1: allData[team1], team2: allData[team2], team3: allData[team3], team4: allData[team4], team5: allData[team5], team6: allData[team6]});
-  //     } else {
-  //       //search by match
-  //       fetch('/api/get-teams-of-match?match=' + searchParams.get('match')).then(resp => resp.json()).then(data => {
-  //         if (data.message) {
-  //           console.log(data.message);
-  //         } else {
-  //           //update url with teams
-  //           const newParams = new URLSearchParams(searchParams);
-  //           newParams.set('team1', data.team1);
-  //           newParams.set('team2', data.team2);
-  //           newParams.set('team3', data.team3);
-  //           newParams.set('team4', data.team4);
-  //           newParams.set('team5', data.team5);
-  //           newParams.set('team6', data.team6);
-  //           newParams.delete('match');
 
-  //           const newUrl = `${window.location.pathname}?${newParams.toString()}`;
-  //           window.history.replaceState(null, 'Picklist', newUrl);
+  useEffect(() => {
+    if (searchParams && allData) {
+      if (searchParams.get('match') == null || searchParams.get('match') == "") {
+        //search by teams
+        let [team1, team2, team3, team4, team5, team6] = [searchParams.get("team1"), searchParams.get("team2"), searchParams.get("team3"), searchParams.get("team4"), searchParams.get("team5"), searchParams.get("team6")];
+        setData({team1: allData[team1], team2: allData[team2], team3: allData[team3], team4: allData[team4], team5: allData[team5], team6: allData[team6]});
+      } else {
+        //search by match
+        fetch('/api/get-teams-of-match?match=' + searchParams.get('match')).then(resp => resp.json()).then(data => {
+          if (data.message) {
+            console.log(data.message);
+          } else {
+            //update url with teams
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set('team1', data.team1);
+            newParams.set('team2', data.team2);
+            newParams.set('team3', data.team3);
+            newParams.set('team4', data.team4);
+            newParams.set('team5', data.team5);
+            newParams.set('team6', data.team6);
+            newParams.delete('match');
+
+            const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+            window.history.replaceState(null, 'Picklist', newUrl);
             
-  //           setData({team1: allData[data.team1], team2: allData[data.team2], team3: allData[data.team3], team4: allData[data.team4], team5: allData[data.team5], team6: allData[data.team6]});
-  //         }
-  //       })
+            setData({team1: allData[data.team1], team2: allData[data.team2], team3: allData[data.team3], team4: allData[data.team4], team5: allData[data.team5], team6: allData[data.team6]});
+          }
+        })
 
-  //     }
-  //   }
-  // }, [searchParams, allData]);
+      }
+    }
+  }, [searchParams, allData]);
 
-  // //until url loads show loading
-  // if (!data || searchParams == null) {
-  //   return <div>
-  //     <h1>Loading...</h1>
-  //   </div>
-  // }
+  //until url loads show loading
+  if (!data || searchParams == null) {
+    return <div>
+      <h1>Loading...</h1>
+    </div>
+  }
 
   const defaultTeam = {
     team: 404,
@@ -111,161 +107,162 @@ function MatchView() {
     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
   };
 
-  // Static data instead of fetching
-  const data = {
-    team1: {
-      team: 2485,
-      teamName: "Overclocked",
-      auto: 30,
-      tele: 22,
-      end: 10,
-      avgPieces: {
-        L1: 3,
-        L2: 2,
-        L3: 5,
-        L4: 7,
-        net:10, 
-        processor: 1,
-        HP: 0,
-      },
-      leave: true,
-      autoCoral: 0,
-      removedAlgae: 4,
-      endgame: { none: 10, park: 13, shallow: 35, deep: 7, fail: 15},
-      qualitative: { coralspeed: 5, processorspeed: 2, netspeed: 3, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 1, defenseplayed: 4, defenseevasion: 2, aggression: 4, cagehazard: 3 }
-    },
-    team2: {
-      team: 1234,
-      teamName: "Invisibotics 👻",
-      auto: 0,
-      tele: 0,
-      end: 4,
-      avgPieces: {
-        L1: 1,
-        L2: 2,
-        L3: 0,
-        L4: 0,
-        net:0, 
-        processor: 0,
-        HP: 0,
-      },
-      leave: true,
-      autoCoral: 0,
-      removedAlgae: 0,
-      endgame: { none: 9, park: 2, shallow: 1, deep: 4, fail: 5},
-      qualitative: { coralspeed: 3, processorspeed: 1, netspeed: 4, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
-    },
-    team3: {
-      team: 4321,
-      teamName: "Invisibotics 👻",
-      auto: 0,
-      tele: 0,
-      end: 0,
-      avgPieces: {
-        L1: 3,
-        L2: 2,
-        L3: 0,
-        L4: 0,
-        net:0, 
-        processor: 0,
-        HP: 0,
-      },
-      leave: true,
-      autoCoral: 0,
-      removedAlgae: 0,
-      endgame: { none: 5, park: 6, shallow: 7, deep: 8, fail: 9},
-      qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
-    },
-    team4: {
-      team: 4,
-      teamName: "Invisibotics 👻",
-      auto: 0,
-      tele: 0,
-      end: 0,
-      avgPieces: {
-        L1: 4,
-        L2: 3,
-        L3: 2,
-        L4: 1,
-        net:0, 
-        processor: 0,
-        HP: 0,
-      },
-      leave: true,
-      autoCoral: 0,
-      removedAlgae: 0,
-      endgame: { none: 3, park: 2, shallow: 1, deep: 2, fail: 3},
-      qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
-    },
-    team5: {
-      team: 5,
-      teamName: "Invisibotics 👻",
-      auto: 1,
-      tele: 11,
-      end: 12,
-      avgPieces: {
-        L1: 1,
-        L2: 2,
-        L3: 3,
-        L4: 0,
-        net:0, 
-        processor: 0,
-        HP: 0,
-      },
-      leave: true,
-      autoCoral: 0,
-      removedAlgae: 0,
-      endgame: { none: 10, park: 12, shallow: 17, deep: 18, fail: 4},
-      qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
-    },
-    team6: {
-      team: 6,
-      teamName: "Invisibotics 👻",
-      auto: 0,
-      tele: 0,
-      end: 0,
-      avgPieces: {
-        L1: 0,
-        L2: 0,
-        L3: 0,
-        L4: 0,
-        net:0, 
-        processor: 0,
-        HP: 0,
-      },
-      leave: true,
-      autoCoral: 0,
-      removedAlgae: 0,
-      endgame: { none: 7, park: 17, shallow: 21, deep: 23, fail: 10},
-      qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
-    },
-  };
+  // // Static data instead of fetching
+  // const data = {
+  //   team1: {
+  //     team: 2485,
+  //     teamName: "Overclocked",
+  //     auto: 30,
+  //     tele: 22,
+  //     end: 10,
+  //     avgPieces: {
+  //       L1: 3,
+  //       L2: 2,
+  //       L3: 5,
+  //       L4: 7,
+  //       net:10, 
+  //       processor: 1,
+  //       HP: 0,
+  //     },
+  //     leave: true,
+  //     autoCoral: 0,
+  //     removedAlgae: 4,
+  //     endgame: { none: 10, park: 13, shallow: 35, deep: 7, fail: 15},
+  //     qualitative: { coralspeed: 5, processorspeed: 2, netspeed: 3, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 1, defenseplayed: 4, defenseevasion: 2, aggression: 4, cagehazard: 3 }
+  //   },
+  //   team2: {
+  //     team: 1234,
+  //     teamName: "Invisibotics 👻",
+  //     auto: 0,
+  //     tele: 0,
+  //     end: 4,
+  //     avgPieces: {
+  //       L1: 1,
+  //       L2: 2,
+  //       L3: 0,
+  //       L4: 0,
+  //       net:0, 
+  //       processor: 0,
+  //       HP: 0,
+  //     },
+  //     leave: true,
+  //     autoCoral: 0,
+  //     removedAlgae: 0,
+  //     endgame: { none: 9, park: 2, shallow: 1, deep: 4, fail: 5},
+  //     qualitative: { coralspeed: 3, processorspeed: 1, netspeed: 4, algaeremovalspeed: 5, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
+  //   },
+  //   team3: {
+  //     team: 4321,
+  //     teamName: "Invisibotics 👻",
+  //     auto: 0,
+  //     tele: 0,
+  //     end: 0,
+  //     avgPieces: {
+  //       L1: 3,
+  //       L2: 2,
+  //       L3: 0,
+  //       L4: 0,
+  //       net:0, 
+  //       processor: 0,
+  //       HP: 0,
+  //     },
+  //     leave: true,
+  //     autoCoral: 0,
+  //     removedAlgae: 0,
+  //     endgame: { none: 5, park: 6, shallow: 7, deep: 8, fail: 9},
+  //     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
+  //   },
+  //   team4: {
+  //     team: 4,
+  //     teamName: "Invisibotics 👻",
+  //     auto: 0,
+  //     tele: 0,
+  //     end: 0,
+  //     avgPieces: {
+  //       L1: 4,
+  //       L2: 3,
+  //       L3: 2,
+  //       L4: 1,
+  //       net:0, 
+  //       processor: 0,
+  //       HP: 0,
+  //     },
+  //     leave: true,
+  //     autoCoral: 0,
+  //     removedAlgae: 0,
+  //     endgame: { none: 3, park: 2, shallow: 1, deep: 2, fail: 3},
+  //     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
+  //   },
+  //   team5: {
+  //     team: 5,
+  //     teamName: "Invisibotics 👻",
+  //     auto: 1,
+  //     tele: 11,
+  //     end: 12,
+  //     avgPieces: {
+  //       L1: 1,
+  //       L2: 2,
+  //       L3: 3,
+  //       L4: 0,
+  //       net:0, 
+  //       processor: 0,
+  //       HP: 0,
+  //     },
+  //     leave: true,
+  //     autoCoral: 0,
+  //     removedAlgae: 0,
+  //     endgame: { none: 10, park: 12, shallow: 17, deep: 18, fail: 4},
+  //     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
+  //   },
+  //   team6: {
+  //     team: 6,
+  //     teamName: "Invisibotics 👻",
+  //     auto: 0,
+  //     tele: 0,
+  //     end: 0,
+  //     avgPieces: {
+  //       L1: 0,
+  //       L2: 0,
+  //       L3: 0,
+  //       L4: 0,
+  //       net:0, 
+  //       processor: 0,
+  //       HP: 0,
+  //     },
+  //     leave: true,
+  //     autoCoral: 0,
+  //     removedAlgae: 0,
+  //     endgame: { none: 7, park: 17, shallow: 21, deep: 23, fail: 10},
+  //     qualitative: { coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0, climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0, aggression: 0, cagehazard: 0 }
+  //   },
+  // };
 
 
 //setData based on teams selected
-useEffect(() => {
-  if (searchParams && allData) {
-    //search by teams
-    let [team1, team2, team3, team4, team5, team6] = [
-      searchParams.get("team1"),
-      searchParams.get("team2"),
-      searchParams.get("team3"),
-      searchParams.get("team4"),
-      searchParams.get("team5"),
-      searchParams.get("team6")
-    ];
-    setData({
-      team1: allData[team1],
-      team2: allData[team2],
-      team3: allData[team3],
-      team4: allData[team4],
-      team5: allData[team5],
-      team6: allData[team6]
-    });
-  }
-}, [searchParams, allData]);
+// useEffect(() => {
+//   if (searchParams && allData) {
+//     //search by teams
+//     let [team1, team2, team3, team4, team5, team6] = [
+//       searchParams.get("team1"),
+//       searchParams.get("team2"),
+//       searchParams.get("team3"),
+//       searchParams.get("team4"),
+//       searchParams.get("team5"),
+//       searchParams.get("team6")
+//     ];
+//     setData({
+//       team1: allData[team1],
+//       team2: allData[team2],
+//       team3: allData[team3],
+//       team4: allData[team4],
+//       team5: allData[team5],
+//       team6: allData[team6]
+//     });
+//   }
+// }, [searchParams, allData]);
 
 //until url loads show loading
+
 if (!data || searchParams == null) {
   return (
     <div>
@@ -495,6 +492,10 @@ if (searchParams.get("go") != "go") {
   }
    }
   matchMax = Math.floor(matchMax) + 2; 
+  console.log("Team 1 Data:", data.team1);
+  console.log("Team 2 Data:", data.team2);
+  console.log("Team 3 Data:", data.team3);
+
 
   return (
     <div>
@@ -513,8 +514,12 @@ if (searchParams.get("go") != "go") {
             radarData={radarData} 
             teamIndices={[1, 2, 3]} 
             colors={[COLORS[3][0], COLORS[4][0], COLORS[5][0]]}
-            teamNumbers={[data.team1.team, data.team2.team, data.team3.team]} 
-          />
+            teamNumbers={[
+              (data.team1 || defaultTeam).team,
+              (data.team2 || defaultTeam).team,
+              (data.team3 || defaultTeam).team
+            ]}
+                      />
         </div>
         <div className={styles.lineGraphContainer}>
           <h2>EPA / time</h2>
@@ -526,8 +531,12 @@ if (searchParams.get("go") != "go") {
             radarData={radarData} 
             teamIndices={[4, 5, 6]} 
             colors={[COLORS[0][0], COLORS[1][0], COLORS[2][0]]} 
-            teamNumbers={[data.team4.team, data.team5.team, data.team6.team]} 
-          />
+            teamNumbers={[
+              (data.team4 || defaultTeam).team,
+              (data.team5 || defaultTeam).team,
+              (data.team6 || defaultTeam).team
+            ]}
+                      />
         </div>
       </div>
       <div className={styles.matches}>
@@ -543,4 +552,3 @@ if (searchParams.get("go") != "go") {
     </div>
   )
 }
-

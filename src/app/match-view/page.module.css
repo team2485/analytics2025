@@ -273,3 +273,16 @@
     transform: translateX(-20px);
 }
 
+@media screen and (max-width: 1150px) {
+    .MainDiv {
+        margin: 0px;
+    }
+    
+    .barchartContainer {
+        width: 400px;
+    }
+
+    .chartContainer {
+        width: 400px;
+    }
+}

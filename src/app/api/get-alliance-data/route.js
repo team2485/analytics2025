@@ -2,135 +2,172 @@ import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 import { calcAuto, calcTele, calcEnd } from "@/util/calculations";
 
-export const revalidate = 300; // Cache for 300 seconds (5 minutes)
+export const revalidate = 300; // Cache for 5 minutes
 
 export async function GET() {
-    let data = await sql`SELECT * FROM phr2025;`;
-    const rows = data.rows;
-
+  try {
+    const { rows } = await sql`SELECT * FROM phr2025;`;
     let responseObject = {};
+
+
+    // fetch team name from blue alliance api, commented our for now while testing getting from the backend
+    // const teamName = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
+    //   headers: {
+    //     "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
+    //     "Accept": "application/json"
+    //   },
+    // })
+    // .then(resp => {
+    //   if (resp.status !== 200) {
+    //     return {teams: []};
+    //   }
+    //   return resp.json();
+    // }).then(data => data.teams);
+
     rows.forEach((row) => {
       if (!row.noshow) {
         let auto = calcAuto(row);
         let tele = calcTele(row);
         let end = calcEnd(row);
+        // let frcAPITeamInfo = frcAPITeamData.filter(teamData => teamData.teamNumber == row.team);
 
-        if (responseObject[row.team] == undefined) {
-          responseObject[row.team] = {
-            team: row.team,
-            teamName: "🤖", // Default name while FRC API is commented out
-            auto: [auto], 
-            tele: [tele], 
-            end: [end],
-            avgNotes: {
-              coral: [row.autoCoralSuccess + row.teleCoralSuccess],
-              algae: [row.autoAlgaeRemoved + row.teleAlgaeRemoved],
-              processor: [row.autoAlgaeAvgProcessor + row.teleAlgaeAvgProcessor],
-              net: [row.autoAlgaeAvgNet + row.teleAlgaeAvgNet],
-            },
-            passedNotes: [row.teleAvgHp],
-            endgame: {
-              none: row.endNone,
-              park: row.endPark,
-              deep: row.endDeep,
-              shallow: row.endShallow,
-              fail: row.endParkFail,
-            },
-            attemptCage: [row.attemptCage],
-            successCage: [row.successCage],
-            qualitative: {
-              coralSpeed: [row.coralSpeed],
-              processorSpeed: [row.processorSpeed],
-              netSpeed: [row.netSpeed],
-              algaeRemovalSpeed: [row.algaeRemovalSpeed],
-              climbSpeed: [row.climbSpeed],
-              maneuverability: [row.maneuverability],
-              defensePlayed: [row.defensePlayed],
-              defenseEvasion: [row.defenseEvasion],
-              aggression: [row.aggression],
-              cageHazard: [row.cageHazard],
-            }
-          };
+        if (!responseObject[row.team]) {
+          responseObject[row.team] = initializeTeamData(row, auto, tele, end);
         } else {
-          let teamData = responseObject[row.team];
-          teamData.auto.push(auto);
-          teamData.tele.push(tele);
-          teamData.end.push(end);
-          teamData.passedNotes.push(row.teleAvgHp);
-          teamData.avgNotes.coral.push(row.autoCoralSuccess + row.teleCoralSuccess);
-          teamData.avgNotes.algae.push(row.autoAlgaeRemoved + row.teleAlgaeRemoved);
-          teamData.avgNotes.processor.push(row.autoAlgaeAvgProcessor + row.teleAlgaeAvgProcessor);
-          teamData.avgNotes.net.push(row.autoAlgaeAvgNet + row.teleAlgaeAvgNet);
-          teamData.attemptCage.push(row.attemptCage);
-          teamData.successCage.push(row.successCage);
-
-          if (row.endNone) teamData.endgame.none++;
-          if (row.endPark) teamData.endgame.park++;
-          if (row.endDeep) teamData.endgame.deep++;
-          if (row.endShallow) teamData.endgame.shallow++;
-          if (row.endParkFail) teamData.endgame.fail++;
-
-          teamData.qualitative.coralSpeed.push(row.coralSpeed);
-          teamData.qualitative.processorSpeed.push(row.processorSpeed);
-          teamData.qualitative.netSpeed.push(row.netSpeed);
-          teamData.qualitative.algaeRemovalSpeed.push(row.algaeRemovalSpeed);
-          teamData.qualitative.climbSpeed.push(row.climbSpeed);
-          teamData.qualitative.maneuverability.push(row.maneuverability);
-          teamData.qualitative.defensePlayed.push(row.defensePlayed);
-          teamData.qualitative.defenseEvasion.push(row.defenseEvasion);
-          teamData.qualitative.aggression.push(row.aggression);
-          teamData.qualitative.cageHazard.push(row.cageHazard);
+          accumulateTeamData(responseObject[row.team], row, auto, tele, end);
         }
       }
     });
 
-    // **🔢 Function to Calculate Averages**
-    const average = (array) => {
-      let count = array.length;
-      if (count == 0) return -1;
-      let sum = array.reduce((acc, value) => acc + value, 0);
-      return Math.round(sum * 10 / count) / 10;
-    };
+    calculateAverages(responseObject, rows);
 
-    // **📊 Compute Averages for Each Team**
-    for (let team in responseObject) {
-      let teamObject = responseObject[team];
-      teamObject.auto = average(teamObject.auto);
-      teamObject.tele = average(teamObject.tele);
-      teamObject.end = average(teamObject.end);
-      teamObject.passedNotes = average(teamObject.passedNotes);
-      teamObject.avgNotes.coral = average(teamObject.avgNotes.coral);
-      teamObject.avgNotes.algae = average(teamObject.avgNotes.algae);
-      teamObject.avgNotes.processor = average(teamObject.avgNotes.processor);
-      teamObject.avgNotes.net = average(teamObject.avgNotes.net);
-      teamObject.attemptCage = average(teamObject.attemptCage);
-      teamObject.successCage = average(teamObject.successCage);
-
-      let { none, park, deep, shallow, fail } = teamObject.endgame;
-      let locationSum = none + park + deep + shallow + fail;
-      if (locationSum === 0) {
-        teamObject.endgame = { none: 100, park: 0, deep: 0, shallow: 0, fail: 0 };
-      } else {
-        teamObject.endgame = {
-          none: Math.round(100 * none / locationSum),
-          park: Math.round(100 * park / locationSum),
-          deep: Math.round(100 * deep / locationSum),
-          shallow: Math.round(100 * shallow / locationSum),
-          fail: Math.round(100 * fail / locationSum),
-        };
-      }
-
-      teamObject.qualitative.coralSpeed = average(teamObject.qualitative.coralSpeed);
-      teamObject.qualitative.processorSpeed = average(teamObject.qualitative.processorSpeed);
-      teamObject.qualitative.netSpeed = average(teamObject.qualitative.netSpeed);
-      teamObject.qualitative.algaeRemovalSpeed = average(teamObject.qualitative.algaeRemovalSpeed);
-      teamObject.qualitative.climbSpeed = average(teamObject.qualitative.climbSpeed);
-      teamObject.qualitative.maneuverability = average(teamObject.qualitative.maneuverability);
-      teamObject.qualitative.defensePlayed = average(teamObject.qualitative.defensePlayed);
-      teamObject.qualitative.defenseEvasion = average(teamObject.qualitative.defenseEvasion);
-      teamObject.qualitative.aggression = average(teamObject.qualitative.aggression);
-      teamObject.qualitative.cageHazard = average(teamObject.qualitative.cageHazard);
-    }
-
+    console.log(responseObject);
     return NextResponse.json(responseObject, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching alliance data:", error);
+    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+  }
+}
+
+function initializeTeamData(row, auto, tele, end) {
+  return {
+    team: row.team,
+    teamName: "🤖", // Default name while FRC API is commented out
+    // teamName: frcAPITeamInfo.length == 0 ? "🤖" : frcAPITeamInfo[0].nickName,
+
+    auto,
+    tele,
+    end,
+    avgPieces: {
+      L1: row.autol1success + row.telel1success,
+      L2: row.autol2success + row.telel2success,
+      L3: row.autol3success + row.telel3success,
+      L4: row.autol4success + row.telel4success,
+      net: row.autoprocessorsuccess + row.teleprocessorsuccess,
+      processor: row.autonetsuccess + row.telenetsuccess,
+      HP: row.hpsuccess,
+    },
+    leave: row.leave,
+    autoCoral: row.autocoralsuccess,
+    removedAlgae: row.autoalgaeremoved + row.telealgaeremoved,
+    endgame: createEndgameData(row.endlocation),
+    qualitative: {
+      coralspeed: row.coralspeed,
+      processorspeed: row.processorspeed,
+      netspeed: row.netspeed,
+      algaeremovalspeed: row.algaeremovalspeed,
+      climbspeed: row.climbspeed,
+      maneuverability: row.maneuverability,
+      defenseplayed: row.defenseplayed,
+      defenseevasion: row.defenseevasion,
+      aggression: row.aggression,
+      cagehazard: row.cagehazard,
+    },
+  };
+}
+
+function accumulateTeamData(teamData, row, auto, tele, end) {
+  teamData.auto += auto;
+  teamData.tele += tele;
+  teamData.end += end;
+
+  teamData.avgPieces.L1 += row.autol1success + row.telel1success;
+  teamData.avgPieces.L2 += row.autol2success + row.telel2success;
+  teamData.avgPieces.L3 += row.autol3success + row.telel3success;
+  teamData.avgPieces.L4 += row.autol4success + row.telel4success;
+  teamData.avgPieces.net += row.autoprocessorsuccess + row.teleprocessorsuccess;
+  teamData.avgPieces.processor += row.autonetsuccess + row.telenetsuccess;
+  teamData.avgPieces.HP += row.hpsuccess;
+  teamData.removedAlgae += row.autoalgaeremoved + row.telealgaeremoved;
+
+  const endgameData = createEndgameData(row.endlocation);
+  for (let key in endgameData) {
+    teamData.endgame[key] += endgameData[key];
+  }
+
+  teamData.qualitative.coralspeed += row.coralspeed;
+  teamData.qualitative.processorspeed += row.processorspeed;
+  teamData.qualitative.netspeed += row.netspeed;
+  teamData.qualitative.algaeremovalspeed += row.algaeremovalspeed;
+  teamData.qualitative.climbspeed += row.climbspeed;
+  teamData.qualitative.maneuverability += row.maneuverability;
+  teamData.qualitative.defenseplayed += row.defenseplayed;
+  teamData.qualitative.defenseevasion += row.defenseevasion;
+  teamData.qualitative.aggression += row.aggression;
+  teamData.qualitative.cagehazard += row.cagehazard;
+}
+
+function createEndgameData(endlocation) {
+  return {
+    none: endlocation === 0 ? 1 : 0,
+    park: endlocation === 1 ? 1 : 0,
+    shallow: endlocation === 2 ? 1 : 0,
+    deep: endlocation === 3 ? 1 : 0,
+    fail: endlocation === 4 ? 1 : 0,
+  };
+}
+
+function calculateAverages(responseObject, rows) {
+  const average = (value, count) => (count > 0 ? Math.round((value / count) * 10) / 10 : 0);
+
+  for (let team in responseObject) {
+    let teamData = responseObject[team];
+    let count = rows.filter((row) => row.team === parseInt(team)).length;
+
+    teamData.auto = average(teamData.auto, count);
+    teamData.tele = average(teamData.tele, count);
+    teamData.end = average(teamData.end, count);
+    teamData.avgPieces.L1 = average(teamData.avgPieces.L1, count);
+    teamData.avgPieces.L2 = average(teamData.avgPieces.L2, count);
+    teamData.avgPieces.L3 = average(teamData.avgPieces.L3, count);
+    teamData.avgPieces.L4 = average(teamData.avgPieces.L4, count);
+    teamData.avgPieces.net = average(teamData.avgPieces.net, count);
+    teamData.avgPieces.processor = average(teamData.avgPieces.processor, count);
+    teamData.avgPieces.HP = average(teamData.avgPieces.HP, count);
+    teamData.removedAlgae = average(teamData.removedAlgae, count);
+
+    let locationSum =
+      teamData.endgame.none + teamData.endgame.park + teamData.endgame.shallow + teamData.endgame.deep + teamData.endgame.fail;
+
+    teamData.endgame = locationSum > 0
+      ? {
+          none: Math.round((100 * teamData.endgame.none) / locationSum),
+          park: Math.round((100 * teamData.endgame.park) / locationSum),
+          shallow: Math.round((100 * teamData.endgame.shallow) / locationSum),
+          deep: Math.round((100 * teamData.endgame.deep) / locationSum),
+          fail: Math.round((100 * teamData.endgame.fail) / locationSum),
+        }
+      : { none: 100, park: 0, shallow: 0, deep: 0, fail: 0 };
+
+    teamData.qualitative.coralspeed = average(teamData.qualitative.coralspeed, count);
+    teamData.qualitative.processorspeed = average(teamData.qualitative.processorspeed, count);
+    teamData.qualitative.netspeed = average(teamData.qualitative.netspeed, count);
+    teamData.qualitative.algaeremovalspeed = average(teamData.qualitative.algaeremovalspeed, count);
+    teamData.qualitative.climbspeed = average(teamData.qualitative.climbspeed, count);
+    teamData.qualitative.maneuverability = average(teamData.qualitative.maneuverability, count);
+    teamData.qualitative.defenseplayed = average(teamData.qualitative.defenseplayed, count);
+    teamData.qualitative.defenseevasion = average(teamData.qualitative.defenseevasion, count);
+    teamData.qualitative.aggression = average(teamData.qualitative.aggression, count);
+    teamData.qualitative.cagehazard = average(teamData.qualitative.cagehazard, count);
+  }
 }
