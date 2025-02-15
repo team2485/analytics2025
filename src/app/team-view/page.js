@@ -285,7 +285,7 @@ function TeamView() {
                     </div>
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
-                    <EPALineChart data={Math.round(10*data.epaOverTime)/10} color={Colors[0][3]} label={"epa"}/>
+                    <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={"epa"}/>
                 </div>
                 <div className={styles.barGraphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
@@ -293,7 +293,7 @@ function TeamView() {
                         L1={Math.round(10*(data.auto.coral.avgL1 + data.tele.coral.avgL1))/10}
                         L2={Math.round(10*(data.auto.coral.avgL2 + data.tele.coral.avgL2))/10}
                         L3={Math.round(10*(data.auto.coral.avgL3 + data.tele.coral.avgL3))/10}
-                        L4={Math.round(10*(data.data.auto.coral.avgL4 + data.tele.coral.avgL4))/10}
+                        L4={Math.round(10*(data.auto.coral.avgL4 + data.tele.coral.avgL4))/10}
                         net={Math.round(10*(data.auto.algae.avgNet + data.tele.algae.avgNet))/10}
                         processor={Math.round(10*(data.auto.algae.avgProcessor + data.tele.algae.avgProcessor))/10}
                         HP={Math.round(10*data.tele.avgHp)/10}
@@ -303,7 +303,7 @@ function TeamView() {
                   <div className={styles.leftColumnBoxes}>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Consistency"} value={`${Math.round(10*data.consistency)/10}%`}/>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={`${Math.round(10*data.defense)/10}%`}/>
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={Math.round(10*data.lastBreakdown)/10}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown}/>
 
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${Math.round(10*data.noShow)/10}%`}/>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={Math.round(10*data.breakdown)/10}/>
@@ -324,7 +324,7 @@ function TeamView() {
           <div className={styles.graphContainer}>
               <h4 className={styles.graphTitle}>Auto Over Time</h4>
               <EPALineChart 
-                data={Math.round(10*data.autoOverTime)/10} 
+                data={data.autoOverTime} 
                 color={Colors[1][3]} 
                 label={"auto"}
               />
@@ -394,7 +394,7 @@ function TeamView() {
           <div className={styles.graphContainer}>
               <h4 className={styles.graphTitle}>Tele Over Time</h4>
               <EPALineChart 
-                data={Math.round(10*data.teleOverTime)/10} 
+                data={data.teleOverTime} 
                 color={Colors[2][3]} 
                 label={"tele"}
               />
@@ -500,7 +500,7 @@ function TeamView() {
           <h1 className={styles.header} style={{ color: Colors[4][3] }}>Qualitative</h1>
             <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-              <Qualitative data={Math.round(10*data.qualitative)/10} color1={Colors[4][2]} color2={Colors[4][2]}/>
+              <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
             <p>*Inverted so outside is good</p>
           </div>
           <table className={styles.differentTable}> 
