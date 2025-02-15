@@ -129,10 +129,10 @@ export default function Home() {
         alert("Thank you!");
         const jsConfetti = new JSConfetti();
         jsConfetti.addConfetti({
-        emojis: ['🐟', '🐠', '🐡', '🦀', '🐚', '🪸', '🌊'],
-        emojiSize: 250,
-        confettiRadius: 15,
-        confettiNumber: 1000,
+        emojis: ['🐠', '🐡', '🦀', '🪸'],
+        emojiSize: 100,
+        confettiRadius: 3,
+        confettiNumber: 100,
        })
        
         if (typeof document !== 'undefined')  {
