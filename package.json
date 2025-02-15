@@ -11,6 +11,7 @@
   "dependencies": {
     "@tidyjs/tidy": "^2.5.2",
     "@vercel/postgres": "^0.10.0",
+    "antd": "^5.24.0",
     "next": "15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
