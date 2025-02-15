@@ -15,6 +15,7 @@ export default function Picklist() {
   const [rankAdjustments, setRankAdjustments] = useState({});
   const [originalPositions, setOriginalPositions] = useState({});
   const [finalPositions, setFinalPositions] = useState({});
+  const [adjustmentTriggered, setAdjustmentTriggered] = useState (false);
 
 
   const weightsFormRef = useRef();
@@ -313,7 +314,6 @@ export default function Picklist() {
         [newPicklist[currentIndex - 1], newPicklist[currentIndex]];
         
         // Update rank adjustments and final positions for all teams
-        const newRankAdjustments = {};
         const newFinalPositions = {};
 
         newPicklist.forEach((teamData, idx) => {
@@ -326,6 +326,7 @@ export default function Picklist() {
         setFinalPositions(newFinalPositions);
         localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
         setPicklist(newPicklist);
+        setAdjustmentTriggered(true);
       }
     }
     
@@ -350,6 +351,7 @@ export default function Picklist() {
         setFinalPositions(newFinalPositions);
         localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
         setPicklist(newPicklist);
+        setAdjustmentTriggered(true);
       }
     }
     
