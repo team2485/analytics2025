@@ -6,7 +6,24 @@ export async function POST(req) {
   let body = await req.json();
   console.log(body);
 
-  if (!(_.isString(body.scoutname) && _.isNumber(body.scoutteam) && _.isNumber(body.team) && _.isNumber(body.match) && _.isNumber(body.matchType))) {
+  // Adjust match number based on match type
+  let adjustedMatch = body.match;
+  switch (body.matchType) {
+    case 0: // pre-comp
+      adjustedMatch = body.match - 100;
+      break;
+    case 1: // practice
+      adjustedMatch = body.match - 50;
+      break;
+    case 2: // qual (no change)
+      adjustedMatch = body.match;
+      break;
+    case 3: // elim
+      adjustedMatch = body.match + 50;
+      break;
+  }
+
+  if (!(_.isString(body.scoutname) && _.isNumber(body.scoutteam) && _.isNumber(body.team) && _.isNumber(adjustedMatch) && _.isNumber(body.matchType))) {
     return NextResponse.json({ message: "Invalid Pre-Match Data!" }, { status: 400 });
   }
   
@@ -15,7 +32,7 @@ export async function POST(req) {
     console.log("no show!");
     let resp = await sql`
       INSERT INTO phr2025 (ScoutName, ScoutTeam, Team, Match, MatchType, NoShow)
-      VALUES (${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchtype}, ${body.noshow})
+      VALUES (${body.scoutname}, ${body.scoutteam}, ${body.team}, ${adjustedMatch}, ${body.matchtype}, ${body.noshow})
     `;
     return NextResponse.json({ message: "Success!" }, { status: 201 });
   }
