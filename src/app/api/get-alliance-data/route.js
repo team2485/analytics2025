@@ -11,7 +11,7 @@ export async function GET() {
 
 
     // fetch team name from blue alliance api, commented our for now while testing getting from the backend
-    // const teamName = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
+    // const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
     //   headers: {
     //     "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
     //     "Accept": "application/json"
@@ -29,7 +29,7 @@ export async function GET() {
         let auto = calcAuto(row);
         let tele = calcTele(row);
         let end = calcEnd(row);
-        // let frcAPITeamInfo = frcAPITeamData.filter(teamData => teamData.teamNumber == row.team);
+        // let frcAPITeamInfo = frcAPITeamData.filter(teamData => teamData.team_number == row.team);
 
         if (!responseObject[row.team]) {
           responseObject[row.team] = initializeTeamData(row, auto, tele, end);
@@ -53,7 +53,7 @@ function initializeTeamData(row, auto, tele, end) {
   return {
     team: row.team,
     teamName: "🤖", // Default name while FRC API is commented out
-    // teamName: frcAPITeamInfo.length == 0 ? "🤖" : frcAPITeamInfo[0].nickName,
+    // teamName: frcAPITeamInfo.length == 0 ? "🤖" : frcAPITeamInfo[0].nickname,
 
     auto,
     tele,

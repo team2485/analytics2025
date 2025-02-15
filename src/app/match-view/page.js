@@ -310,6 +310,9 @@ if (searchParams.get("go") != "go") {
           </div>
           <input type="hidden" name="go" value="go"></input>
         </div>
+        <span>Or by Match...</span>
+        <label htmlFor="match">Match #</label>
+        <input id="match" name="match" type="number"></input>
         <button>Go!</button>
       </form>
     </div>

@@ -17,7 +17,7 @@ export async function GET(request) {
   
   try {
     const response = await fetch(
-      `https://www.thebluealliance.com/api/v3/event/2025casd/matches/simple`,
+      `https://www.thebluealliance.com/api/v3/event/2024casd/matches/simple`,
       {
         headers: {
           "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
@@ -34,7 +34,7 @@ export async function GET(request) {
     }
 
     const matches = await response.json();
-    
+    console.log("Fetched Matches:", matches);
     // Filter for qualification matches and the specific match number
     const matchArr = matches.filter(match => 
       match.comp_level === "qm" && // qm = qualification match
