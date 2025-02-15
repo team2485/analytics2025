@@ -311,10 +311,10 @@ export default function Picklist() {
                   <tr key={teamData.team}>
                     <td>
                       <div className={styles.picklistRank}>
-                        {/* <div className={styles.arrows}>
-                          <button onClick={() => handleUp(teamData.team, index)}>⬆️</button>
-                          <button onClick={() => handleDown(teamData.team, index)}>⬇️</button>
-                        </div> */}
+                        <div className={styles.arrows}>
+                          <button onClick={() => handleUp()}>⬆️</button>
+                          <button onClick={() => handleDown()}>⬇️</button>
+                        </div>
                         {displayRank}
                       </div>
                     </td>
