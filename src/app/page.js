@@ -95,23 +95,23 @@ export default function Home() {
     //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
     //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
 
-    // if (matchType == 2) {
-    //   try {
-    //     const response = await fetch(`/api/get-valid-team?team=${data.team}&match=${data.match}`)
-    //     const validationData = await response.json();
+    if (matchType == 2) {
+      try {
+        const response = await fetch(`/api/get-valid-team?team=${data.team}&match=${data.match}`)
+        const validationData = await response.json();
         
-    //     if (!validationData.valid) {
-    //       alert("Invalid Team and Match Combination!");
-    //       submitButton.disabled = false;
-    //       return;
-    //     }
-    //   } catch (error) {
-    //     console.error("Validation error:", error);
-    //     alert("Error validating team and match. Please try again.");
-    //     submitButton.disabled = false;
-    //     return;
-    //   }
-    // }
+        if (!validationData.valid) {
+          alert("Invalid Team and Match Combination!");
+          submitButton.disabled = false;
+          return;
+        }
+      } catch (error) {
+        console.error("Validation error:", error);
+        alert("Error validating team and match. Please try again.");
+        submitButton.disabled = false;
+        return;
+      }
+    }
 
     //confirm and submit
     if (confirm("Are you sure you want to submit?") == true) {
