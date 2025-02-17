@@ -11,37 +11,41 @@ export async function GET() {
 
 
     // fetch team name from blue alliance api, commented our for now while testing getting from the backend
-    // const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
-    //   headers: {
-    //     "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
-    //     "Accept": "application/json"
-    //   },
-    // })
-    // .then(resp => {
-    //   if (resp.status !== 200) {
-    //     return {teams: []};
-    //   }
-    //   return resp.json();
-    // }).then(data => data.teams);
-
+    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2024casd/teams`, {
+      headers: {
+        "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
+        "Accept": "application/json"
+      },
+    })
+    .then(resp => {
+      if (resp.status !== 200) {
+        throw new Error(`Failed to fetch team data: ${resp.status}`);
+      }
+      return resp.json();
+    });
+    
+    // Log the actual data to confirm
+    
     rows.forEach((row) => {
       if (!row.noshow) {
         let auto = calcAuto(row);
         let tele = calcTele(row);
         let end = calcEnd(row);
-        // let frcAPITeamInfo = frcAPITeamData.filter(teamData => teamData.team_number == row.team);
-
+        
+        // Correct filter logic
+        let frcAPITeamInfo = frcAPITeamData.filter(teamData => parseInt(teamData.team_number) == parseInt(row.team));
+        
         if (!responseObject[row.team]) {
-          responseObject[row.team] = initializeTeamData(row, auto, tele, end);
+          responseObject[row.team] = initializeTeamData(row, auto, tele, end, frcAPITeamInfo);
         } else {
           accumulateTeamData(responseObject[row.team], row, auto, tele, end);
         }
       }
     });
+    
 
     calculateAverages(responseObject, rows);
 
-    console.log(responseObject);
     return NextResponse.json(responseObject, { status: 200 });
   } catch (error) {
     console.error("Error fetching alliance data:", error);
@@ -49,11 +53,10 @@ export async function GET() {
   }
 }
 
-function initializeTeamData(row, auto, tele, end) {
+function initializeTeamData(row, auto, tele, end, frcAPITeamInfo) {
   return {
     team: row.team,
-    teamName: "🤖", // Default name while FRC API is commented out
-    // teamName: frcAPITeamInfo.length == 0 ? "🤖" : frcAPITeamInfo[0].nickname,
+    teamName: frcAPITeamInfo.length === 0 ? "🤖" : frcAPITeamInfo[0].nickname,
 
     auto,
     tele,
@@ -85,6 +88,7 @@ function initializeTeamData(row, auto, tele, end) {
     },
   };
 }
+
 
 function accumulateTeamData(teamData, row, auto, tele, end) {
   teamData.auto += auto;
