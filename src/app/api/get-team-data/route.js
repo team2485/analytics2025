@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sql } from '@vercel/postgres';
 import _ from 'lodash';
 import { tidy, mutate, mean, select, summarizeAll, groupBy, summarize, first, n, median, total, arrange, asc } from '@tidyjs/tidy';
+import { calcEPA, calcAuto, calcTele, calcEnd } from "../../../util/calculations.js";
 
 export const revalidate = 300; // Cache for 5 minutes
 
@@ -37,17 +38,11 @@ export async function GET(request) {
     return mean(index);
   }
 
-  let teamTable = tidy(rows, groupBy(['match'], [summarizeAll(byAveragingNumbers)]));
-
-  // Compute auto, tele, endgame
-  teamTable = tidy(teamTable, mutate({
-    auto: rec => rec.autol1success + rec.autol2success + rec.autol3success + rec.autol4success + rec.autoprocessorsuccess + rec.autonetsuccess || 0,
-    tele: rec => rec.telel1success + rec.telel2success + rec.telel3success + rec.telel4success + rec.teleprocessorsuccess + rec.telenetsuccess || 0,
-    end: rec => rec.endlocation || 0,
-    epa: rec => (rec.autol1success + rec.autol2success + rec.autol3success + rec.autol4success + 
-                 rec.autoprocessorsuccess + rec.autonetsuccess + 
-                 rec.telel1success + rec.telel2success + rec.telel3success + rec.telel4success +
-                 rec.teleprocessorsuccess + rec.telenetsuccess) || 0
+  let teamTable = tidy(rows, mutate({
+    auto: rec => calcAuto(rec),
+    tele: rec => calcTele(rec),
+    end: rec => calcEnd(rec),
+    epa: rec => calcEPA(rec) // Ensure EPA is using the correct calculation
 }));
 
 
@@ -306,7 +301,7 @@ export async function GET(request) {
     lollipop: rows.some(row => row.lollipop === true),
   };
 
-  console.log("Backend End Placement:", returnObject[0].endPlacement);
+  console.log("Backend End Placement:", returnObject[0]);
 
 
   return NextResponse.json(returnObject[0], { status: 200 });

@@ -340,6 +340,13 @@ if (searchParams.get("go") != "go") {
     const tele = (teams[0]?.tele || 0) + (teams[1]?.tele || 0) + (teams[2]?.tele || 0);
     const end = (teams[0]?.end || 0) + (teams[1]?.end || 0) + (teams[2]?.end || 0);
 
+    console.log(auto)
+    console.log(tele)
+    console.log(end)
+
+
+
+
     //calc ranking points
     const RGBColors = {
       red: "#FF9393",
@@ -385,7 +392,7 @@ if (searchParams.get("go") != "go") {
 
     return <div className={styles.lightBorderBox}>
       <div className={styles.scoreBreakdownContainer}>
-        <div style={{background: colors[0]}} className={styles.EPABox}>{Math.round(10*(auto + tele + end))/10}</div>
+        <div style={{background: colors[0]}} className={styles.EPABox}>{(auto + tele + end)}</div>
         <div className={styles.EPABreakdown}>
           <div style={{background: colors[1]}}>A: {Math.round(10*auto)/10}</div>
           <div style={{background: colors[1]}}>T: {Math.round(10*tele)/10}</div>
