@@ -220,44 +220,44 @@ export default function Home() {
                     <td><h2>L4</h2></td>
                     <td><NumericInput 
                       pieceType={"Success"}
-                      internalName={"autol4success"}/>
+                      internalName={"autoL4success"}/>
                       </td>
                     <td><NumericInput 
                       pieceType={"Fail"}
-                      internalName={"autol4fail"}/>
+                      internalName={"autoL4fail"}/>
                       </td>
                     </tr> 
                   <tr>
                   <td><h2>L3</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autol3success"}/>
+                    internalName={"autoL3success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autol3fail"}/>
+                    internalName={"autoL3fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L2</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autol2success"}/>
+                    internalName={"autoL2success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autol2fail"}/>
+                    internalName={"autoL2fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L1</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autol1success"}/>
+                    internalName={"autoL1success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autol1fail"}/>
+                    internalName={"autoL1fail"}/>
                     </td>
                   </tr>
                   </tbody>
@@ -315,44 +315,44 @@ export default function Home() {
                     <td><h2>L4</h2></td>
                     <td><NumericInput 
                       pieceType={"Success"}
-                      internalName={"telel4success"}/>
+                      internalName={"teleL4success"}/>
                       </td>
                     <td><NumericInput 
                       pieceType={"Fail"}
-                      internalName={"telel4fail"}/>
+                      internalName={"teleL4fail"}/>
                       </td>
                     </tr> 
                   <tr>
                   <td><h2>L3</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"telel3success"}/>
+                    internalName={"teleL3success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"telel3fail"}/>
+                    internalName={"teleL3fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L2</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"telel2success"}/>
+                    internalName={"teleL2success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"telel2fail"}/>
+                    internalName={"teleL2fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L1</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"telel1success"}/>
+                    internalName={"teleL1success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"telel1fail"}/>
+                    internalName={"teleL1fail"}/>
                     </td>
                   </tr>
                   </tbody>
@@ -466,7 +466,7 @@ export default function Home() {
               <div className={styles.Intake}>
                 <Checkbox
                   visibleName={"Coral Ground"}
-                  internalName={"coralgrndintake"}
+                  internalName={"coralgndintake"}
                 />
                 <Checkbox
                   visibleName={"Coral Station"}
@@ -474,11 +474,11 @@ export default function Home() {
                 />
                 <Checkbox
                   visibleName={"Lollipop"}
-                  internalName={"lollipop"}
+                  internalName={"algaegndintake"}
                 />
                 <Checkbox
                   visibleName={"Algae Ground"}
-                  internalName={"algaegrndintake"}
+                  internalName={"algaegndintake"}
                 />
                 <Checkbox
                   visibleName={"Algae High Reef"}
