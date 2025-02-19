@@ -40,14 +40,14 @@ export async function POST(req) {
   // Check Auto Data
   if (
     !(
-      _.isNumber(body.autoL1success) &&
-      _.isNumber(body.autoL1fail) &&
-      _.isNumber(body.autoL2success) &&
-      _.isNumber(body.autoL2fail) &&
-      _.isNumber(body.autoL3success) &&
-      _.isNumber(body.autoL3fail) &&
-      _.isNumber(body.autoL4success) &&
-      _.isNumber(body.autoL4fail) &&
+      _.isNumber(body.autol1success) &&
+      _.isNumber(body.autol1fail) &&
+      _.isNumber(body.autol2success) &&
+      _.isNumber(body.autol2fail) &&
+      _.isNumber(body.autol3success) &&
+      _.isNumber(body.autol3fail) &&
+      _.isNumber(body.autol4success) &&
+      _.isNumber(body.autol4fail) &&
       _.isNumber(body.autoprocessorsuccess) &&
       _.isNumber(body.autoprocessorfail) &&
       _.isNumber(body.autonetsuccess) &&
@@ -60,14 +60,14 @@ export async function POST(req) {
   // Check Tele Data
   if (
     !(
-      _.isNumber(body.teleL1success) &&
-      _.isNumber(body.teleL1fail) &&
-      _.isNumber(body.teleL2success) &&
-      _.isNumber(body.teleL2fail) &&
-      _.isNumber(body.teleL3success) &&
-      _.isNumber(body.teleL3fail) &&
-      _.isNumber(body.teleL4success) &&
-      _.isNumber(body.teleL4fail) &&
+      _.isNumber(body.telel1success) &&
+      _.isNumber(body.telel1fail) &&
+      _.isNumber(body.telel2success) &&
+      _.isNumber(body.telel2fail) &&
+      _.isNumber(body.telel3success) &&
+      _.isNumber(body.telel3fail) &&
+      _.isNumber(body.telel4success) &&
+      _.isNumber(body.telel4fail) &&
       _.isNumber(body.telealgaeremoved) &&
       _.isNumber(body.teleprocessorsuccess) &&
       _.isNumber(body.teleprocessorfail) &&
