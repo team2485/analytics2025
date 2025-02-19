@@ -35,7 +35,6 @@ function TeamView() {
     const searchParams = useSearchParams();
     const team = searchParams.get("team");
 
-    console.log(data)
 
     // let data={
     //   team: 2485,
@@ -161,6 +160,7 @@ function TeamView() {
               setLoading(false);
           });
   }
+
   
 
     useEffect(() => {
@@ -544,4 +544,5 @@ function TeamView() {
     </div>
 
     )
+
   }

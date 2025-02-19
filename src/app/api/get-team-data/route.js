@@ -301,7 +301,30 @@ export async function GET(request) {
     lollipop: rows.some(row => row.lollipop === true),
   };
 
-  console.log("Backend End Placement:", returnObject[0]);
+
+  function aggregateByMatch(dataArray) {
+    return tidy(
+      dataArray,
+      groupBy("match", [
+        summarize({
+          epa: mean("epa"),
+          auto: mean("auto"),
+          tele: mean("tele"),
+        }),
+      ])
+    );
+  }
+  
+    let processedEPAOverTime = aggregateByMatch(returnObject[0].epaOverTime);
+    let processedAutoOverTime = aggregateByMatch(returnObject[0].autoOverTime);
+    let processedTeleOverTime = aggregateByMatch(returnObject[0].teleOverTime);
+    
+    returnObject[0].epaOverTime = processedEPAOverTime;
+    returnObject[0].autoOverTime = processedAutoOverTime;
+    returnObject[0].teleOverTime = processedTeleOverTime;
+  
+
+  console.log("Backend End Placement:", returnObject[0].epaOverTime);
 
 
   return NextResponse.json(returnObject[0], { status: 200 });
