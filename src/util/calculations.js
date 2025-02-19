@@ -1,24 +1,24 @@
 function calcAuto(record) {
     return (
-      record.autol1success * 1 + // Level 1 Coral
-      record.autol2success * 2 + // Level 2 Coral
-      record.autol3success * 3 + // Level 3 Coral
-      record.autol4success * 4 + // Level 4 Coral
-      record.autoprocessorsuccess * 3 + // Processor success
-      record.autonetsuccess * 5 + // Net success
+      record.autol1success * 3 + // Level 1 Coral
+      record.autol2success * 4 + // Level 2 Coral
+      record.autol3success * 6 + // Level 3 Coral
+      record.autol4success * 7 + // Level 4 Coral
+      record.autoprocessorsuccess * 6 + // Processor success
+      record.autonetsuccess * 4 + // Net success
       (record.leave ? 2 : 0) // Leaving starting zone bonus
     );
   }
   
   function calcTele(record) {
     return (
-      record.telel1success * 1 + // Level 1 Coral
-      record.telel2success * 2 + // Level 2 Coral
-      record.telel3success * 3 + // Level 3 Coral
-      record.telel4success * 4 + // Level 4 Coral
-      record.teleprocessorsuccess * 3 + // Processor success in teleop
-      record.telenetsuccess * 5 + // Net success in teleop
-      record.hpsuccess * 2 // Human player success bonus
+      record.telel1success * 2 + // Level 1 Coral
+      record.telel2success * 3 + // Level 2 Coral
+      record.telel3success * 4 + // Level 3 Coral
+      record.telel4success * 5 + // Level 4 Coral
+      record.teleprocessorsuccess * 6 + // Processor success in teleop
+      record.telenetsuccess * 4 + // Net success in teleop
+      record.hpsuccess * 1 // Human player success bonus
     );
   }
   
@@ -30,21 +30,19 @@ function calcAuto(record) {
         endgamePoints = 2; // Parked
         break;
       case 2:
-        endgamePoints = 4; // Shallow Dock
+        endgamePoints = 6; // Shallow Dock
         break;
       case 3:
-        endgamePoints = 6; // Deep Dock
+        endgamePoints = 12; // Deep Dock
         break;
       case 4:
-        endgamePoints = 2; // Failed Attempt
+        endgamePoints = 0; // Failed Attempt
         break;
       default:
         endgamePoints = 0; // No endgame placement or invalid value
     }
-  
-    const cageBonus = record.cagesuccess ? record.cagesuccess * 5 : 0;
-  
-    return endgamePoints + cageBonus;
+    
+    return endgamePoints;
   }
   
   function calcEPA(record) {
