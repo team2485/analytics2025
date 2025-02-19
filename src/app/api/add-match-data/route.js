@@ -40,14 +40,14 @@ export async function POST(req) {
   // Check Auto Data
   if (
     !(
-      _.isNumber(body.autoL1success) &&
-      _.isNumber(body.autoL1fail) &&
-      _.isNumber(body.autoL2success) &&
-      _.isNumber(body.autoL2fail) &&
-      _.isNumber(body.autoL3success) &&
-      _.isNumber(body.autoL3fail) &&
-      _.isNumber(body.autoL4success) &&
-      _.isNumber(body.autoL4fail) &&
+      _.isNumber(body.autol1success) &&
+      _.isNumber(body.autol1fail) &&
+      _.isNumber(body.autol2success) &&
+      _.isNumber(body.autol2fail) &&
+      _.isNumber(body.autol3success) &&
+      _.isNumber(body.autol3fail) &&
+      _.isNumber(body.autol4success) &&
+      _.isNumber(body.autol4fail) &&
       _.isNumber(body.autoprocessorsuccess) &&
       _.isNumber(body.autoprocessorfail) &&
       _.isNumber(body.autonetsuccess) &&
@@ -60,14 +60,14 @@ export async function POST(req) {
   // Check Tele Data
   if (
     !(
-      _.isNumber(body.teleL1success) &&
-      _.isNumber(body.teleL1fail) &&
-      _.isNumber(body.teleL2success) &&
-      _.isNumber(body.teleL2fail) &&
-      _.isNumber(body.teleL3success) &&
-      _.isNumber(body.teleL3fail) &&
-      _.isNumber(body.teleL4success) &&
-      _.isNumber(body.teleL4fail) &&
+      _.isNumber(body.telel1success) &&
+      _.isNumber(body.telel1fail) &&
+      _.isNumber(body.telel2success) &&
+      _.isNumber(body.telel2fail) &&
+      _.isNumber(body.telel3success) &&
+      _.isNumber(body.telel3fail) &&
+      _.isNumber(body.telel4success) &&
+      _.isNumber(body.telel4fail) &&
       _.isNumber(body.telealgaeremoved) &&
       _.isNumber(body.teleprocessorsuccess) &&
       _.isNumber(body.teleprocessorfail) &&
@@ -109,13 +109,13 @@ export async function POST(req) {
   // Insert Data into Database**
   let resp = await sql`
     INSERT INTO phr2025 (
-      scoutname, scoutteam, team, match, matchtype, breakdown, noshow, leave, autoL1success, autol1fail, autol2success, autol2fail, autol3success, autol3fail, autol4success, autol4fail, autocoralsuccess, autocoralfail, autoalgaeremoved, autoprocessorsuccess, autoprocessorfail, autonetsuccess, autonetfail, telel1success, telel1fail, telel2success, telel2fail, telel3success, telel3fail, telel4success, telel4fail, telecoralsuccess, telecoralfail, telealgaeremoved, teleprocessorsuccess, teleprocessorfail, telenetsuccess, telenetfail, hpsuccess, hpfail, endlocation, coralspeed, processorspeed, netspeed, algaeremovalspeed, climbspeed, maneuverability, defenseplayed, defenseevasion, aggression, cagehazard, coralgrndintake, coralstationintake, lollipop, algaegrndintake, algaehighreefintake, algaelowreefintake, generalcomments, breakdowncomments, defensecomments
+      scoutname, scoutteam, team, match, matchtype, breakdown, noshow, leave, autol1success, autol1fail, autol2success, autol2fail, autol3success, autol3fail, autol4success, autol4fail, autocoralsuccess, autocoralfail, autoalgaeremoved, autoprocessorsuccess, autoprocessorfail, autonetsuccess, autonetfail, telel1success, telel1fail, telel2success, telel2fail, telel3success, telel3fail, telel4success, telel4fail, telecoralsuccess, telecoralfail, telealgaeremoved, teleprocessorsuccess, teleprocessorfail, telenetsuccess, telenetfail, hpsuccess, hpfail, endlocation, coralspeed, processorspeed, netspeed, algaeremovalspeed, climbspeed, maneuverability, defenseplayed, defenseevasion, aggression, cagehazard, coralgrndintake, coralstationintake, lollipop, algaegrndintake, algaehighreefintake, algaelowreefintake, generalcomments, breakdowncomments, defensecomments
     )
     VALUES (
-      ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchType}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
-      ${body.autoL1success}, ${body.autoL1fail}, ${body.autoL2success}, ${body.autoL2fail}, ${body.autoL3success}, ${body.autoL3fail}, ${body.autoL4success}, ${body.autoL4fail}, 
+      ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchtype}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
+      ${body.autol1success}, ${body.autol1fail}, ${body.autol2success}, ${body.autol2fail}, ${body.autol3success}, ${body.autol3fail}, ${body.autol4success}, ${body.autol4fail}, 
       ${body.autocoralsuccess}, ${body.autocoralfail}, ${body.autoalgaeremoved}, ${body.autoprocessorsuccess}, ${body.autoprocessorfail}, ${body.autonetsuccess}, ${body.autonetfail}, 
-      ${body.teleL1success}, ${body.teleL1fail}, ${body.teleL2success}, ${body.teleL2fail}, ${body.teleL3success}, ${body.teleL3fail}, ${body.teleL4success}, ${body.teleL4fail}, 
+      ${body.telel1success}, ${body.telel1fail}, ${body.telel2success}, ${body.telel2fail}, ${body.telel3success}, ${body.telel3fail}, ${body.telel4success}, ${body.telel4fail}, 
       ${body.telecoralsuccess}, ${body.telecoralfail}, ${body.telealgaeremoved}, ${body.teleprocessorsuccess}, ${body.teleprocessorfail}, ${body.telenetsuccess}, ${body.telenetfail}, 
       ${body.hpsuccess}, ${body.hpfail}, ${body.endlocation}, ${body.coralspeed}, ${body.processorspeed}, ${body.netspeed}, ${body.algaeremovalspeed}, 
       ${body.climbspeed}, ${body.maneuverability}, ${body.defenseplayed}, ${body.defenseevasion}, ${body.aggression}, ${body.cagehazard}, 
