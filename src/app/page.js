@@ -56,7 +56,7 @@ export default function Home() {
     submitButton.disabled = true;
     //import values from form to data variable
 
-    let data = {noshow: false, leave: false, algaelowreefintake: false, algaehighreefintake: false, lollipop: false, algaegndintake: false, coralgndintake: false, coralstationintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null, generalcomments: null };
+    let data = {noshow: false, leave: false, algaelowreefintake: false, algaehighreefintake: false, lollipop: false, algaegrndintake: false, coralgrndintake: false, coralstationintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null, generalcomments: null };
     [...new FormData(form.current).entries()].forEach(([name, value]) => {
       if (value == 'on') {
         data[name] = true;
@@ -220,44 +220,44 @@ export default function Home() {
                     <td><h2>L4</h2></td>
                     <td><NumericInput 
                       pieceType={"Success"}
-                      internalName={"autoL4success"}/>
+                      internalName={"autol4success"}/>
                       </td>
                     <td><NumericInput 
                       pieceType={"Fail"}
-                      internalName={"autoL4fail"}/>
+                      internalName={"autol4fail"}/>
                       </td>
                     </tr> 
                   <tr>
                   <td><h2>L3</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL3success"}/>
+                    internalName={"autol3success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL3fail"}/>
+                    internalName={"autol3fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L2</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL2success"}/>
+                    internalName={"autol2success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL2fail"}/>
+                    internalName={"autol2fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L1</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL1success"}/>
+                    internalName={"autol1success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL1fail"}/>
+                    internalName={"autol1fail"}/>
                     </td>
                   </tr>
                   </tbody>
@@ -315,44 +315,44 @@ export default function Home() {
                     <td><h2>L4</h2></td>
                     <td><NumericInput 
                       pieceType={"Success"}
-                      internalName={"teleL4success"}/>
+                      internalName={"telel4success"}/>
                       </td>
                     <td><NumericInput 
                       pieceType={"Fail"}
-                      internalName={"teleL4fail"}/>
+                      internalName={"telel4fail"}/>
                       </td>
                     </tr> 
                   <tr>
                   <td><h2>L3</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL3success"}/>
+                    internalName={"telel3success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL3fail"}/>
+                    internalName={"telel3fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L2</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL2success"}/>
+                    internalName={"telel2success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL2fail"}/>
+                    internalName={"telel2fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L1</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL1success"}/>
+                    internalName={"telel1success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL1fail"}/>
+                    internalName={"telel1fail"}/>
                     </td>
                   </tr>
                   </tbody>
@@ -466,7 +466,7 @@ export default function Home() {
               <div className={styles.Intake}>
                 <Checkbox
                   visibleName={"Coral Ground"}
-                  internalName={"coralgndintake"}
+                  internalName={"coralgrndintake"}
                 />
                 <Checkbox
                   visibleName={"Coral Station"}
@@ -474,11 +474,11 @@ export default function Home() {
                 />
                 <Checkbox
                   visibleName={"Lollipop"}
-                  internalName={"algaegndintake"}
+                  internalName={"lollipop"}
                 />
                 <Checkbox
                   visibleName={"Algae Ground"}
-                  internalName={"algaegndintake"}
+                  internalName={"algaegrndintake"}
                 />
                 <Checkbox
                   visibleName={"Algae High Reef"}
