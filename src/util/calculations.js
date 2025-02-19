@@ -23,6 +23,7 @@ function calcAuto(record) {
   }
   
   function calcEnd(record) {
+
     let endgamePoints = 0;
   
     switch (record.endlocation) {
