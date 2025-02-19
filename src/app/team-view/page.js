@@ -16,6 +16,8 @@ import Endgame from "./components/Endgame";
 import Qualitative from "./components/Qualitative";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, RadarChart, PolarRadiusAxis, PolarAngleAxis, PolarGrid, Radar, Legend } from 'recharts';
 
+
+
 export default function TeamViewPage() {
     return (
         <Suspense>
@@ -32,6 +34,8 @@ function TeamView() {
     const [error, setError] = useState(null);
     const searchParams = useSearchParams();
     const team = searchParams.get("team");
+
+    console.log(data)
 
     // let data={
     //   team: 2485,
