@@ -18,9 +18,21 @@ export default function Home() {
   const [humanplayer, setHumanPlayer] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
-  const [matchType, setMatchType] = useState("2"); // Default to Qual
+  const [matchType, setMatchType] = useState("2");
+  const [scoutProfile, setScoutProfile] = useState(null);
 
   const form = useRef();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedProfile = localStorage.getItem("ScoutProfile");
+      if (savedProfile) {
+        const profileData = JSON.parse(savedProfile)
+        setScoutProfile(profileData);
+        setMatchType(profileData.matchType || "2")
+      }
+    }
+  }, []);
   
   function onNoShowChange(e) {
     let checked = e.target.checked;
@@ -139,15 +151,19 @@ export default function Home() {
           let ScoutName = document.querySelector("input[name='scoutname']").value;
           let ScoutTeam = document.querySelector("input[name='scoutteam']").value;
           let Match = document.querySelector("input[name='match']").value;
-          let MatchType = matchType;
-          let scoutProfile = { 
+          let newProfile = { 
             scoutname: ScoutName, 
             scoutteam: ScoutTeam, 
             match: Number(Match)+1,
-            matchType: MatchType 
+            matchType: matchType 
           };
-          localStorage.setItem("ScoutProfile", JSON.stringify(scoutProfile));
+          setScoutProfile(newProfile);
+          localStorage.setItem("ScoutProfile", JSON.stringify(newProfile));
+          console.log(scoutProfile)
         }
+
+        globalThis.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
         setTimeout(() => {
           location.reload()
         }, 2000);
@@ -162,6 +178,7 @@ export default function Home() {
       submitButton.disabled = false;
     };
   }
+console.log("page",matchType)
 
   return (
     <div className={styles.MainDiv}>
@@ -172,12 +189,12 @@ export default function Home() {
         <TextInput 
             visibleName={"Scout Name:"} 
             internalName={"scoutname"} 
-            defaultValue={""}
+            defaultValue={scoutProfile?.scoutname || ""}
           />
           <TextInput 
             visibleName={"Team #:"} 
             internalName={"scoutteam"} 
-            defaultValue={""}
+            defaultValue={scoutProfile?.scoutteam || ""}
             type={"number"}
           />
           <TextInput
@@ -189,11 +206,11 @@ export default function Home() {
           <TextInput 
             visibleName={"Match #:"} 
             internalName={"match"} 
-            defaultValue={""}
+            defaultValue={scoutProfile?.match || ""}
             type={"number"}
           />
         </div>
-        <MatchType onMatchTypeChange={handleMatchTypeChange}/>
+        <MatchType onMatchTypeChange={handleMatchTypeChange} defaultValue={matchType}/>
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
@@ -265,7 +282,7 @@ export default function Home() {
                 </div>
               </div>
               <div className={styles.AlgaeRemoved}>
-                <SubHeader subHeaderName={"Algae Removed"}/>
+                <SubHeader subHeaderName={"Algae Removed Intentionally"}/>
                 <div className={styles.HBox}>
                   <NumericInput 
                     pieceType={"Counter"}
@@ -360,7 +377,7 @@ export default function Home() {
                 </div>
               </div>
               <div className={styles.AlgaeRemoved}>
-                <SubHeader subHeaderName={"Algae Removed"}/>
+                <SubHeader subHeaderName={"Algae Removed Intentionally"}/>
                 <div className={styles.HBox}>
                   <NumericInput 
                     pieceType={"Counter"}

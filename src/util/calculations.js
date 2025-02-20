@@ -23,28 +23,33 @@ function calcAuto(record) {
   }
   
   function calcEnd(record) {
+    const roundedEndLocation = Math.round(record.endlocation); // Ensure it's an integer
+
+    console.log(`Calculating Endgame Points for endlocation ${record.endlocation} (rounded to ${roundedEndLocation})`);
 
     let endgamePoints = 0;
-  
-    switch (record.endlocation) {
-      case 1:
-        endgamePoints = 2; // Parked
-        break;
-      case 2:
-        endgamePoints = 6; // Shallow Dock
-        break;
-      case 3:
-        endgamePoints = 12; // Deep Dock
-        break;
-      case 4:
-        endgamePoints = 0; // Failed Attempt
-        break;
-      default:
-        endgamePoints = 0; // No endgame placement or invalid value
+
+    switch (roundedEndLocation) {
+        case 1:
+            endgamePoints = 2; // Parked
+            break;
+        case 2:
+            endgamePoints = 6; // Shallow Dock
+            break;
+        case 3:
+            endgamePoints = 12; // Deep Dock
+            break;
+        case 4:
+            endgamePoints = 0; // Failed Attempt
+            break;
+        default:
+            endgamePoints = 0; // Invalid value
     }
-    
+
     return endgamePoints;
-  }
+}
+
+
   
   function calcEPA(record) {
     return calcAuto(record) + calcTele(record) + calcEnd(record);
