@@ -12,10 +12,7 @@ export default function Picklist() {
   const [weights, setWeights] = useState({});
   const [teamRatings, setTeamRatings] = useState({});
   const [weightsChanged, setWeightsChanged] = useState(false);
-  const [rankAdjustments, setRankAdjustments] = useState({});
-  const [originalPositions, setOriginalPositions] = useState({});
-  const [finalPositions, setFinalPositions] = useState({});
-  const [adjustmentTriggered, setAdjustmentTriggered] = useState (false);
+  const [isClient, setIsClient] = useState(false);
 
 
   const weightsFormRef = useRef();
@@ -24,15 +21,11 @@ export default function Picklist() {
   const greenToRedColors = ["#9ADC83", "#BECC72", "#E1BB61", "#F0A56C", "#FF8E76"];
 
   useEffect(() => {
+    setIsClient(true);
+
     const urlParams = new URLSearchParams(window.location.search);
     const urlWeights = Object.fromEntries(urlParams);
     setWeights(urlWeights);
-
-    const storedFinalPositions = localStorage.getItem('finalPositions');
-    if (storedFinalPositions) {
-      const positions = JSON.parse(storedFinalPositions);
-      setFinalPositions(positions);
-    }
 
     const storedRatings = localStorage.getItem('teamRatings');
     if (storedRatings) {
@@ -64,8 +57,6 @@ export default function Picklist() {
 
     const urlParams = new URLSearchParams([...weightEntries, ...Object.entries(allianceData).flatMap(([allianceNumber, teams]) => teams.map((team, index) => [`T${allianceNumber}A${index + 1}`, team]))]);
     window.history.replaceState(null, '', `?${urlParams.toString()}`);
-
-    // Original fetch code commented out --> uncomment when regionals are coming out
     
     const picklist = await fetch('/api/compute-picklist', {
       method: 'POST',
@@ -119,57 +110,10 @@ export default function Picklist() {
     //   },
     // ];
     
-     // First, set the original positions based on the calculated order
-    const originalPos = {};
-    picklist.forEach((team, index) => {
-      originalPos[team.team] = index;
-    });
-    setOriginalPositions(originalPos);
 
-    // Create a new picklist that applies stored adjustments
-    let newPicklist = [...picklist];
-    const storedAdjustments = {};
-    
-    // Calculate current adjustments based on final positions
-    if (Object.keys(finalPositions).length > 0) {
-      newPicklist.forEach((teamData) => {
-        const originalIndex = originalPos[teamData.team];
-        const storedPosition = finalPositions[teamData.team];
-        if (storedPosition !== undefined) {
-          const currentAdjustment = originalIndex - storedPosition;
-          storedAdjustments[teamData.team] = currentAdjustment;
-        }
-      });
-
-      // Sort the picklist based on the stored adjustments
-      newPicklist.sort((a, b) => {
-        const adjA = storedAdjustments[a.team] || 0;
-        const adjB = storedAdjustments[b.team] || 0;
-        const baseA = originalPos[a.team];
-        const baseB = originalPos[b.team];
-        return (baseA - adjA) - (baseB - adjB);
-      });
-    }
-
-    // Update the rank adjustments state
-    const newRankAdjustments = {};
-    newPicklist.forEach((teamData, currentIndex) => {
-      const originalIndex = originalPos[teamData.team];
-      newRankAdjustments[teamData.team] = originalIndex - currentIndex;
-    });
-
-    setPicklist(newPicklist);
+    setPicklist(picklist);
     setMaxScore(picklist[0].score);
     setWeightsChanged(false);
-    setRankAdjustments(newRankAdjustments);
-
-    // Update final positions based on new order
-    const newFinalPositions = {};
-    newPicklist.forEach((teamData, index) => {
-      newFinalPositions[teamData.team] = index;
-    });
-    setFinalPositions(newFinalPositions);
-    localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
   }
 
   function updateAlliancesData(allianceNumber, allianceTeams) {
@@ -225,10 +169,12 @@ export default function Picklist() {
   }
 
   
-  function CommentCell ({ team }){
+  function CommentCell({ team }) {
     const [comment, setComment] = useState('');
+    const [mounted, setMounted] = useState(false);
   
     useEffect(() => {
+      setMounted(true);
       const savedComments = localStorage.getItem('teamComments');
       if (savedComments) {
         const comments = JSON.parse(savedComments);
@@ -245,6 +191,10 @@ export default function Picklist() {
       localStorage.setItem('teamComments', JSON.stringify(savedComments));
     };
   
+    if (!mounted) {
+      return <textarea className={styles.commentBox} />;
+    }
+  
     return (
       <textarea 
         value={comment}
@@ -252,7 +202,7 @@ export default function Picklist() {
         className={styles.commentBox}
       />
     );
-  };
+  }
 
   const AllianceRow = ({ allianceNumber, allianceData, handleAllianceChange }) => {
     const firstValue = allianceData ? allianceData[0] : '';
@@ -286,6 +236,7 @@ export default function Picklist() {
   };
 
   function PicklistTable() {
+    
     const valueToColor = (value) => {
       if (value > 0.8) return greenToRedColors[0];
       if (value > 0.6) return greenToRedColors[1];
@@ -295,64 +246,21 @@ export default function Picklist() {
     };
 
     function handleThumbsUp(team) {
-      setTeamRatings({ ...teamRatings, [team]: true });
-    };
-
-    function handleThumbsDown(team) {
-      setTeamRatings({ ...teamRatings, [team]: false });
-    };
-
-    function handleMeh(team) {
-      setTeamRatings({ ...teamRatings, [team]: undefined });
-    };
-
-    function handleUp(team, currentIndex) {
-      if (currentIndex > 0) {
-        const newPicklist = [...picklist];
-        // Perform the swap
-        [newPicklist[currentIndex], newPicklist[currentIndex - 1]] = 
-        [newPicklist[currentIndex - 1], newPicklist[currentIndex]];
-        
-        // Update rank adjustments and final positions for all teams
-        const newFinalPositions = {};
-
-        newPicklist.forEach((teamData, idx) => {
-          newFinalPositions[teamData.team] = idx;
-          const originalIndex = originalPositions[teamData.team];
-          newRankAdjustments[teamData.team] = originalIndex - idx;
-        });
-        
-        setRankAdjustments(newRankAdjustments);
-        setFinalPositions(newFinalPositions);
-        localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
-        setPicklist(newPicklist);
-        setAdjustmentTriggered(true);
-      }
+      const newRatings = { ...teamRatings, [team]: true };
+      setTeamRatings(newRatings);
+      localStorage.setItem('teamRatings', JSON.stringify(newRatings));
     }
-    
-    function handleDown(team, currentIndex) {
-      if (currentIndex < picklist.length - 1) {
-        const newPicklist = [...picklist];
-        // Perform the swap
-        [newPicklist[currentIndex], newPicklist[currentIndex + 1]] = 
-        [newPicklist[currentIndex + 1], newPicklist[currentIndex]];
-        
-        // Update rank adjustments and final positions for all teams
-        const newRankAdjustments = {};
-        const newFinalPositions = {};
-
-        newPicklist.forEach((teamData, idx) => {
-          newFinalPositions[teamData.team] = idx;
-          const originalIndex = originalPositions[teamData.team];
-          newRankAdjustments[teamData.team] = originalIndex - idx;
-        });
-        
-        setRankAdjustments(newRankAdjustments);
-        setFinalPositions(newFinalPositions);
-        localStorage.setItem('finalPositions', JSON.stringify(newFinalPositions));
-        setPicklist(newPicklist);
-        setAdjustmentTriggered(true);
-      }
+  
+    function handleThumbsDown(team) {
+      const newRatings = { ...teamRatings, [team]: false };
+      setTeamRatings(newRatings);
+      localStorage.setItem('teamRatings', JSON.stringify(newRatings));
+    }
+  
+    function handleMeh(team) {
+      const newRatings = { ...teamRatings, [team]: undefined };
+      setTeamRatings(newRatings);
+      localStorage.setItem('teamRatings', JSON.stringify(newRatings));
     }
     
 
@@ -364,8 +272,10 @@ export default function Picklist() {
         </div>
       );
     }
+    
 
     const roundToThree = (x) => Math.round(x * 1000) / 1000;
+    
 
     return (
       <div className={styles.picklistContainer}>
@@ -395,24 +305,21 @@ export default function Picklist() {
               if (teamsToExclude.includes(teamData.team)) {
                 return <tr key={teamData.team} style={{display: "none"}}></tr>
               } else {
-                const originalRank = originalPositions[teamData.team] + 1;
-                const currentRank = index + 1;
-                const adjustment = rankAdjustments[teamData.team] || 0;
-                const adjustmentText = adjustment !== 0 ? ` (${adjustment > 0 ? `+${adjustment}` : adjustment})` : '   ';
-                const displayRank = `#${currentRank}${adjustmentText}`;
+                const displayRank = `#${index + 1}`;
+                const tbaRank = (teamData.tbaRank !== -1 ? `${teamData.tbaRank}` : "");
                 
                 return (
                   <tr key={teamData.team}>
                     <td>
                       <div className={styles.picklistRank}>
-                        <div className={styles.arrows}>
-                          <button onClick={() => handleUp(teamData.team, index)}>⬆️</button>
-                          <button onClick={() => handleDown(teamData.team, index)}>⬇️</button>
-                        </div>
+                        {/* <div className={styles.arrows}>
+                          <button onClick={() => handleUp()}>⬆️</button>
+                          <button onClick={() => handleDown()}>⬇️</button>
+                        </div> */}
                         {displayRank}
                       </div>
                     </td>
-                      <td>#{teamData.firstRanking}</td>
+                      <td>#{tbaRank}</td>
                       <td><a href={`/team-view?team=${teamData.team}`}>{teamData.team}
                         {teamRatings[teamData.team] === true && '✅'}
                         {teamRatings[teamData.team] === false && '❌'}
@@ -494,6 +401,10 @@ export default function Picklist() {
         </div>
       </form>
     );
+  }
+
+  if (!isClient) {
+    return <div>Loading...</div>;
   }
 
   return (
