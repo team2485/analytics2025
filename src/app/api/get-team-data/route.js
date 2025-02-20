@@ -125,39 +125,47 @@ export async function GET(request) {
     auto: arr => ({
       coral: {
         
-        total: (() => rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0)), 0))(),
-
+          total: (() => rows.reduce((sum, row) => 
+          sum + (
+              (row.autol1success || 0) +
+              (row.autol2success || 0) +
+              (row.autol3success || 0) +
+              (row.autol4success || 0)
+          ) / 4, 0)
+      )(),
+    
         success: (() => {
           const totalSuccess = rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0)), 0);
           const totalAttempts = rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0) + (row.autol1fail || 0) + (row.autol2fail || 0) + (row.autol3fail || 0) + (row.autol4fail || 0)), 0);
           return totalAttempts > 0 ? (totalSuccess / totalAttempts) * 100 : 0;
         })(),
-        avgL1: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel1success || 0), 0) / rows.length : 0)(),
-        avgL2: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel2success || 0), 0) / rows.length : 0)(),
-        avgL3: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel3success || 0), 0) / rows.length : 0)(),
-        avgL4: (() => rows.length ? rows.reduce((sum, row) => sum + (row.telel4success || 0), 0) / rows.length : 0)(),
+        avgL1: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autol1success || 0), 0) / rows.length : 0)(),
+        avgL2: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autol2success || 0), 0) / rows.length : 0)(),
+        avgL3: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autol3success || 0), 0) / rows.length : 0)(),
+        avgL4: (() => rows.length ? rows.reduce((sum, row) => sum + (row.autol4success || 0), 0) / rows.length : 0)(),
+
 
         successL1: (() => {
-          const successes = rows.reduce((sum, row) => sum + (row.telel1success || 0), 0);
-          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel1fail || 0), 0);
+          const successes = rows.reduce((sum, row) => sum + (row.autol1success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.autol1fail || 0), 0);
           return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
         })(),
-
+    
         successL2: (() => {
-          const successes = rows.reduce((sum, row) => sum + (row.telel2success || 0), 0);
-          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel2fail || 0), 0);
+          const successes = rows.reduce((sum, row) => sum + (row.autol2success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.autol2fail || 0), 0);
           return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
         })(),
-
+    
         successL3: (() => {
-          const successes = rows.reduce((sum, row) => sum + (row.telel3success || 0), 0);
-          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel3fail || 0), 0);
+          const successes = rows.reduce((sum, row) => sum + (row.autol3success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.autol3fail || 0), 0);
           return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
         })(),
-
+    
         successL4: (() => {
-          const successes = rows.reduce((sum, row) => sum + (row.telel4success || 0), 0);
-          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.telel4fail || 0), 0);
+          const successes = rows.reduce((sum, row) => sum + (row.autol4success || 0), 0);
+          const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.autol4fail || 0), 0);
           return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
         })(),
 
@@ -185,8 +193,18 @@ export async function GET(request) {
 
     tele: arr => ({
       coral: {
-        total: (() => rows.reduce((sum, row) => sum + ((row.telel1success || 0) + (row.telel2success || 0) + (row.telel3success || 0) + (row.telel4success || 0)), 0))(),
-        success: (() => {
+        total: (() => {
+          const totalSuccess = rows.reduce((sum, row) => 
+              sum + (row.telel1success || 0) +
+                     (row.telel2success || 0) +
+                     (row.telel3success || 0) +
+                     (row.telel4success || 0), 
+          0);
+          return totalSuccess / rows.length;
+      })(),
+      
+    
+    success: (() => {
           const totalSuccess = rows.reduce((sum, row) => sum + ((row.telel1success || 0) + (row.telel2success || 0) + (row.telel3success || 0) + (row.telel4success || 0)), 0);
           const totalAttempts = rows.reduce((sum, row) => sum + ((row.telel1success || 0) + (row.telel2success || 0) + (row.telel3success || 0) + (row.telel4success || 0) + (row.telel1fail || 0) + (row.telel2fail || 0) + (row.telel3fail || 0) + (row.telel4fail || 0)), 0);
           return totalAttempts > 0 ? (totalSuccess / totalAttempts) * 100 : 0;
