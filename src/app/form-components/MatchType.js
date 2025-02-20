@@ -1,14 +1,24 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './MatchType.module.css';
 
-export default function MatchType({ onMatchTypeChange }) {
-    const [selectedType, setSelectedType] = useState("2"); // Default to Qual
+export default function MatchType({ onMatchTypeChange, defaultValue }) {
+    const [selectedType, setSelectedType] = useState(defaultValue);
+
+    useEffect(() => {
+        if (defaultValue) {
+            setSelectedType(defaultValue);
+            onMatchTypeChange(defaultValue)
+        }
+    }, [setSelectedType, onMatchTypeChange]);
 
     const handleChange = (e) => {
-        setSelectedType(e.target.value);
-        onMatchTypeChange(e.target.value);
+        const newValue = e.target.value;
+        setSelectedType(newValue);
+        onMatchTypeChange(newValue);
     };
+    console.log("matchtype",selectedType);
+    console.log("default value",defaultValue)
 
     return (
         <div className={styles.MatchType}>

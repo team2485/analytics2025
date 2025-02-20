@@ -71,7 +71,7 @@ export async function GET(request) {
   .then(data => {
     if (!data || !data.nickname) { 
       console.warn(`TBA API Warning: No nickname found for team ${team}`);
-      return "Unknown Team";  // Provide a default fallback
+      return "";  // Provide a default fallback
     }
     return data.nickname;
   });
