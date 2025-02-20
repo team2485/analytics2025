@@ -100,7 +100,7 @@ export async function POST(req) {
       _.isNumber(body.cagehazard)
       )
   ) {
-    return NextResponse.json({ message: "Invalid Endgame Data!" }, { status: 400 });
+    return NextResponse.json({ message: "Invalid Qualitative Data!" }, { status: 400 });
   }
   // Check Comments
   if (
