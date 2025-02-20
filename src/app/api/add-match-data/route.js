@@ -80,19 +80,28 @@ export async function POST(req) {
   
   // Check Endgame Data
   if (
-    !(
-      _.isNumber(body.endlocation) &&
-      _.isNumber(body.coralspeed) &&
-      _.isNumber(body.processorspeed) &&
-      _.isNumber(body.netspeed) &&
-      _.isNumber(body.algaeremovalspeed) &&
-      _.isNumber(body.climbspeed)    )
+    !(_.isNumber(body.endlocation))
   ) {
     return NextResponse.json({ message: "Invalid Endgame Data!" }, { status: 400 });
   }
   
   // Check Qualitative Data
-  
+  if (
+    !(
+      _.isNumber(body.coralspeed) &&
+      _.isNumber(body.processorspeed) &&
+      _.isNumber(body.netspeed) &&
+      _.isNumber(body.algaeremovalspeed) &&
+      _.isNumber(body.climbspeed)  &&
+      _.isNumber(body.maneuverability)  &&
+      _.isNumber(body.defenseplayed)  &&
+      _.isNumber(body.defenseevasion)  &&
+      _.isNumber(body.aggression)  &&
+      _.isNumber(body.cagehazard)
+      )
+  ) {
+    return NextResponse.json({ message: "Invalid Qualitative Data!" }, { status: 400 });
+  }
   // Check Comments
   if (
     !(
@@ -112,7 +121,7 @@ export async function POST(req) {
       scoutname, scoutteam, team, match, matchtype, breakdown, noshow, leave, autol1success, autol1fail, autol2success, autol2fail, autol3success, autol3fail, autol4success, autol4fail, autoalgaeremoved, autoprocessorsuccess, autoprocessorfail, autonetsuccess, autonetfail, telel1success, telel1fail, telel2success, telel2fail, telel3success, telel3fail, telel4success, telel4fail, telealgaeremoved, teleprocessorsuccess, teleprocessorfail, telenetsuccess, telenetfail, hpsuccess, hpfail, endlocation, coralspeed, processorspeed, netspeed, algaeremovalspeed, climbspeed, maneuverability, defenseplayed, defenseevasion, aggression, cagehazard, coralgrndintake, coralstationintake, lollipop, algaegrndintake, algaehighreefintake, algaelowreefintake, generalcomments, breakdowncomments, defensecomments
     )
     VALUES (
-      ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${body.match}, ${body.matchtype}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
+      ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${adjustedMatch}, ${body.matchType}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
       ${body.autol1success}, ${body.autol1fail}, ${body.autol2success}, ${body.autol2fail}, ${body.autol3success}, ${body.autol3fail}, ${body.autol4success}, ${body.autol4fail}, 
       ${body.autoalgaeremoved}, ${body.autoprocessorsuccess}, ${body.autoprocessorfail}, ${body.autonetsuccess}, ${body.autonetfail}, 
       ${body.telel1success}, ${body.telel1fail}, ${body.telel2success}, ${body.telel2fail}, ${body.telel3success}, ${body.telel3fail}, ${body.telel4success}, ${body.telel4fail}, 
