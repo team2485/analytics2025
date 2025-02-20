@@ -8,13 +8,16 @@ export async function POST(request) {
 
   let data = await sql`SELECT * FROM phr2025;`;
   let rows = data.rows;
+  console.log(rows)
 
   // Average numerical fields and handle exceptions
   function averageField(index) {
     if (['breakdown', 'leave', 'noshow'].includes(index)) return arr => arr.some(row => row[index] === true);
     if (['scoutname', 'generalcomments', 'breakdowncomments', 'defensecomments'].includes(index)) return arr => arr.map(row => row[index]).join(', ');
     const validValues = arr => arr.map(row => row[index]).filter(val => val != null && !isNaN(val));
-    return arr => validValues(arr).length > 0 ? validValues(arr).reduce((sum, v) => sum + v, 0) / validValues(arr).length : 0;
+    return arr => validValues(arr).length > 0 
+      ? validValues(arr).reduce((sum, v) => sum + v, 0) / validValues(arr).length 
+      : 0;    
   }
 
   let teamTable = tidy(rows, groupBy(['team', 'match'], [summarizeAll(averageField)]));
@@ -22,57 +25,106 @@ export async function POST(request) {
   teamTable = tidy(teamTable, groupBy(['team'], [summarizeAll(averageField)]));
 
   const calcConsistency = (dr) => {
-    const arr = [dr.coral, dr.algae, dr.cage, dr.consistency].filter(a => a >= 0);
-    return arr.length > 0 ? arr.reduce((sum, value) => sum + value, 0) / arr.length : 0;
-  };
+    // Calculate success rate for auto and tele piece placement
+    const autoSuccess = (dr.autol1success || 0) + (dr.autol2success || 0) + (dr.autol3success || 0) + (dr.autol4success || 0);
+    const autoAttempts = autoSuccess + (dr.autol1fail || 0) + (dr.autol2fail || 0) + (dr.autol3fail || 0) + (dr.autol4fail || 0);
+
+    const teleSuccess = (dr.telel1success || 0) + (dr.telel2success || 0) + (dr.telel3success || 0) + (dr.telel4success || 0);
+    const teleAttempts = teleSuccess + (dr.telel1fail || 0) + (dr.telel2fail || 0) + (dr.telel3fail || 0) + (dr.telel4fail || 0);
+
+    const successRate = (autoAttempts + teleAttempts) > 0 
+        ? ((autoSuccess + teleSuccess) / (autoAttempts + teleAttempts)) * 100 
+        : 0;
+
+    // Endgame success (shallow or deep dock)
+    const endgameSuccess = (dr.endlocation === 2 || dr.endlocation === 3) ? 1 : 0;
+
+    // No-show penalty
+    const noShowPenalty = dr.noshow ? 0 : 1;
+
+    // Average of success metrics
+    const metrics = [successRate, endgameSuccess * 100, noShowPenalty * 100];
+    const validMetrics = metrics.filter(val => val >= 0);
+
+    return validMetrics.length > 0
+        ? validMetrics.reduce((sum, value) => sum + value, 0) / validMetrics.length
+        : 0;
+};
+
 
   teamTable = tidy(teamTable, mutate({
     auto: d => calcAuto({
-      autoL1success: d.autoL1success || 0,
-      autoL2success: d.autoL2success || 0,
-      autoL3success: d.autoL3success || 0,
-      autoL4success: d.autoL4success || 0,
+      autol1success: d.autol1success || 0,
+      autol2success: d.autol2success || 0,
+      autol3success: d.autol3success || 0,
+      autol4success: d.autol4success || 0,
       autoprocessorsuccess: d.autoprocessorsuccess || 0,
       autonetsuccess: d.autonetsuccess || 0,
       leave: d.leave || false,
     }),
     tele: d => calcTele({
-      teleL1success: d.teleL1success || 0,
-      teleL2success: d.teleL2success || 0,
-      teleL3success: d.teleL3success || 0,
-      teleL4success: d.teleL4success || 0,
-      telealgaeprocessor: d.telealgaeprocessor || 0,
-      telealgaenet: d.telealgaenet || 0,
-      hpsuccess: d.hpsuccess || 0,
-    }),
+      telel1success: d.telel1success || 0,
+      telel2success: d.telel2success || 0,
+      telel3success: d.telel3success || 0,
+      telel4success: d.telel4success || 0,
+      teleprocessorsuccess: d.teleprocessorsuccess || 0,
+      telenetsuccess: d.telenetsuccess || 0,
+      hpsuccess: d.hpsuccess || 0
+    }),    
     end: d => calcEnd({
-      endlocation: d.endlocation || 0,
-      cagesuccess: d.cagesuccess || 0,
+      endlocation: d.endlocation || 0
     }),
     epa: d => calcEPA({
-      autoL1success: d.autoL1success || 0,
-      autoL2success: d.autoL2success || 0,
-      autoL3success: d.autoL3success || 0,
-      autoL4success: d.autoL4success || 0,
+      autol1success: d.autol1success || 0,
+      autol2success: d.autol2success || 0,
+      autol3success: d.autol3success || 0,
+      autol4success: d.autol4success || 0,
       autoprocessorsuccess: d.autoprocessorsuccess || 0,
       autonetsuccess: d.autonetsuccess || 0,
       leave: d.leave || false,
-      teleL1success: d.teleL1success || 0,
-      teleL2success: d.teleL2success || 0,
-      teleL3success: d.teleL3success || 0,
-      teleL4success: d.teleL4success || 0,
-      telealgaeprocessor: d.telealgaeprocessor || 0,
-      telealgaenet: d.telealgaenet || 0,
+      telel1success: d.telel1success || 0,
+      telel2success: d.telel2success || 0,
+      telel3success: d.telel3success || 0,
+      telel4success: d.telel4success || 0,
+      teleprocessorsuccess: d.teleprocessorsuccess || 0,
+      telenetsuccess: d.telenetsuccess || 0,
       hpsuccess: d.hpsuccess || 0,
-      endlocation: d.endlocation || 0,
-      cagesuccess: d.cagesuccess || 0,
-    }),
+      endlocation: d.endlocation || 0
+    }),    
+    cage: d => {
+      const roundedEndLocation = Math.round(d.endlocation ?? 0);
+      if (roundedEndLocation === 2) return 6;  // Shallow Cage
+      if (roundedEndLocation === 3) return 12; // Deep Cage
+      return 0;  // No cage success or failed attempt
+  },
+
     consistency: d => calcConsistency(d),
-    defense: d => Math.max(d.defense || 0, 0)
+    coral: d => {
+      const success = (d.autol1success || 0) + (d.autol2success || 0) + (d.autol3success || 0) + (d.autol4success || 0) +
+                     (d.telel1success || 0) + (d.telel2success || 0) + (d.telel3success || 0) + (d.telel4success || 0);
+      const fail = (d.autol1fail || 0) + (d.autol2fail || 0) + (d.autol3fail || 0) + (d.autol4fail || 0) +
+                   (d.telel1fail || 0) + (d.telel2fail || 0) + (d.telel3fail || 0) + (d.telel4fail || 0);
+      const totalAttempts = success + fail;
+      return totalAttempts > 0 ? (success / totalAttempts) * 100 : 0;
+    },
+    
+    algae: d => {
+      const success = (d.autoprocessorsuccess || 0) + (d.teleprocessorsuccess || 0) +
+                      (d.autonetsuccess || 0) + (d.telenetsuccess || 0);
+      const fail = (d.autoprocessorfail || 0) + (d.teleprocessorfail || 0) +
+                   (d.autonetfail || 0) + (d.telenetfail || 0);
+      const totalAttempts = success + fail;
+      return totalAttempts > 0 ? (success / totalAttempts) * 100 : 0;
+  },
+  
+  
+  defense: d => {
+    const defensePlayed = d.defenseplayed || 0;
+    return defensePlayed > 0 ? defensePlayed * 10 : 0;  // Scale as needed (example: x10 for visibility)
+},
 }), select(['team', 'auto', 'tele', 'end', 'epa', 'cage', 'consistency', 'coral', 'algae', 'defense']));
 
 
-  console.log(teamTable)
   const maxes = tidy(teamTable, summarizeAll(max))[0];
 
   teamTable = tidy(teamTable, mutate({
@@ -85,8 +137,14 @@ export async function POST(request) {
     coral: d => maxes.coral ? d.coral / maxes.coral : 0,
     algae: d => maxes.algae ? d.algae / maxes.algae : 0,
     defense: d => maxes.defense ? d.defense / maxes.defense : 0,
-    score: d => requestBody.reduce((sum, [key, weight]) => sum + ((d[key] || 0) * parseFloat(weight)), 0)
-  }), arrange(desc('score')));
+    score: d => requestBody.reduce((sum, [key, weight]) => {
+      const value = d[key] ?? 0;
+      return sum + (value * parseFloat(weight));
+    }, 0),
+      }), arrange(desc('score')));
+
+  console.log(teamTable)
+
 
   return NextResponse.json(teamTable, { status: 200 });
 }
