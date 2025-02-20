@@ -124,15 +124,16 @@ export async function GET(request) {
 
     auto: arr => ({
       coral: {
-        
-          total: (() => rows.reduce((sum, row) => 
-          sum + (
-              (row.autol1success || 0) +
-              (row.autol2success || 0) +
-              (row.autol3success || 0) +
-              (row.autol4success || 0)
-          ) / 4, 0)
-      )(),
+
+      total: (() => {
+        const totalSuccess = rows.reduce((sum, row) => 
+            sum + (row.autol1success || 0) +
+                   (row.autol2success || 0) +
+                   (row.autol3success || 0) +
+                   (row.autol4success || 0), 
+        0);
+        return totalSuccess / rows.length;
+    })(),
     
         success: (() => {
           const totalSuccess = rows.reduce((sum, row) => sum + ((row.autol1success || 0) + (row.autol2success || 0) + (row.autol3success || 0) + (row.autol4success || 0)), 0);
