@@ -72,6 +72,51 @@ export async function POST(request) {
 }), select(['team', 'auto', 'tele', 'end', 'epa', 'cage', 'consistency', 'coral', 'algae', 'defense']));
 
 
+  
+ // Fetch TBA Rankings
+ async function getTBARankings() {
+  try {
+    const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025caph/rankings`, {
+      headers: {
+        'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      console.error(`TBA API Error: ${response.status}`);
+      return []; // Return empty array if API fails
+    }
+
+    const data = await response.json();
+    return data.rankings.map(team => ({
+      teamNumber: team.team_key.replace('frc', ''),
+      rank: team.rank
+    }));
+  } catch (error) {
+    console.error('Error fetching TBA rankings:', error);
+    return [];
+  }
+}
+
+// Get rankings and add them to team data
+try {
+  const tbaRankings = await getTBARankings();
+  teamTable = teamTable.map(teamData => {
+    const rankedData = tbaRankings.find(rankedTeam => 
+      rankedTeam.teamNumber == teamData.team
+    );
+    
+    return {
+      ...teamData,
+      tbaRank: rankedData ? rankedData.rank : -1
+    };
+  });
+} catch (error) {
+  console.error('Error updating rankings:', error);
+  // Continue without rankings if there's an error
+}
+
   console.log(teamTable)
   const maxes = tidy(teamTable, summarizeAll(max))[0];
 
@@ -94,35 +139,50 @@ export async function POST(request) {
 
 
 
-  // ============================
-  //  FRC API FETCH - COMMENTED OUT FOR NOW 
-  // ============================
+// // Update team data with rankings
+// async function updateTeamRankings(teamTable) {
+//   const firstRankings = await getTBARankings;
 
-  /*
-  const frcAPITeamRankings = await fetch("https://frc-api.firstinspires.org/v3.0/2025/rankings/CURIE", {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + process.env.FIRST_AUTH_TOKEN, // Make sure to store the API key in .env
-    }
-  }).then(resp => {
-    if (resp.status !== 200) {
-      return { Rankings: [] }; // Return an empty array if the API fails
-    }
-    return resp.json();
-  }).then(data => data.Rankings);
-  */
+//   return teamTable.map(teamData => {
+//     let firstRanking = -1;
+//     let rankedData = firstRankings.filter(rankedTeamData => 
+//       rankedTeamData.teamNumber == teamData.team
+//     );
+    
+//     if (rankedData.length == 1) {
+//       firstRanking = rankedData[0].rank;
+//     }
+    
+//     return {
+//       ...teamData,
+//       firstRanking,
+//     };
+//   });
+// }
 
-  /*
-  // Add FRC API Rankings to team data
-  teamTable = teamTable.map(teamData => {
-    let firstRanking = -1;
-    let rankedData = frcAPITeamRankings.filter(rankedTeamData => rankedTeamData.teamNumber == teamData.team);
-    if (rankedData.length == 1) {
-      firstRanking = rankedData[0].rank;
-    }
-    return {
-      ...teamData,
-      firstRanking,
-    };
-  });
-  */
+// const frcAPITeamRankings = await fetch("https://frc-api.firstinspires.org/v3.0/2025/rankings/CURIE", {
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Authorization': 'Basic ' + process.env.FIRST_AUTH_TOKEN, // Make sure to store the API key in .env
+//   }
+// }).then(resp => {
+//   if (resp.status !== 200) {
+//     return { Rankings: [] }; // Return an empty array if the API fails
+//   }
+//   return resp.json();
+// }).then(data => data.Rankings);
+// */
+
+// /*
+// // Add FRC API Rankings to team data
+// teamTable = teamTable.map(teamData => {
+//   let firstRanking = -1;
+//   let rankedData = frcAPITeamRankings.filter(rankedTeamData => rankedTeamData.teamNumber == teamData.team);
+//   if (rankedData.length == 1) {
+//     firstRanking = rankedData[0].rank;
+//   }
+//   return {
+//     ...teamData,
+//     firstRanking,
+//   };
+// });

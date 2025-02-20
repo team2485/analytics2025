@@ -306,19 +306,20 @@ export default function Picklist() {
                 return <tr key={teamData.team} style={{display: "none"}}></tr>
               } else {
                 const displayRank = `#${index + 1}`;
+                const tbaRank = (teamData.tbaRank !== -1 ? `${teamData.tbaRank}` : "");
                 
                 return (
                   <tr key={teamData.team}>
                     <td>
                       <div className={styles.picklistRank}>
-                        <div className={styles.arrows}>
+                        {/* <div className={styles.arrows}>
                           <button onClick={() => handleUp()}>⬆️</button>
                           <button onClick={() => handleDown()}>⬇️</button>
-                        </div>
+                        </div> */}
                         {displayRank}
                       </div>
                     </td>
-                      <td>#{teamData.firstRanking}</td>
+                      <td>#{tbaRank}</td>
                       <td><a href={`/team-view?team=${teamData.team}`}>{teamData.team}
                         {teamRatings[teamData.team] === true && '✅'}
                         {teamRatings[teamData.team] === false && '❌'}
