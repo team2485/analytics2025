@@ -309,7 +309,7 @@ function TeamView() {
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense"} value={`${Math.round(10*data.defense)/10}%`}/>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown}/>
 
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${Math.round(10*data.noShow)/10}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${Math.round(10*data.noShow)*10}%`}/>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={Math.round(10*data.breakdown)/10}/>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={Math.round(10*data.matchesScouted)/10}/>
                   </div>
@@ -337,7 +337,7 @@ function TeamView() {
           <div className={styles.alignElements}>
               <div className={styles.valueBoxes}>
                 <div className={styles.rightColumnBoxes}>
-                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={Math.round(10*data.leave)/10}/>
+                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={Math.round(10*data.leave)*10}/>
               </div>
               <table className={styles.coralTable}> 
                 <tbody>
