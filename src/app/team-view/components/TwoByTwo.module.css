@@ -1,0 +1,6 @@
+.TwoByTwo, .TwoByTwo td, .TwoByTwo th {
+    border: 1px black solid;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 4px;
+}

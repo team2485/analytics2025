@@ -1,0 +1,9 @@
+.barchartContainer {
+    width: 30vw;
+    height: 300px;
+    margin: auto;
+    margin-bottom: -30px;
+}
+.barchartContainer svg {
+    transform: translateX(-20px);
+}
