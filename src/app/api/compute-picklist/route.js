@@ -42,14 +42,21 @@ export async function POST(request) {
     // No-show penalty
     const noShowPenalty = dr.noshow ? 0 : 1;
 
-    // Average of success metrics
+    // Breakdown penalty based on comments: 20% reduction if breakdown comments exist
+    const breakdownPenalty = dr.breakdowncomments && dr.breakdowncomments.trim() !== "" ? 0.8 : 1;
+
+    // Calculate average of success metrics
     const metrics = [successRate, endgameSuccess * 100, noShowPenalty * 100];
     const validMetrics = metrics.filter(val => val >= 0);
 
-    return validMetrics.length > 0
+    // Calculate final consistency with breakdown penalty
+    const baseConsistency = validMetrics.length > 0
         ? validMetrics.reduce((sum, value) => sum + value, 0) / validMetrics.length
         : 0;
+
+    return baseConsistency * breakdownPenalty;
 };
+
 
 
   teamTable = tidy(teamTable, mutate({
