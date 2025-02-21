@@ -6,7 +6,7 @@ function calcAuto(record) {
       record.autol4success * 7 + // Level 4 Coral
       record.autoprocessorsuccess * 6 + // Processor success
       record.autonetsuccess * 4 + // Net success
-      (record.leave ? 2 : 0) // Leaving starting zone bonus
+      (record.leave ? 3 : 0) // Leaving starting zone bonus
     );
   }
   
