@@ -278,6 +278,7 @@ if (searchParams.get("go") != "go") {
       <form className={styles.teamForm}>
         <span>View by Teams...</span>
         <div className={styles.horizontalBox}>
+        <div className={styles.RedInputs}>
           <div>
             <label htmlFor="team1">Red 1:</label>
             <br />
@@ -293,6 +294,8 @@ if (searchParams.get("go") != "go") {
             <br />
             <input id="team3" name="team3" defaultValue={searchParams.get("team3")}></input>
           </div>
+        </div>
+        <div className={styles.BlueInputs}>
           <div>
             <label htmlFor="team4">Blue 1:</label>
             <br />
@@ -307,6 +310,7 @@ if (searchParams.get("go") != "go") {
             <label htmlFor="team6">Blue 3:</label>
             <br />
             <input id="team6" name="team6" defaultValue={searchParams.get("team6")}></input>
+          </div>
           </div>
           <input type="hidden" name="go" value="go"></input>
         </div>
