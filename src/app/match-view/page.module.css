@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .horizontalBox {
@@ -13,8 +14,16 @@
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 5px;
     margin: 10px;
+}
+
+.BlueInputs, .RedInputs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .teamForm label {

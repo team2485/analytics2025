@@ -381,7 +381,7 @@ function TeamView() {
                   <TwoByTwo
                     HC1="Success"
                     HC2="Avg Algae"
-                    HR1="Processor"
+                    HR1="Prcsr"
                     R1C1={`${Math.round(10*data.auto.algae.successProcessor)/10}%`}
                     R1C2={Math.round(10*data.auto.algae.avgProcessor)/10}
                     HR2="Net"
@@ -463,7 +463,7 @@ function TeamView() {
                 <TwoByTwo
                   HC1="Success" 
                   HC2="Avg Algae"
-                  HR1="Processor"
+                  HR1="Prcsr"
                   R1C1={`${Math.round(10*data.tele.algae.successProcessor)/10}%`}
                   R1C2={Math.round(10*data.tele.algae.avgProcessor)/10}
                   HR2="Net"
