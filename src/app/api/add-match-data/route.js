@@ -8,7 +8,7 @@ export async function POST(req) {
 
   // Adjust match number based on match type
   let adjustedMatch = body.match;
-  switch (body.matchType) {
+  switch (parseInt(body.matchType)) {
     case 0: // pre-comp
       adjustedMatch = body.match - 100;
       break;
@@ -32,7 +32,7 @@ export async function POST(req) {
     console.log("no show!");
     let resp = await sql`
       INSERT INTO phr2025 (ScoutName, ScoutTeam, Team, Match, MatchType, NoShow)
-      VALUES (${body.scoutname}, ${body.scoutteam}, ${body.team}, ${adjustedMatch}, ${body.matchtype}, ${body.noshow})
+      VALUES (${body.scoutname}, ${body.scoutteam}, ${body.team}, ${adjustedMatch}, ${body.matchType}, ${body.noshow})
     `;
     return NextResponse.json({ message: "Success!" }, { status: 201 });
   }
