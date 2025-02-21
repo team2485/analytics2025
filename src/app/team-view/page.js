@@ -257,18 +257,18 @@ function TeamView() {
 
     //auto last3epa
     let autoLast3 = epaColors.yellow2;
-    if ((data.avgAuto + 5) < data.last3Auto) autoLast3 = epaColors.green2;
-    else if ((data.avgAuto - 5) > data.last3Auto) autoLast3 = epaColors.red2;
+    if ((data.avgAuto + 6) < data.last3Auto) autoLast3 = epaColors.green2;
+    else if ((data.avgAuto - 6) > data.last3Auto) autoLast3 = epaColors.red2;
 
     //tele last3epa
     let teleLast3 = epaColors.yellow2;
-    if ((data.avgTele + 5) < data.last3Tele) teleLast3 = epaColors.green2;
-    else if ((data.avgTele - 5) > data.last3Tele) teleLast3 = epaColors.red2;
+    if ((data.avgTele + 10) < data.last3Tele) teleLast3 = epaColors.green2;
+    else if ((data.avgTele - 10) > data.last3Tele) teleLast3 = epaColors.red2;
 
     //tele last3epa
     let endLast3 = epaColors.yellow2;
-    if ((data.avgEnd + 5) < data.last3End) endLast3 = epaColors.green2;
-    else if ((data.avgEnd - 5) > data.last3End) endLast3 = epaColors.red2;
+    if ((data.avgEnd + 6) < data.last3End) endLast3 = epaColors.green2;
+    else if ((data.avgEnd - 6) > data.last3End) endLast3 = epaColors.red2;
 
     const endgamePieData = [
         { x: 'None', y: data.endPlacement.none },
