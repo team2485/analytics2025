@@ -523,7 +523,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
           <Qualitative 
             radarData={radarData} 
             teamIndices={[1, 2, 3]} 
-            colors={[COLORS[3][0], COLORS[4][0], COLORS[5][0]]}
+            colors={[COLORS[3][2], COLORS[4][1], COLORS[5][2]]}
             teamNumbers={[
               (data.team1 || defaultTeam).team,
               (data.team2 || defaultTeam).team,
@@ -540,7 +540,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
           <Qualitative 
             radarData={radarData} 
             teamIndices={[4, 5, 6]} 
-            colors={[COLORS[0][0], COLORS[1][0], COLORS[2][0]]} 
+            colors={[COLORS[0][2], COLORS[1][1], COLORS[2][2]]} 
             teamNumbers={[
               (data.team4 || defaultTeam).team,
               (data.team5 || defaultTeam).team,
