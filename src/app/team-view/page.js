@@ -338,7 +338,7 @@ function TeamView() {
           <div className={styles.alignElements}>
               <div className={styles.valueBoxes}>
                 <div className={styles.rightColumnBoxes}>
-                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={Math.round(data.leave*100)}/>
+                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={`${Math.round(data.leave*100)}%`}/>
               </div>
               <table className={styles.coralTable}> 
                 <tbody>
