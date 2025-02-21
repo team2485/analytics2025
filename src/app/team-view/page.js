@@ -286,7 +286,7 @@ function TeamView() {
                 <div className={styles.graphContainer}>
                     <h4 className={styles.graphTitle}>EPA Over Time</h4>
                     <EPALineChart data={data.epaOverTime} color={Colors[0][3]} label={"epa"}/>
-                </div>
+                  </div>
                 <div className={styles.barGraphContainer}>
                     <h4 className={styles.graphTitle}>Piece Placement</h4>
                     <PiecePlacement
