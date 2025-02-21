@@ -36,6 +36,7 @@ function TeamView() {
     const team = searchParams.get("team");
 
 
+
     // let data={
     //   team: 2485,
     //   name: "Overclocked",
@@ -149,7 +150,7 @@ function TeamView() {
           .then(data => {
               console.log("Fetched Data:", data);  // <-- Log the data received
               setData(data);
-              console.log("Coral Total (Frontend):", data.auto.coral.total);
+              console.log("Coral Total (Frontend):", data.leave);
 
               setLoading(false);
           })
@@ -310,7 +311,7 @@ function TeamView() {
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Last Breakdown"} value={data.lastBreakdown}/>
 
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"No Show"} value={`${Math.round(10*data.noShow)*10}%`}/>
-                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={`${Math.round(10*data.breakdown)*10}%`}/>
+                    <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown"} value={`${Math.round(data.breakdown)}%`}/>
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={Math.round(10*data.matchesScouted)/10}/>
                   </div>
                   <div className={styles.allComments}>
@@ -337,7 +338,7 @@ function TeamView() {
           <div className={styles.alignElements}>
               <div className={styles.valueBoxes}>
                 <div className={styles.rightColumnBoxes}>
-                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={Math.round(10*data.leave)*10}/>
+                  <VBox color1={Colors[1][2]} color2={Colors[1][0]} color3={Colors[1][2]} title={"Leave"} value={Math.round(data.leave*100)}/>
               </div>
               <table className={styles.coralTable}> 
                 <tbody>

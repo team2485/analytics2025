@@ -108,10 +108,25 @@ export async function GET(request) {
       return 100 - (breakdownRate + epaStdDev);
     },
 
-    defense: arr => percentValue(arr, 'defenseplayed', true),
     lastBreakdown: arr => arr.filter(e => e.breakdowncomments !== null).reduce((a, b) => b.match, "N/A"),
     noShow: arr => percentValue(arr, 'noshow', true),
-    breakdown: arr => percentValue(arr, 'breakdown', true),
+
+    breakdown: arr => {
+  const uniqueMatches = new Set(arr.map(row => row.match));
+  const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
+    arr.some(row => row.match === match && row.breakdowncomments !== null)
+  ).length;
+  return (uniqueBreakdownCount / uniqueMatches.size) * 100;
+    },
+
+    defense: arr => {
+      const uniqueMatches = new Set(arr.map(row => row.match));
+      const uniqueDefenseCount = Array.from(uniqueMatches).filter(match =>
+        arr.some(row => row.match === match && row.defensecomments !== null)
+      ).length;
+      return (uniqueDefenseCount / uniqueMatches.size) * 100;
+    },
+
     matchesScouted: () => matchesScouted,
     scouts: arr => rowsToArray(arr, 'scoutname'),
     generalComments: arr => rowsToArray(arr, 'generalcomments'),
@@ -119,8 +134,10 @@ export async function GET(request) {
     defenseComments: arr => rowsToArray(arr, 'defensecomments'),
     autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
     teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
-    leave: arr => arr.filter(e => e.leave === true).length / arr.length || 0,
-
+    leave: arr => {
+      const uniqueLeaveMatches = new Set(arr.filter(e => e.leave === true).map(e => e.match));
+      return uniqueLeaveMatches.size / new Set(arr.map(e => e.match)).size || 0;
+    },
 
     auto: arr => ({
       coral: {
@@ -260,8 +277,10 @@ export async function GET(request) {
         })(),
       },
       
-      avgHp: (() => rows.length ? rows.reduce((sum, row) => sum + (row.hpsuccess || 0), 0) / rows.length : 0)(),
-
+      avgHp: (() => {
+        const validRows = rows.filter(row => row.hpsuccess !== null);
+        return validRows.length ? validRows.reduce((sum, row) => sum + row.hpsuccess, 0) / validRows.length : 0;
+      })(),
       successHp: (() => {
         const successes = rows.reduce((sum, row) => sum + (row.hpsuccess || 0), 0);
         const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.hpfail || 0), 0);
@@ -343,7 +362,7 @@ export async function GET(request) {
     returnObject[0].teleOverTime = processedTeleOverTime;
   
 
-  console.log("Backend End Placement:", returnObject[0].epaOverTime);
+  console.log("Backend End Placement:", returnObject[0].defense);
 
 
   return NextResponse.json(returnObject[0], { status: 200 });
