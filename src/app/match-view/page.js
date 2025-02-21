@@ -320,19 +320,19 @@ if (searchParams.get("go") != "go") {
 }
 
 
-  function AllianceButtons({t1, t2, t3, colors}) {
-    return <div className={styles.allianceBoard}>
-      <Link href={`/team-view?team=${t1.team}`}>
-        <button style={{background: colors[0][1]}}>{t1.team}</button>
-      </Link>
-      <Link href={`/team-view?team=${t2.team}`}>
-        <button style={{background: colors[1][1]}}>{t2.team}</button>
-      </Link>
-      <Link href={`/team-view?team=${t3.team}`}>
-        <button style={{background: colors[2][1]}}>{t3.team}</button>
-      </Link>
-    </div>
-  }
+function AllianceButtons({t1, t2, t3, colors}) {
+  return <div className={styles.allianceBoard}>
+    <Link href={`/team-view?team=${t1.team}&team1=${data.team1?.team || ""}&team2=${data.team2?.team || ""}&team3=${data.team3?.team || ""}&team4=${data.team4?.team || ""}&team5=${data.team5?.team || ""}&team6=${data.team6?.team || ""}`}>
+      <button style={{background: colors[0][1]}}>{t1.team}</button>
+    </Link>
+    <Link href={`/team-view?team=${t2.team}&team1=${data.team1?.team || ""}&team2=${data.team2?.team || ""}&team3=${data.team3?.team || ""}&team4=${data.team4?.team || ""}&team5=${data.team5?.team || ""}&team6=${data.team6?.team || ""}`}>
+      <button style={{background: colors[1][1]}}>{t2.team}</button>
+    </Link>
+    <Link href={`/team-view?team=${t3.team}&team1=${data.team1?.team || ""}&team2=${data.team2?.team || ""}&team3=${data.team3?.team || ""}&team4=${data.team4?.team || ""}&team5=${data.team5?.team || ""}&team6=${data.team6?.team || ""}`}>
+      <button style={{background: colors[2][1]}}>{t3.team}</button>
+    </Link>
+  </div>
+}
 
   function AllianceDisplay({teams, opponents, colors}) {
     //calc alliance espm breakdown
@@ -392,7 +392,7 @@ if (searchParams.get("go") != "go") {
 
     return <div className={styles.lightBorderBox}>
       <div className={styles.scoreBreakdownContainer}>
-        <div style={{background: colors[0]}} className={styles.EPABox}>{(auto + tele + end)}</div>
+        <div style={{background: colors[0]}} className={styles.EPABox}>{Math.round(10*(auto + tele + end)/10)}</div>
         <div className={styles.EPABreakdown}>
           <div style={{background: colors[1]}}>A: {Math.round(10*auto)/10}</div>
           <div style={{background: colors[1]}}>T: {Math.round(10*tele)/10}</div>

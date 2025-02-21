@@ -47,7 +47,7 @@ export default function Qualitative({ color1, color2, data }) {
             scales: {
               r: {
                 angleLines: { display: true },
-                suggestedMin: 0,
+                suggestedMin: -1,
                 suggestedMax: 5,
                 ticks: { stepSize: 1 }, 
                 pointLabels: {

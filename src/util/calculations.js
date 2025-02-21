@@ -18,7 +18,7 @@ function calcAuto(record) {
       record.telel4success * 5 + // Level 4 Coral
       record.teleprocessorsuccess * 6 + // Processor success in teleop
       record.telenetsuccess * 4 + // Net success in teleop
-      record.hpsuccess * 1 // Human player success bonus
+      record.hpsuccess * 2 // Human player success bonus
     );
   }
   
@@ -40,7 +40,7 @@ function calcAuto(record) {
             endgamePoints = 12; // Deep Dock
             break;
         case 4:
-            endgamePoints = 0; // Failed Attempt
+            endgamePoints = 2; // Failed Attempt
             break;
         default:
             endgamePoints = 0; // Invalid value
