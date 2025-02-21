@@ -34,7 +34,40 @@ function TeamView() {
     const [error, setError] = useState(null);
     const searchParams = useSearchParams();
     const team = searchParams.get("team");
+    const hasTopBar = searchParams.get('team1') !== null;
 
+    function AllianceButtons({t1, t2, t3, colors}) {
+      console.log(searchParams.get('team6'))
+      return <div className={styles.allianceBoard}>
+        <Link href={`/team-view?team=${t1 || ""}&${searchParams.toString()}`}>
+          <button style={team == t1 ? {background: 'black', color: 'yellow'} : {background: colors[0][1]}}>{t1 || 404}</button>
+        </Link>
+        <Link href={`/team-view?team=${t2 || ""}&${searchParams.toString()}`}>
+          <button style={team == t2 ? {background: 'black', color: 'yellow'} : {background: colors[1][1]}}>{t2 || 404}</button>
+        </Link>
+        <Link href={`/team-view?team=${t3 || ""}&${searchParams.toString()}`}>
+          <button style={team == t3 ? {background: 'black', color: 'yellow'} : {background: colors[2][1]}}>{t3 || 404}</button>
+        </Link>
+      </div>
+    }
+    function TopBar() {
+      const COLORS = [
+        ["#B7F7F2", "#A1E7E1", "#75C6BF", "#5EB5AE"],
+        ["#8AB8FD", "#7D99FF", "#6184DD", "#306BDD"],
+        ["#E1BFFA", "#E1A6FE", "#CA91F2", "#A546DF"],
+        ["#FFC6F6", "#ECA6E0", "#ED75D9", "#C342AE"],
+        ["#FABFC4", "#FEA6AD", "#F29199", "#E67983"],
+        ["#FFE3D3", "#EBB291", "#E19A70", "#D7814F"],
+      ];
+      if (!hasTopBar) {
+        return <></>
+      }
+      return <div className={styles.matchNav}>
+        <AllianceButtons t1={searchParams.get('team1')} t2={searchParams.get('team2')} t3={searchParams.get('team3')} colors={[COLORS[0], COLORS[1], COLORS[2]]}></AllianceButtons>
+        <Link href={`/match-view?team1=${searchParams.get('team1') || ""}&team2=${searchParams.get('team2') || ""}&team3=${searchParams.get('team3') || ""}&team4=${searchParams.get('team4') || ""}&team5=${searchParams.get('team5') || ""}&team6=${searchParams.get('team6') || ""}&go=go`}><button style={{background: "#ffff88", color: "black"}}>Match</button></Link>
+        <AllianceButtons t1={searchParams.get('team4')} t2={searchParams.get('team5')} t3={searchParams.get('team6')} colors={[COLORS[3], COLORS[4], COLORS[5]]}></AllianceButtons>
+      </div>
+    }
 
     // let data={
     //   team: 2485,
@@ -199,20 +232,6 @@ function TeamView() {
         );
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
     const Colors = [
         //light to dark
         ["#CCFBF7", "#76E3D3", "#18a9a2", "#117772"], //green
@@ -260,7 +279,8 @@ function TeamView() {
     ];
 
 
-    return (
+    return (<div>
+          <TopBar></TopBar>
         <div className={styles.MainDiv}>
             <div className={styles.leftColumn}>
                 <h1 style={{ color: Colors[0][3] }}>Team {data.team} View</h1>
@@ -542,7 +562,7 @@ function TeamView() {
         </div>
       </div>
     </div>
-
+    </div>
     )
 
   }

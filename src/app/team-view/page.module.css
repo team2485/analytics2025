@@ -9,6 +9,36 @@
     font-family: "Belleza", sans-serif;
 }
 
+.allianceBoard {
+    display: flex;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    flex-wrap: wrap;
+}
+
+.matchNav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 10px;
+    gap: 5px;
+}
+
+.matchNav button {
+    border: 1px solid black;
+    padding: 3px 15px;
+    padding-bottom: 0px;
+    border-radius: 5px;
+    font-size: 45px;
+    font-family: "Teko", sans-serif;
+}
+
+.matchNav button:hover {
+    background: black !important;
+    color: yellow !important;
+}
+
 .rightColumn {
     display: flex;
     width: 66%;
@@ -100,12 +130,13 @@
     font-size: 1;
 }
 
+
 .epaBreakdown div {
     text-align: center;
     flex-grow: 1;
     border: 1px solid black;
     padding: 5px;
-    font-size: larger;
+    font-size: medium;
 
 }
 
