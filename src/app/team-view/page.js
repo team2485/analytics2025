@@ -253,8 +253,8 @@ function TeamView() {
 
     //overall last3epa
     let overallLast3 = epaColors.yellow1;
-    if ((data.avgEpa + 5) < data.last3Epa) overallLast3 = epaColors.green1;
-    else if ((data.avgEpa - 5) > data.last3Epa) overallLast3 = epaColors.red1;
+    if ((data.avgEpa + 12) < data.last3Epa) overallLast3 = epaColors.green1;
+    else if ((data.avgEpa - 12) > data.last3Epa) overallLast3 = epaColors.red1;
 
     //auto last3epa
     let autoLast3 = epaColors.yellow2;
