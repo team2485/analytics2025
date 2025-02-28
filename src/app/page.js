@@ -93,7 +93,6 @@ export default function Home() {
         return;
       } 
     }
-
     if (matchType == 2) {
       try {
         const response = await fetch(`/api/get-valid-team?team=${data.team}&match=${data.match}`)
