@@ -182,9 +182,21 @@ function TeamView() {
           })
           .then(data => {
               console.log("Fetched Data:", data);  // <-- Log the data received
+
               setData(data);
               console.log("Coral Total (Frontend):", data.leave);
+              const last3Matches = data.matches.slice(-3); 
 
+              const last3Epa = last3Matches.reduce((sum, match) => sum + match.epa, 0) / last3Matches.length;
+              const last3Auto = last3Matches.reduce((sum, match) => sum + match.auto, 0) / last3Matches.length;
+              const last3Tele = last3Matches.reduce((sum, match) => sum + match.tele, 0) / last3Matches.length;
+              const last3End = last3Matches.reduce((sum, match) => sum + match.end, 0) / last3Matches.length;
+
+              // Add the calculated metrics to the data object
+              data.last3Epa = last3Epa;
+              data.last3Auto = last3Auto;
+              data.last3Tele = last3Tele;
+              data.last3End = last3End;
               setLoading(false);
           })
           .catch(error => {
