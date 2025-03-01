@@ -125,9 +125,9 @@ function createEndgameData(endlocation) {
   return {
     none: endlocation === 0 ? 1 : 0,
     park: endlocation === 1 ? 1 : 0,
-    shallow: endlocation === 2 ? 1 : 0,
-    deep: endlocation === 3 ? 1 : 0,
-    fail: endlocation === 4 ? 1 : 0,
+    shallow: endlocation === 3 ? 1 : 0,
+    deep: endlocation === 4 ? 1 : 0,
+    fail: endlocation === 2 ? 1 : 0,
   };
 }
 

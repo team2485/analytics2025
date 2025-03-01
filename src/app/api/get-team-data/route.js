@@ -293,9 +293,9 @@ export async function GET(request) {
     endPlacement: arr => ({
       none: percentValue(rows, 'endlocation', 0) * 100,
       park: percentValue(rows, 'endlocation', 1) * 100,
-      shallow: percentValue(rows, 'endlocation', 2) * 100,
-      deep: percentValue(rows, 'endlocation', 3) * 100,
-      parkandFail: percentValue(rows, 'endlocation', 4) * 100,
+      shallow: percentValue(rows, 'endlocation', 3) * 100,
+      deep: percentValue(rows, 'endlocation', 4) * 100,
+      parkandFail: percentValue(rows, 'endlocation', 2) * 100,
     }),
 
 
