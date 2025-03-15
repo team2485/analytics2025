@@ -59,10 +59,12 @@
   right: 0px;
   bottom: 15px;
   margin: 0px;
+  margin-bottom: -22px;
 }
 
 .Table th {
   padding-right: 19px;
+  margin-bottom: 20px;
 }
 
 .AlgaeRemoved {
