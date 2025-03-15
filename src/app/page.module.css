@@ -100,7 +100,6 @@
 .HBox {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     gap: 20px;
     width: 100%;
     justify-content: center;
