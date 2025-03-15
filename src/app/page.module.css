@@ -181,5 +181,9 @@ hr.subsubheading {
     border-color: rgb(184, 0, 0);
 }
 
+*MainDiv {
+  -webkit-apperance: none;
+}
+
 
 
