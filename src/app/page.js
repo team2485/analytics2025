@@ -416,6 +416,34 @@ export default function Home() {
             <div className={styles.PostMatch}>
               <br></br>
               <Header headerName={"Post-Match"}/>
+              <span className={styles.subsubheading}>Intake</span>
+              <hr className={styles.subsubheading}></hr>
+              <div className={styles.Intake}>
+                <Checkbox
+                  visibleName={"Coral Ground"}
+                  internalName={"coralgndintake"}
+                />
+                <Checkbox
+                  visibleName={"Coral Station"}
+                  internalName={"coralstationintake"}
+                />
+                <Checkbox
+                  visibleName={"Lollipop"}
+                  internalName={"algaegndintake"}
+                />
+                <Checkbox
+                  visibleName={"Algae Ground"}
+                  internalName={"algaegndintake"}
+                />
+                <Checkbox
+                  visibleName={"Algae High Reef"}
+                  internalName={"algaehighreefintake"}
+                />
+                <Checkbox
+                  visibleName={"Algae Low Reef"}
+                  internalName={"algaelowreefintake"}
+                />
+              </div>
                 <div className={styles.Qual}>
                   <Qualitative                   
                     visibleName={"Coral Speed"}
@@ -461,34 +489,7 @@ export default function Home() {
                     symbol={"ⵔ"}/>
                 </div>
               <br></br>
-              <span className={styles.subsubheading}>Intake</span>
-              <hr className={styles.subsubheading}></hr>
-              <div className={styles.Intake}>
-                <Checkbox
-                  visibleName={"Coral Ground"}
-                  internalName={"coralgndintake"}
-                />
-                <Checkbox
-                  visibleName={"Coral Station"}
-                  internalName={"coralstationintake"}
-                />
-                <Checkbox
-                  visibleName={"Lollipop"}
-                  internalName={"algaegndintake"}
-                />
-                <Checkbox
-                  visibleName={"Algae Ground"}
-                  internalName={"algaegndintake"}
-                />
-                <Checkbox
-                  visibleName={"Algae High Reef"}
-                  internalName={"algaehighreefintake"}
-                />
-                <Checkbox
-                  visibleName={"Algae Low Reef"}
-                  internalName={"algaelowreefintake"}
-                />
-              </div>
+              
               <Checkbox visibleName={"Broke down?"} internalName={"breakdown"} changeListener={onBreakdownChange} />
               { breakdown &&
                 <CommentBox
