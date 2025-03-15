@@ -77,7 +77,7 @@ export async function GET(request) {
   });
 
 
-  const matchesScouted = teamTable.length;
+  const matchesScouted = new Set(teamTable.map(row => row.match)).size;
 
   function standardDeviation(arr, key) {
     const values = arr.map(row => row[key]).filter(v => v !== null && v !== undefined);
@@ -131,9 +131,59 @@ export async function GET(request) {
 
     matchesScouted: () => matchesScouted,
     scouts: arr => rowsToArray(arr, 'scoutname'),
-    generalComments: arr => rowsToArray(arr, 'generalcomments'),
-    breakdownComments: arr => rowsToArray(arr, 'breakdowncomments'),
-    defenseComments: arr => rowsToArray(arr, 'defensecomments'),
+    generalComments: arr => {
+      const commentsByMatch = {};
+      arr.forEach(row => {
+        if (row.generalcomments && row.generalcomments.trim()) {
+          if (!commentsByMatch[row.match]) {
+            commentsByMatch[row.match] = [];
+          }
+          commentsByMatch[row.match].push(row.generalcomments);
+        }
+      });
+      
+      const result = Object.entries(commentsByMatch).map(([match, comments]) => 
+        `Match ${match}: ${comments.join(' - ')}`
+      );
+      
+      return result.length > 0 ? result : [];
+    },
+    
+    breakdownComments: arr => {
+      const commentsByMatch = {};
+      arr.forEach(row => {
+        if (row.breakdowncomments && row.breakdowncomments.trim()) {
+          if (!commentsByMatch[row.match]) {
+            commentsByMatch[row.match] = [];
+          }
+          commentsByMatch[row.match].push(row.breakdowncomments);
+        }
+      });
+      
+      const result = Object.entries(commentsByMatch).map(([match, comments]) => 
+        `Match ${match}: ${comments.join(' - ')}`
+      );
+      
+      return result.length > 0 ? result : [];
+    },
+    
+    defenseComments: arr => {
+      const commentsByMatch = {};
+      arr.forEach(row => {
+        if (row.defensecomments && row.defensecomments.trim()) {
+          if (!commentsByMatch[row.match]) {
+            commentsByMatch[row.match] = [];
+          }
+          commentsByMatch[row.match].push(row.defensecomments);
+        }
+      });
+      
+      const result = Object.entries(commentsByMatch).map(([match, comments]) => 
+        `Match ${match}: ${comments.join(' - ')}`
+      );
+      
+      return result.length > 0 ? result : [];
+    },
     autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
     teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
     leave: arr => {
