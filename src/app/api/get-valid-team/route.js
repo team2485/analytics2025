@@ -1,22 +1,11 @@
-//    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-
-
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const team = searchParams.get("team");
     const match = searchParams.get("match");
+    console.log("Looking for match:", match);
+    console.log("Looking for team:", team);
 
     // Validate required parameters
     if (!team || !match) {
@@ -29,7 +18,7 @@ export async function GET(request) {
     try {
         // Fetch match data from The Blue Alliance API
         const response = await fetch(
-            `https://www.thebluealliance.com/api/v3/event/2024casd/matches/simple`,
+            `https://www.thebluealliance.com/api/v3/event/2025caph/matches/simple`,
             {
                 headers: {
                     "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
@@ -46,7 +35,7 @@ export async function GET(request) {
 
         // Filter for the specific match and team
         const teamKey = `frc${team}`;
-        const matchKey = `2024casd_qm${match}`;
+        const matchKey = `2025caph_qm${match}`;
 
         const validMatch = matches.find(match => {
             // Check if this is the correct match
