@@ -1,0 +1,6 @@
+.ThreeByThree {
+    border: 1px solid black;
+    border-radius: 5px;
+    table-layout: fixed;
+    align-self: center;
+}

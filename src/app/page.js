@@ -18,9 +18,21 @@ export default function Home() {
   const [humanplayer, setHumanPlayer] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
-  const [matchType, setMatchType] = useState("2"); // Default to Qual
+  const [matchType, setMatchType] = useState("2");
+  const [scoutProfile, setScoutProfile] = useState(null);
 
   const form = useRef();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedProfile = localStorage.getItem("ScoutProfile");
+      if (savedProfile) {
+        const profileData = JSON.parse(savedProfile)
+        setScoutProfile(profileData);
+        setMatchType(profileData.matchType || "2")
+      }
+    }
+  }, []);
   
   function onNoShowChange(e) {
     let checked = e.target.checked;
@@ -56,7 +68,7 @@ export default function Home() {
     submitButton.disabled = true;
     //import values from form to data variable
 
-    let data = {noshow: false, leave: false, algaelowreefintake: false, algaehighreefintake: false, lollipop: false, algaegndintake: false, coralgndintake: false, coralstationintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null, generalcomments: null };
+    let data = {noshow: false, leave: false, algaelowreefintake: false, algaehighreefintake: false, lollipop: false, algaegrndintake: false, coralgrndintake: false, coralstationintake: false, srcintake: false, breakdown: false, defense: false, stageplacement: -1, breakdowncomments: null, defensecomments: null, generalcomments: null };
     [...new FormData(form.current).entries()].forEach(([name, value]) => {
       if (value == 'on') {
         data[name] = true;
@@ -81,20 +93,6 @@ export default function Home() {
         return;
       } 
     }
-    //check team and match for quals 
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-        //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-    //UNCOMMENT WHEN PHR STARTS SINCE THIS IS FOR THE API
-
     if (matchType == 2) {
       try {
         const response = await fetch(`/api/get-valid-team?team=${data.team}&match=${data.match}`)
@@ -139,15 +137,19 @@ export default function Home() {
           let ScoutName = document.querySelector("input[name='scoutname']").value;
           let ScoutTeam = document.querySelector("input[name='scoutteam']").value;
           let Match = document.querySelector("input[name='match']").value;
-          let MatchType = matchType;
-          let scoutProfile = { 
+          let newProfile = { 
             scoutname: ScoutName, 
             scoutteam: ScoutTeam, 
             match: Number(Match)+1,
-            matchType: MatchType 
+            matchType: matchType 
           };
-          localStorage.setItem("ScoutProfile", JSON.stringify(scoutProfile));
+          setScoutProfile(newProfile);
+          localStorage.setItem("ScoutProfile", JSON.stringify(newProfile));
+          console.log(scoutProfile)
         }
+
+        globalThis.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
         setTimeout(() => {
           location.reload()
         }, 2000);
@@ -162,6 +164,7 @@ export default function Home() {
       submitButton.disabled = false;
     };
   }
+console.log("page",matchType)
 
   return (
     <div className={styles.MainDiv}>
@@ -172,12 +175,12 @@ export default function Home() {
         <TextInput 
             visibleName={"Scout Name:"} 
             internalName={"scoutname"} 
-            defaultValue={""}
+            defaultValue={scoutProfile?.scoutname || ""}
           />
           <TextInput 
             visibleName={"Team #:"} 
             internalName={"scoutteam"} 
-            defaultValue={""}
+            defaultValue={scoutProfile?.scoutteam || ""}
             type={"number"}
           />
           <TextInput
@@ -189,11 +192,11 @@ export default function Home() {
           <TextInput 
             visibleName={"Match #:"} 
             internalName={"match"} 
-            defaultValue={""}
+            defaultValue={scoutProfile?.match || ""}
             type={"number"}
           />
         </div>
-        <MatchType onMatchTypeChange={handleMatchTypeChange}/>
+        <MatchType onMatchTypeChange={handleMatchTypeChange} defaultValue={matchType}/>
         <Checkbox
           visibleName={"No Show"}
           internalName={"noshow"}
@@ -220,44 +223,44 @@ export default function Home() {
                     <td><h2>L4</h2></td>
                     <td><NumericInput 
                       pieceType={"Success"}
-                      internalName={"autoL4success"}/>
+                      internalName={"autol4success"}/>
                       </td>
                     <td><NumericInput 
                       pieceType={"Fail"}
-                      internalName={"autoL4fail"}/>
+                      internalName={"autol4fail"}/>
                       </td>
                     </tr> 
                   <tr>
                   <td><h2>L3</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL3success"}/>
+                    internalName={"autol3success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL3fail"}/>
+                    internalName={"autol3fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L2</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL2success"}/>
+                    internalName={"autol2success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL2fail"}/>
+                    internalName={"autol2fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L1</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"autoL1success"}/>
+                    internalName={"autol1success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"autoL1fail"}/>
+                    internalName={"autol1fail"}/>
                     </td>
                   </tr>
                   </tbody>
@@ -265,7 +268,7 @@ export default function Home() {
                 </div>
               </div>
               <div className={styles.AlgaeRemoved}>
-                <SubHeader subHeaderName={"Algae Removed"}/>
+                <SubHeader subHeaderName={"Algae Removed Intentionally"}/>
                 <div className={styles.HBox}>
                   <NumericInput 
                     pieceType={"Counter"}
@@ -315,44 +318,44 @@ export default function Home() {
                     <td><h2>L4</h2></td>
                     <td><NumericInput 
                       pieceType={"Success"}
-                      internalName={"teleL4success"}/>
+                      internalName={"telel4success"}/>
                       </td>
                     <td><NumericInput 
                       pieceType={"Fail"}
-                      internalName={"teleL4fail"}/>
+                      internalName={"telel4fail"}/>
                       </td>
                     </tr> 
                   <tr>
                   <td><h2>L3</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL3success"}/>
+                    internalName={"telel3success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL3fail"}/>
+                    internalName={"telel3fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L2</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL2success"}/>
+                    internalName={"telel2success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL2fail"}/>
+                    internalName={"telel2fail"}/>
                     </td>
                   </tr>
                    <tr>
                   <td><h2>L1</h2></td>
                   <td><NumericInput 
                     pieceType={"Success"}
-                    internalName={"teleL1success"}/>
+                    internalName={"telel1success"}/>
                     </td>
                   <td><NumericInput 
                     pieceType={"Fail"}
-                    internalName={"teleL1fail"}/>
+                    internalName={"telel1fail"}/>
                     </td>
                   </tr>
                   </tbody>
@@ -360,7 +363,7 @@ export default function Home() {
                 </div>
               </div>
               <div className={styles.AlgaeRemoved}>
-                <SubHeader subHeaderName={"Algae Removed"}/>
+                <SubHeader subHeaderName={"Algae Removed Intentionally"}/>
                 <div className={styles.HBox}>
                   <NumericInput 
                     pieceType={"Counter"}
@@ -489,7 +492,7 @@ export default function Home() {
                     symbol={"ⵔ"}/>
                 </div>
               <br></br>
-              
+
               <Checkbox visibleName={"Broke down?"} internalName={"breakdown"} changeListener={onBreakdownChange} />
               { breakdown &&
                 <CommentBox
