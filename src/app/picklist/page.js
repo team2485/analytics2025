@@ -204,10 +204,46 @@ export default function Picklist() {
     );
   }
 
-  const AllianceRow = ({ allianceNumber, allianceData, handleAllianceChange }) => {
+  const AllianceRow = ({ allianceNumber, allianceData, handleAllianceChange, team }) => {
     const firstValue = allianceData ? allianceData[0] : '';
     const secondValue = allianceData ? allianceData[1] : '';
     const thirdValue = allianceData ? allianceData[2] : '';
+
+    function AllianceCell ({ team }) {
+      const [alliance, setAlliance] = useState('');
+      const [mounted, setMounted] = useState(false);
+    
+      useEffect (() => {
+        setMounted(true);
+        const alliances = localStorage.getSavedAlliances('teamAlliance');
+        if(alliances) {
+          const alliance = JSON.parse(alliances);
+        setAlliance(alliance[team] || '');
+      }
+    }, [team]);
+    
+      if (!mounted) {
+        return <tr><td><input className={styles.allianceBox} /></td></tr>;
+      }
+    
+      const handleChange = (e) => {
+        const newAlliance = e.target.value;
+        setAlliance(newAlliance);
+    
+        const savedAlliances = JSON.parse(localStorage.getSavedAlliances('teamAlliance') || '{}');
+        savedAlliances[team] = newAlliance;
+        localStorage.setItem('teamAlliance', JSON.stringify(savedAlliances));
+    
+      return (
+        <tr><td><input 
+        type="text" 
+        value={alliance} 
+        onChange={handleChange} 
+        /></td></tr>
+      );
+    };
+  }
+
     return (
       <tr>
         <td>A{allianceNumber}</td>
