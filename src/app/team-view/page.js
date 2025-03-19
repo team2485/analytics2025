@@ -347,11 +347,11 @@ function TeamView() {
                     <VBox id="box" className={styles.boxes} style={{width: "200px"}} color1={Colors[0][1]} color2={Colors[0][0]} title={"Matches Scouted"} value={Math.round(10*data.matchesScouted)/10}/>
                   </div>
                   <div className={styles.allComments}>
-                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"General Comments"} value={data.generalComments.join(" | ")} />
-                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown Comments"} value={data.breakdownComments.join(" | ")} />
-                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense Comments"} value={data.defenseComments.join(" | ")} />
+                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"General Comments"} value={data.generalComments} />
+                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Breakdown Comments"} value={data.breakdownComments} />
+                    <Comments color1={Colors[0][1]} color2={Colors[0][0]} title={"Defense Comments"} value={data.defenseComments} />
                   </div>
-                  <HBox color1={Colors[0][1]} color2={Colors[0][0]} title={"Scouts"} value={data.scouts.join(" | ")} />
+                  <HBox color1={Colors[0][1]} color2={Colors[0][0]} title={"Scouts"} value={data.scouts} />
                 </div>
           </div>
       <div className={styles.rightColumn}>

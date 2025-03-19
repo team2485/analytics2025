@@ -130,7 +130,25 @@ export async function GET(request) {
     },
 
     matchesScouted: () => matchesScouted,
-    scouts: arr => rowsToArray(arr, 'scoutname'),
+    scouts: arr => {
+      const scoutsByMatch = {};
+      arr.forEach(row => {
+        if (row.scoutname && row.scoutname.trim()) {
+          if (!scoutsByMatch[row.match]) {
+            scoutsByMatch[row.match] = [];
+          }
+          if (!scoutsByMatch[row.match].includes(row.scoutname)) {
+            scoutsByMatch[row.match].push(row.scoutname);
+          }
+        }
+      });
+      
+      const result = Object.entries(scoutsByMatch).map(([match, scouts]) => 
+        ` *Match ${match}: ${scouts.join(', ')}*`
+      );
+      
+      return result.length > 0 ? result : [];
+    },
     generalComments: arr => {
       const commentsByMatch = {};
       arr.forEach(row => {
@@ -143,7 +161,7 @@ export async function GET(request) {
       });
       
       const result = Object.entries(commentsByMatch).map(([match, comments]) => 
-        `Match ${match}: ${comments.join(' - ')}`
+        ` *Match ${match}: ${comments.join(' -- ')}*`
       );
       
       return result.length > 0 ? result : [];
@@ -161,7 +179,7 @@ export async function GET(request) {
       });
       
       const result = Object.entries(commentsByMatch).map(([match, comments]) => 
-        `Match ${match}: ${comments.join(' - ')}`
+         ` *Match ${match}: ${comments.join(' -- ')}*`
       );
       
       return result.length > 0 ? result : [];
@@ -179,7 +197,7 @@ export async function GET(request) {
       });
       
       const result = Object.entries(commentsByMatch).map(([match, comments]) => 
-        `Match ${match}: ${comments.join(' - ')}`
+        ` *Match ${match}: ${comments.join(' -- ')}*`
       );
       
       return result.length > 0 ? result : [];
