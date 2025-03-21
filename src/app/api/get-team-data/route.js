@@ -343,19 +343,24 @@ export async function GET(request) {
 
 
   // Then, update your aggregateByMatch function to ensure proper sorting:
-function aggregateByMatch(dataArray) {
-  return tidy(
-    dataArray,
-    groupBy("match", [
-      summarize({
-        epa: mean("epa"),
-        auto: mean("auto"),
-        tele: mean("tele"),
+  function aggregateByMatch(dataArray) {
+    return tidy(
+      dataArray,
+      groupBy("match", [
+        summarize({
+          epa: mean("epa"),
+          auto: mean("auto"),
+          tele: mean("tele"),
+        }),
+      ]),
+      mutate({
+        epa: d => Math.round(d.epa * 100) / 100,
+        auto: d => Math.round(d.auto * 100) / 100,
+        tele: d => Math.round(d.tele * 100) / 100,
       }),
-    ]),
-    arrange([asc("match")]) // This ensures sorting by match number in ascending order
-  );
-}
+      arrange([asc("match")])
+    );
+  }
 
 // Apply the aggregation and sorting:
 let processedEPAOverTime = aggregateByMatch(returnObject[0].epaOverTime);
