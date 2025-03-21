@@ -80,10 +80,17 @@ export async function GET(request) {
   const matchesScouted = new Set(teamTable.map(row => row.match)).size;
 
   function standardDeviation(arr, key) {
-    const values = arr.map(row => row[key]).filter(v => v !== null && v !== undefined);
-    const avg = mean(values);
-    const variance = values.reduce((sum, value) => sum + Math.pow(value - avg, 2), 0) / values.length;
-    return Math.sqrt(variance) || 0; // Avoid NaN if only one value
+    const values = arr.map(row => row[key]).filter(v => typeof v === 'number' && !isNaN(v));
+  
+    if (values.length === 0) return 0;
+      const sum = values.reduce((acc, val) => acc + val, 0);
+    const avg = sum / values.length;
+      const variance = values.reduce((acc, val) => acc + Math.pow(val - avg, 2), 0) / values.length;
+      const stdDev = Math.sqrt(variance);
+  
+    console.log(`📏 Manual StdDev Debug → values: [${values.join(', ')}] | Mean: ${avg} | Variance: ${variance} | StdDev: ${stdDev}`);
+  
+    return stdDev;
   }
 
   let returnObject = tidy(teamTable, summarize({
@@ -105,8 +112,13 @@ export async function GET(request) {
     teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
   
     consistency: arr => {
-      let breakdownRate = percentValue(arr, 'breakdown', true) * 100;
-      let epaStdDev = standardDeviation(arr, 'epa');
+      const uniqueMatches = new Set(arr.map(row => row.match));
+      const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
+        arr.some(row => row.match === match && row.breakdowncomments !== null)
+      ).length;
+      const breakdownRate = (uniqueBreakdownCount / uniqueMatches.size) * 100;
+    
+      const epaStdDev = standardDeviation(arr, 'epa');
       return 100 - (breakdownRate + epaStdDev);
     },
 
