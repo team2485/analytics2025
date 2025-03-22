@@ -93,123 +93,193 @@ export async function GET(request) {
     
     let returnObject = tidy(teamTable, 
       summarize({
-        epa: mean('epa'),
-        auto: mean('auto'),
-        tele: mean('tele'),
-        end: mean('end'),
         team: first('team'),
         name: () => teamName,
-        avgEpa: mean('epa'),
-        avgAuto: mean('auto'),
-        avgTele: mean('tele'),
-        avgEnd: mean('end'),
         
-        // Last 3 averages
-        last3Epa: arr => {
-          // If we have 3 or fewer matches, use all data (same as average)
-          if (arr.length <= 3) {
-            return arr.reduce((sum, row) => sum + row.epa, 0) / arr.length;
-          }
-          // Otherwise, sort by match number (descending) and take first 3
-          const latest3 = [...arr].sort((a, b) => b.match - a.match).slice(0, 3);
-          return latest3.reduce((sum, row) => sum + row.epa, 0) / 3;
+        // Fixed avgEpa calculation that averages by match first
+        avgEpa: arr => {
+          // Get unique matches and their average EPA
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.epa;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgEpa: data.sum / data.count
+          }));
+          
+          if (matchAverages.length === 0) return 0;
+          return matchAverages.reduce((sum, m) => sum + m.avgEpa, 0) / matchAverages.length;
         },
-// Last 3 averages
-last3Epa: arr => {
-  // Get unique matches and their average EPA
-  const matchGroups = {};
-  arr.forEach(row => {
-    if (!matchGroups[row.match]) {
-      matchGroups[row.match] = { sum: 0, count: 0 };
-    }
-    matchGroups[row.match].sum += row.epa;
-    matchGroups[row.match].count += 1;
-  });
-  
-  // Convert to array of match averages
-  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
-    match: parseInt(match),
-    avgEpa: data.sum / data.count
-  }));
-  
-  // Sort by match number (descending) and take last 3
-  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
-  
-  if (latest3Matches.length === 0) return 0;
-  return latest3Matches.reduce((sum, m) => sum + m.avgEpa, 0) / latest3Matches.length;
-},
-
-last3Auto: arr => {
-  // Get unique matches and their average Auto
-  const matchGroups = {};
-  arr.forEach(row => {
-    if (!matchGroups[row.match]) {
-      matchGroups[row.match] = { sum: 0, count: 0 };
-    }
-    matchGroups[row.match].sum += row.auto;
-    matchGroups[row.match].count += 1;
-  });
-  
-  // Convert to array of match averages
-  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
-    match: parseInt(match),
-    avgAuto: data.sum / data.count
-  }));
-  
-  // Sort by match number (descending) and take last 3
-  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
-  
-  if (latest3Matches.length === 0) return 0;
-  return latest3Matches.reduce((sum, m) => sum + m.avgAuto, 0) / latest3Matches.length;
-},
-
-last3Tele: arr => {
-  // Get unique matches and their average Tele
-  const matchGroups = {};
-  arr.forEach(row => {
-    if (!matchGroups[row.match]) {
-      matchGroups[row.match] = { sum: 0, count: 0 };
-    }
-    matchGroups[row.match].sum += row.tele;
-    matchGroups[row.match].count += 1;
-  });
-  
-  // Convert to array of match averages
-  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
-    match: parseInt(match),
-    avgTele: data.sum / data.count
-  }));
-  
-  // Sort by match number (descending) and take last 3
-  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
-  
-  if (latest3Matches.length === 0) return 0;
-  return latest3Matches.reduce((sum, m) => sum + m.avgTele, 0) / latest3Matches.length;
-},
-
-last3End: arr => {
-  // Get unique matches and their average End
-  const matchGroups = {};
-  arr.forEach(row => {
-    if (!matchGroups[row.match]) {
-      matchGroups[row.match] = { sum: 0, count: 0 };
-    }
-    matchGroups[row.match].sum += row.end;
-    matchGroups[row.match].count += 1;
-  });
-  
-  // Convert to array of match averages
-  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
-    match: parseInt(match),
-    avgEnd: data.sum / data.count
-  }));
-  
-  // Sort by match number (descending) and take last 3
-  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
-  
-  if (latest3Matches.length === 0) return 0;
-  return latest3Matches.reduce((sum, m) => sum + m.avgEnd, 0) / latest3Matches.length;
-},
+        
+        // Fixed avgAuto calculation that averages by match first
+        avgAuto: arr => {
+          // Get unique matches and their average Auto
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.auto;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgAuto: data.sum / data.count
+          }));
+          
+          if (matchAverages.length === 0) return 0;
+          return matchAverages.reduce((sum, m) => sum + m.avgAuto, 0) / matchAverages.length;
+        },
+        
+        // Fixed avgTele calculation that averages by match first
+        avgTele: arr => {
+          // Get unique matches and their average Tele
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.tele;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgTele: data.sum / data.count
+          }));
+          
+          if (matchAverages.length === 0) return 0;
+          return matchAverages.reduce((sum, m) => sum + m.avgTele, 0) / matchAverages.length;
+        },
+        
+        // Fixed avgEnd calculation that averages by match first
+        avgEnd: arr => {
+          // Get unique matches and their average End
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.end;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgEnd: data.sum / data.count
+          }));
+          
+          if (matchAverages.length === 0) return 0;
+          return matchAverages.reduce((sum, m) => sum + m.avgEnd, 0) / matchAverages.length;
+        },
+    
+        // Last 3 averages - keeping your existing functions
+        last3Epa: arr => {
+          // Get unique matches and their average EPA
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.epa;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgEpa: data.sum / data.count
+          }));
+          
+          // Sort by match number (descending) and take last 3
+          const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+          
+          if (latest3Matches.length === 0) return 0;
+          return latest3Matches.reduce((sum, m) => sum + m.avgEpa, 0) / latest3Matches.length;
+        },
+    
+        last3Auto: arr => {
+          // Get unique matches and their average Auto
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.auto;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgAuto: data.sum / data.count
+          }));
+          
+          // Sort by match number (descending) and take last 3
+          const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+          
+          if (latest3Matches.length === 0) return 0;
+          return latest3Matches.reduce((sum, m) => sum + m.avgAuto, 0) / latest3Matches.length;
+        },
+    
+        last3Tele: arr => {
+          // Get unique matches and their average Tele
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.tele;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgTele: data.sum / data.count
+          }));
+          
+          // Sort by match number (descending) and take last 3
+          const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+          
+          if (latest3Matches.length === 0) return 0;
+          return latest3Matches.reduce((sum, m) => sum + m.avgTele, 0) / latest3Matches.length;
+        },
+    
+        last3End: arr => {
+          // Get unique matches and their average End
+          const matchGroups = {};
+          arr.forEach(row => {
+            if (!matchGroups[row.match]) {
+              matchGroups[row.match] = { sum: 0, count: 0 };
+            }
+            matchGroups[row.match].sum += row.end;
+            matchGroups[row.match].count += 1;
+          });
+          
+          // Convert to array of match averages
+          const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+            match: parseInt(match),
+            avgEnd: data.sum / data.count
+          }));
+          
+          // Sort by match number (descending) and take last 3
+          const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+          
+          if (latest3Matches.length === 0) return 0;
+          return latest3Matches.reduce((sum, m) => sum + m.avgEnd, 0) / latest3Matches.length;
+        },
         
         // Extract match and performance metrics
         epaOverTime: arr => tidy(arr, select(['epa', 'match'])),
