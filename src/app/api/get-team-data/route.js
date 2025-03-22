@@ -478,77 +478,182 @@ last3End: arr => {
 
     }),
 
-    endPlacement: arr => ({
-      none: percentValue(rows, 'endlocation', 0) * 100,
-      park: percentValue(rows, 'endlocation', 1) * 100,
-      shallow: percentValue(rows, 'endlocation', 3) * 100,
-      deep: percentValue(rows, 'endlocation', 4) * 100,
-      parkandFail: percentValue(rows, 'endlocation', 2) * 100,
-    }),
+// This appears to be inside a function that returns something via NextResponse
+  // I'm providing the fixed version of the code snippet you shared
+  
+  // Assuming this is inside a function where 'rows' is defined
 
-
-    attemptCage: arr => {
-      const attemptCount = rows.filter(row => [2, 3, 4].includes(row.endlocation)).length;
-      return rows.length > 0 ? attemptCount / rows.length * 100 : 0;
-    },
+  // The endPlacement, attemptCage, successCage functions are likely inside a map or some object construction
+  // which appears to be closed with "))" and then the result is assigned to returnObject[0]
+  
+  // First part of your object definition with fixed endPlacement
+  endPlacement: arr => {
+    // Group data by match ID
+    const matchGroups = {};
+    rows.forEach(row => {
+      const matchId = row.matchid || row.match_id; // adapt to your actual match ID field name
+      if (!matchGroups[matchId]) {
+        matchGroups[matchId] = [];
+      }
+      matchGroups[matchId].push(row);
+    });
     
-    successCage: arr => {
-      const successCount = rows.filter(row => [3, 4].includes(row.endlocation)).length;
-      return rows.length > 0 ? successCount / rows.length * 100: 0;
-    },
+    // Find the most common endlocation for each match
+    const matchModes = [];
+    Object.values(matchGroups).forEach(matchRows => {
+      // Count occurrences of each endlocation value
+      const counts = {};
+      matchRows.forEach(row => {
+        const endLoc = row.endlocation;
+        counts[endLoc] = (counts[endLoc] || 0) + 1;
+      });
+      
+      // Find the mode (most frequent value)
+      let mode = null;
+      let maxCount = 0;
+      Object.entries(counts).forEach(([value, count]) => {
+        if (count > maxCount) {
+          maxCount = count;
+          mode = parseInt(value);
+        }
+      });
+      
+      matchModes.push(mode);
+    });
     
+    // Calculate percentages of the modal values
+    const totalMatches = matchModes.length;
+    return {
+      none: (matchModes.filter(mode => mode === 0).length / totalMatches) * 100,
+      park: (matchModes.filter(mode => mode === 1).length / totalMatches) * 100,
+      shallow: (matchModes.filter(mode => mode === 3).length / totalMatches) * 100,
+      deep: (matchModes.filter(mode => mode === 4).length / totalMatches) * 100,
+      parkandFail: (matchModes.filter(mode => mode === 2).length / totalMatches) * 100,
+    };
+  },
+
+  // Fixed attemptCage function using the same match-based approach
+  attemptCage: arr => {
+    // Group data by match ID
+    const matchGroups = {};
+    rows.forEach(row => {
+      const matchId = row.matchid || row.match_id;
+      if (!matchGroups[matchId]) {
+        matchGroups[matchId] = [];
+      }
+      matchGroups[matchId].push(row);
+    });
     
+    // Count matches where the modal endlocation value indicates a cage attempt
+    const matchesWithAttempt = Object.values(matchGroups).filter(matchRows => {
+      // Find the most common endlocation for this match
+      const counts = {};
+      matchRows.forEach(row => {
+        const endLoc = row.endlocation;
+        counts[endLoc] = (counts[endLoc] || 0) + 1;
+      });
+      
+      let mode = null;
+      let maxCount = 0;
+      Object.entries(counts).forEach(([value, count]) => {
+        if (count > maxCount) {
+          maxCount = count;
+          mode = parseInt(value);
+        }
+      });
+      
+      // Return true if the modal value indicates a cage attempt
+      return [2, 3, 4].includes(mode);
+    }).length;
     
-
-    qualitative: arr => [
-      { name: "Coral Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.coralspeed || 0), 0) / rows.length : 0 },
-      { name: "Processor Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.processorspeed || 0), 0) / rows.length : 0 },
-      { name: "Net Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.netspeed || 0), 0) / rows.length : 0 },
-      { name: "Algae Removal Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.algaeremovalspeed || 0), 0) / rows.length : 0 },
-      { name: "Climb Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.climbspeed || 0), 0) / rows.length : 0 },
-      { name: "Maneuverability", rating: rows.length ? rows.reduce((sum, row) => sum + (row.maneuverability || 0), 0) / rows.length : 0 },
-      { name: "Defense Played", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseplayed || 0), 0) / rows.length : 0 },
-      { name: "Defense Evasion", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseevasion || 0), 0) / rows.length : 0 },
-      { name: "Aggression*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.aggression || 0), 0) / rows.length) : 0 },
-      { name: "Cage Hazard*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.cagehazard || 0), 0) / rows.length) : 0 },
-    ],
-
-
-
+    const totalMatches = Object.keys(matchGroups).length;
+    return totalMatches > 0 ? (matchesWithAttempt / totalMatches) * 100 : 0;
+  },
+  
+  // Fixed successCage function using the same match-based approach
+  successCage: arr => {
+    // Group data by match ID
+    const matchGroups = {};
+    rows.forEach(row => {
+      const matchId = row.matchid || row.match_id;
+      if (!matchGroups[matchId]) {
+        matchGroups[matchId] = [];
+      }
+      matchGroups[matchId].push(row);
+    });
     
-  }));
-  returnObject[0] = {
-    ...returnObject[0],
-    coralGroundIntake: rows.some(row => row.coralgrndintake === true),
-    coralStationIntake: rows.some(row => row.coralstationintake === true),
-    algaeGroundIntake: rows.some(row => row.algaegrndintake === true),
-    algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true),
-    algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true),
-    lollipop: rows.some(row => row.lollipop === true),
-  };
+    // Count matches where the modal endlocation value indicates a successful cage
+    const matchesWithSuccess = Object.values(matchGroups).filter(matchRows => {
+      // Find the most common endlocation for this match
+      const counts = {};
+      matchRows.forEach(row => {
+        const endLoc = row.endlocation;
+        counts[endLoc] = (counts[endLoc] || 0) + 1;
+      });
+      
+      let mode = null;
+      let maxCount = 0;
+      Object.entries(counts).forEach(([value, count]) => {
+        if (count > maxCount) {
+          maxCount = count;
+          mode = parseInt(value);
+        }
+      });
+      
+      // Return true if the modal value indicates a successful cage
+      return [3, 4].includes(mode);
+    }).length;
+    
+    const totalMatches = Object.keys(matchGroups).length;
+    return totalMatches > 0 ? (matchesWithSuccess / totalMatches) * 100 : 0;
+  },
+  
+  qualitative: arr => [
+    { name: "Coral Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.coralspeed || 0), 0) / rows.length : 0 },
+    { name: "Processor Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.processorspeed || 0), 0) / rows.length : 0 },
+    { name: "Net Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.netspeed || 0), 0) / rows.length : 0 },
+    { name: "Algae Removal Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.algaeremovalspeed || 0), 0) / rows.length : 0 },
+    { name: "Climb Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.climbspeed || 0), 0) / rows.length : 0 },
+    { name: "Maneuverability", rating: rows.length ? rows.reduce((sum, row) => sum + (row.maneuverability || 0), 0) / rows.length : 0 },
+    { name: "Defense Played", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseplayed || 0), 0) / rows.length : 0 },
+    { name: "Defense Evasion", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseevasion || 0), 0) / rows.length : 0 },
+    { name: "Aggression*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.aggression || 0), 0) / rows.length) : 0 },
+    { name: "Cage Hazard*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.cagehazard || 0), 0) / rows.length) : 0 },
+  ],
+}));  // This appears to close the object and function call that contains these properties
 
+// The rest of your code seems fine and doesn't need modification for your current issue
+returnObject[0] = {
+  ...returnObject[0],
+  coralGroundIntake: rows.some(row => row.coralgrndintake === true),
+  coralStationIntake: rows.some(row => row.coralstationintake === true),
+  algaeGroundIntake: rows.some(row => row.algaegrndintake === true),
+  algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true),
+  algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true),
+  lollipop: rows.some(row => row.lollipop === true),
+};
 
-  // Then, update your aggregateByMatch function to ensure proper sorting:
-  function aggregateByMatch(dataArray) {
-    return tidy(
-      dataArray,
-      groupBy("match", [
-        summarize({
-          epa: mean("epa"),
-          auto: mean("auto"),
-          tele: mean("tele"),
-        }),
-      ]),
-      mutate({
-        epa: d => Math.round(d.epa * 100) / 100,
-        auto: d => Math.round(d.auto * 100) / 100,
-        tele: d => Math.round(d.tele * 100) / 100,
+// Aggregate function definition
+function aggregateByMatch(dataArray) {
+  return tidy(
+    dataArray,
+    groupBy("match", [
+      summarize({
+        epa: mean("epa"),
+        auto: mean("auto"),
+        tele: mean("tele"),
       }),
-      arrange([asc("match")])
-    );
-  }
+    ]),
+    mutate({
+      epa: d => Math.round(d.epa * 100) / 100,
+      auto: d => Math.round(d.auto * 100) / 100,
+      tele: d => Math.round(d.tele * 100) / 100,
+    }),
+    arrange([asc("match")])
+  );
+}
 
-// Apply the aggregation and sorting:
+// Apply the aggregation and sorting
 let processedEPAOverTime = aggregateByMatch(returnObject[0].epaOverTime);
 let processedAutoOverTime = aggregateByMatch(returnObject[0].autoOverTime);
 let processedTeleOverTime = aggregateByMatch(returnObject[0].teleOverTime);
@@ -556,10 +661,8 @@ let processedTeleOverTime = aggregateByMatch(returnObject[0].teleOverTime);
 returnObject[0].epaOverTime = processedEPAOverTime;
 returnObject[0].autoOverTime = processedAutoOverTime;
 returnObject[0].teleOverTime = processedTeleOverTime;
-  
 
-  console.log("Backend End Placement:", returnObject[0].defense);
+console.log("Backend End Placement:", returnObject[0].defense);
 
-
-  return NextResponse.json(returnObject[0], { status: 200 });
+return NextResponse.json(returnObject[0], { status: 200 });
 }
