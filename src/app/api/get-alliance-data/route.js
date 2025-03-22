@@ -171,6 +171,7 @@ function calculateAverages(responseObject, rows) {
 
 function calculateLast3EPA(responseObject, rows) {
   Object.keys(responseObject).forEach(team => {
+    // Filter rows for this team and calculate metrics
     const teamRows = rows
       .filter(r => String(r.team) === String(team) && !r.noshow)
       .map(r => ({
@@ -179,20 +180,44 @@ function calculateLast3EPA(responseObject, rows) {
         tele: calcTele(r),
         end: calcEnd(r),
         epa: calcAuto(r) + calcTele(r) + calcEnd(r),
-      }))
-      .sort((a, b) => a.match - b.match); // assuming `match` column exists
-
-    const last3 = teamRows.slice(-3);
-
+      }));
+    
+    // Group by match
+    const matchGroups = {};
+    teamRows.forEach(row => {
+      if (!matchGroups[row.match]) {
+        matchGroups[row.match] = [];
+      }
+      matchGroups[row.match].push(row);
+    });
+    
+    // Calculate average per match
+    const matchAverages = Object.entries(matchGroups).map(([match, matchRows]) => {
+      return {
+        match: parseInt(match),
+        auto: matchRows.reduce((sum, r) => sum + r.auto, 0) / matchRows.length,
+        tele: matchRows.reduce((sum, r) => sum + r.tele, 0) / matchRows.length,
+        end: matchRows.reduce((sum, r) => sum + r.end, 0) / matchRows.length,
+        epa: matchRows.reduce((sum, r) => sum + r.epa, 0) / matchRows.length
+      };
+    });
+    
+    // Sort by match number and take last 3 matches
+    const last3Matches = matchAverages
+      .sort((a, b) => a.match - b.match)
+      .slice(-3);
+    
+    // Calculate averages for the last 3 matches
     const avg = (arr, field) => {
       if (arr.length === 0) return 0;
       const sum = arr.reduce((sum, r) => sum + (r[field] || 0), 0);
       return Math.round((sum / arr.length) * 10) / 10;
     };
-
-    responseObject[team].last3Auto = avg(last3, "auto");
-    responseObject[team].last3Tele = avg(last3, "tele");
-    responseObject[team].last3End = avg(last3, "end");
-    responseObject[team].last3EPA = avg(last3, "epa");
+    
+    // Store the results
+    responseObject[team].last3Auto = avg(last3Matches, "auto");
+    responseObject[team].last3Tele = avg(last3Matches, "tele");
+    responseObject[team].last3End = avg(last3Matches, "end");
+    responseObject[team].last3EPA = avg(last3Matches, "epa");
   });
 }
