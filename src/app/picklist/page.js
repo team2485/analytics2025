@@ -117,18 +117,18 @@ export default function Picklist() {
   }
 
   function updateAlliancesData(allianceNumber, allianceTeams) {
-    let formData = new FormData(alliancesFormRef.current);
-    let teams = [...formData.entries()].map(entry => +entry[1]);
-    setTeamsToExclude(teams);
-
-    let updateAllianceData = {
-      ...allianceData,
-      [allianceNumber]: allianceTeams
-    }
-
-    const urlParams = new URLSearchParams([...Object.entries(weights), ...Object.entries(updateAllianceData).flatMap(([allianceNumber, teams]) => teams.map((team, index) => [`A${allianceNumber}T${index + 1}`, team]))]);
+    // This function updates the URL with the current alliance data
+    const urlParams = new URLSearchParams([
+      ...Object.entries(weights), 
+      ...Object.entries({
+        ...allianceData,
+        [allianceNumber]: allianceTeams
+      }).flatMap(([allianceNum, teams]) => 
+        teams.filter(team => team).map((team, index) => [`A${allianceNum}T${index + 1}`, team])
+      )
+    ]);
     window.history.replaceState(null, '', `?${urlParams.toString()}`);
-  };
+  }
 
   const Weights = () => {
     const handleWeightChange = (e) => {
@@ -204,10 +204,71 @@ export default function Picklist() {
     );
   }
 
+  useEffect(() => {
+    setIsClient(true);
+  
+    // First, try to load alliance data from localStorage
+    const storedAlliances = localStorage.getItem('allianceData');
+    let localStorageAlliances = {};
+    if (storedAlliances) {
+      localStorageAlliances = JSON.parse(storedAlliances);
+    }
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlWeights = Object.fromEntries(urlParams);
+    setWeights(urlWeights);
+  
+    const storedRatings = localStorage.getItem('teamRatings');
+    if (storedRatings) {
+      setTeamRatings(JSON.parse(storedRatings));
+    }
+  
+    // Process URL parameters for alliances
+    const urlAlliances = {};
+    let urlTeamsToExclude = new Array(24);
+    
+    for (const [key, value] of urlParams.entries()) {
+      if (key.startsWith('A') && key.includes('T')) {
+        const [, allianceNumber, teamPosition] = key.match(/A(\d+)T(\d+)/);
+        if (!urlAlliances[allianceNumber]) {
+          urlAlliances[allianceNumber] = [];
+        }
+        urlAlliances[allianceNumber][parseInt(teamPosition) - 1] = value;
+        
+        if (value) {
+          urlTeamsToExclude[((parseInt(allianceNumber) - 1) * 3) + (parseInt(teamPosition) - 1)] = +value;
+        }
+      }
+    }
+    
+    // Use URL alliances if available, otherwise use localStorage data
+    const finalAllianceData = Object.keys(urlAlliances).length > 0 
+      ? urlAlliances 
+      : localStorageAlliances;
+    
+    setAllianceData(finalAllianceData);
+    
+    // Update teams to exclude based on alliance data
+    if (Object.keys(finalAllianceData).length > 0) {
+      let updatedTeamsToExclude = new Array(24);
+      Object.entries(finalAllianceData).forEach(([allianceNumber, teams]) => {
+        teams.forEach((team, index) => {
+          if (team) {
+            updatedTeamsToExclude[((parseInt(allianceNumber) - 1) * 3) + index] = +team;
+          }
+        });
+      });
+      setTeamsToExclude(updatedTeamsToExclude);
+    }
+  }, []);
+
+
+
   const AllianceRow = ({ allianceNumber, allianceData, handleAllianceChange }) => {
     const firstValue = allianceData ? allianceData[0] : '';
     const secondValue = allianceData ? allianceData[1] : '';
     const thirdValue = allianceData ? allianceData[2] : '';
+
     return (
       <tr>
         <td>A{allianceNumber}</td>
@@ -228,13 +289,27 @@ export default function Picklist() {
   };
 
   const handleAllianceChange = (allianceNumber, allianceTeams) => {
-    setAllianceData({
+    const updatedAllianceData = {
       ...allianceData,
       [allianceNumber]: allianceTeams
+    };
+    
+    setAllianceData(updatedAllianceData);
+    
+    // Save to localStorage
+    localStorage.setItem('allianceData', JSON.stringify(updatedAllianceData));
+    
+    // Update teams to exclude
+    let updatedTeamsToExclude = [...teamsToExclude];
+    allianceTeams.forEach((team, index) => {
+      const position = ((parseInt(allianceNumber) - 1) * 3) + index;
+      updatedTeamsToExclude[position] = team ? +team : undefined;
     });
+    setTeamsToExclude(updatedTeamsToExclude);
+    
     updateAlliancesData(allianceNumber, allianceTeams);
   };
-
+  
   function PicklistTable() {
     
     const valueToColor = (value) => {
