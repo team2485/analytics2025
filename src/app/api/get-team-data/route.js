@@ -75,128 +75,234 @@ export async function GET(request) {
     }
     return data.nickname;
   });
+    const matchesScouted = new Set(teamTable.map(row => row.match)).size;
 
-
-  const matchesScouted = new Set(teamTable.map(row => row.match)).size;
-
-  function standardDeviation(arr, key) {
-    const values = arr.map(row => row[key]).filter(v => typeof v === 'number' && !isNaN(v));
-  
-    if (values.length === 0) return 0;
+    function standardDeviation(arr, key) {
+      const values = arr.map(row => row[key]).filter(v => typeof v === 'number' && !isNaN(v));
+    
+      if (values.length === 0) return 0;
       const sum = values.reduce((acc, val) => acc + val, 0);
-    const avg = sum / values.length;
+      const avg = sum / values.length;
       const variance = values.reduce((acc, val) => acc + Math.pow(val - avg, 2), 0) / values.length;
       const stdDev = Math.sqrt(variance);
-  
-    console.log(`📏 Manual StdDev Debug → values: [${values.join(', ')}] | Mean: ${avg} | Variance: ${variance} | StdDev: ${stdDev}`);
-  
-    return stdDev;
-  }
-
-  let returnObject = tidy(teamTable, summarize({
-    team: first('team'),
-    name: () => teamName,
-    avgEpa: mean('epa'),
-    avgAuto: mean('auto'),
-    avgTele: mean('tele'),
-    avgEnd: mean('end'),
-    //add real data (mabe need to do calculations)
-    last3Epa: arr => arr.slice(-3).reduce((sum, row) => sum + row.epa, 0) / Math.min(3, arr.length),
-    last3Auto: arr => arr.slice(-3).reduce((sum, row) => sum + row.auto, 0) / Math.min(3, arr.length),
-    last3Tele: arr => arr.slice(-3).reduce((sum, row) => sum + row.tele, 0) / Math.min(3, arr.length),
-    last3End: arr => arr.slice(-3).reduce((sum, row) => sum + row.end, 0) / Math.min(3, arr.length),
-  
-    // Extract match and performance metrics
-    epaOverTime: arr => tidy(arr, select(['epa', 'match'])),
-    autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
-    teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
-  
-    consistency: arr => {
-      const uniqueMatches = new Set(arr.map(row => row.match));
-      const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
-        arr.some(row => row.match === match && row.breakdowncomments !== null)
-      ).length;
-      const breakdownRate = (uniqueBreakdownCount / uniqueMatches.size) * 100;
     
-      const epaStdDev = standardDeviation(arr, 'epa');
-      return 100 - (breakdownRate + epaStdDev);
-    },
-
-    lastBreakdown: arr => arr.filter(e => e.breakdowncomments !== null).reduce((a, b) => b.match, "N/A"),
-    noShow: arr => percentValue(arr, 'noshow', true),
-
-    breakdown: arr => {
-  const uniqueMatches = new Set(arr.map(row => row.match));
-  const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
-    arr.some(row => row.match === match && row.breakdowncomments !== null)
-  ).length;
-  return (uniqueBreakdownCount / uniqueMatches.size) * 100;
-    },
-
-    defense: arr => {
-      const uniqueMatches = new Set(arr.map(row => row.match));
-      const uniqueDefenseCount = Array.from(uniqueMatches).filter(match =>
-        arr.some(row => row.match === match && row.defensecomments !== null)
-      ).length;
-      return (uniqueDefenseCount / uniqueMatches.size) * 100;
-    },
-
-    matchesScouted: () => matchesScouted,
-    scouts: arr => {
-      const scoutsByMatch = {};
-      arr.forEach(row => {
-        if (row.scoutname && row.scoutname.trim()) {
-          if (!scoutsByMatch[row.match]) {
-            scoutsByMatch[row.match] = [];
-          }
-          if (!scoutsByMatch[row.match].includes(row.scoutname)) {
-            scoutsByMatch[row.match].push(row.scoutname);
-          }
-        }
-      });
-      
-      const result = Object.entries(scoutsByMatch).map(([match, scouts]) => 
-        ` *Match ${match}: ${scouts.join(', ')}*`
-      );
-      
-      return result.length > 0 ? result : [];
-    },
-    generalComments: arr => {
-      const commentsByMatch = {};
-      arr.forEach(row => {
-        if (row.generalcomments && row.generalcomments.trim()) {
-          if (!commentsByMatch[row.match]) {
-            commentsByMatch[row.match] = [];
-          }
-          commentsByMatch[row.match].push(row.generalcomments);
-        }
-      });
-      
-      const result = Object.entries(commentsByMatch).map(([match, comments]) => 
-        ` *Match ${match}: ${comments.join(' -- ')}*`
-      );
-      
-      return result.length > 0 ? result : [];
-    },
+      console.log(`📏 Manual StdDev Debug → values: [${values.join(', ')}] | Mean: ${avg} | Variance: ${variance} | StdDev: ${stdDev}`);
     
-    breakdownComments: arr => {
-      const commentsByMatch = {};
-      arr.forEach(row => {
-        if (row.breakdowncomments && row.breakdowncomments.trim()) {
-          if (!commentsByMatch[row.match]) {
-            commentsByMatch[row.match] = [];
-          }
-          commentsByMatch[row.match].push(row.breakdowncomments);
-        }
-      });
-      
-      const result = Object.entries(commentsByMatch).map(([match, comments]) => 
-         ` *Match ${match}: ${comments.join(' -- ')}*`
-      );
-      
-      return result.length > 0 ? result : [];
-    },
+      return stdDev;
+    }
     
+    let returnObject = tidy(teamTable, 
+      summarize({
+        epa: mean('epa'),
+        auto: mean('auto'),
+        tele: mean('tele'),
+        end: mean('end'),
+        team: first('team'),
+        name: () => teamName,
+        avgEpa: mean('epa'),
+        avgAuto: mean('auto'),
+        avgTele: mean('tele'),
+        avgEnd: mean('end'),
+        
+        // Last 3 averages
+        last3Epa: arr => {
+          // If we have 3 or fewer matches, use all data (same as average)
+          if (arr.length <= 3) {
+            return arr.reduce((sum, row) => sum + row.epa, 0) / arr.length;
+          }
+          // Otherwise, sort by match number (descending) and take first 3
+          const latest3 = [...arr].sort((a, b) => b.match - a.match).slice(0, 3);
+          return latest3.reduce((sum, row) => sum + row.epa, 0) / 3;
+        },
+// Last 3 averages
+last3Epa: arr => {
+  // Get unique matches and their average EPA
+  const matchGroups = {};
+  arr.forEach(row => {
+    if (!matchGroups[row.match]) {
+      matchGroups[row.match] = { sum: 0, count: 0 };
+    }
+    matchGroups[row.match].sum += row.epa;
+    matchGroups[row.match].count += 1;
+  });
+  
+  // Convert to array of match averages
+  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+    match: parseInt(match),
+    avgEpa: data.sum / data.count
+  }));
+  
+  // Sort by match number (descending) and take last 3
+  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+  
+  if (latest3Matches.length === 0) return 0;
+  return latest3Matches.reduce((sum, m) => sum + m.avgEpa, 0) / latest3Matches.length;
+},
+
+last3Auto: arr => {
+  // Get unique matches and their average Auto
+  const matchGroups = {};
+  arr.forEach(row => {
+    if (!matchGroups[row.match]) {
+      matchGroups[row.match] = { sum: 0, count: 0 };
+    }
+    matchGroups[row.match].sum += row.auto;
+    matchGroups[row.match].count += 1;
+  });
+  
+  // Convert to array of match averages
+  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+    match: parseInt(match),
+    avgAuto: data.sum / data.count
+  }));
+  
+  // Sort by match number (descending) and take last 3
+  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+  
+  if (latest3Matches.length === 0) return 0;
+  return latest3Matches.reduce((sum, m) => sum + m.avgAuto, 0) / latest3Matches.length;
+},
+
+last3Tele: arr => {
+  // Get unique matches and their average Tele
+  const matchGroups = {};
+  arr.forEach(row => {
+    if (!matchGroups[row.match]) {
+      matchGroups[row.match] = { sum: 0, count: 0 };
+    }
+    matchGroups[row.match].sum += row.tele;
+    matchGroups[row.match].count += 1;
+  });
+  
+  // Convert to array of match averages
+  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+    match: parseInt(match),
+    avgTele: data.sum / data.count
+  }));
+  
+  // Sort by match number (descending) and take last 3
+  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+  
+  if (latest3Matches.length === 0) return 0;
+  return latest3Matches.reduce((sum, m) => sum + m.avgTele, 0) / latest3Matches.length;
+},
+
+last3End: arr => {
+  // Get unique matches and their average End
+  const matchGroups = {};
+  arr.forEach(row => {
+    if (!matchGroups[row.match]) {
+      matchGroups[row.match] = { sum: 0, count: 0 };
+    }
+    matchGroups[row.match].sum += row.end;
+    matchGroups[row.match].count += 1;
+  });
+  
+  // Convert to array of match averages
+  const matchAverages = Object.entries(matchGroups).map(([match, data]) => ({
+    match: parseInt(match),
+    avgEnd: data.sum / data.count
+  }));
+  
+  // Sort by match number (descending) and take last 3
+  const latest3Matches = matchAverages.sort((a, b) => b.match - a.match).slice(0, 3);
+  
+  if (latest3Matches.length === 0) return 0;
+  return latest3Matches.reduce((sum, m) => sum + m.avgEnd, 0) / latest3Matches.length;
+},
+        
+        // Extract match and performance metrics
+        epaOverTime: arr => tidy(arr, select(['epa', 'match'])),
+        autoOverTime: arr => tidy(arr, select(['match', 'auto'])),
+        teleOverTime: arr => tidy(arr, select(['match', 'tele'])),
+      
+        // Consistency calculation
+        consistency: arr => {
+          const uniqueMatches = new Set(arr.map(row => row.match));
+          const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
+            arr.some(row => row.match === match && row.breakdowncomments !== null)
+          ).length;
+          const breakdownRate = (uniqueBreakdownCount / uniqueMatches.size) * 100;
+        
+          const epaStdDev = standardDeviation(arr, 'epa');
+          return 100 - (breakdownRate + epaStdDev);
+        },
+    
+        lastBreakdown: arr => arr.filter(e => e.breakdowncomments !== null).reduce((a, b) => b.match, "N/A"),
+        noShow: arr => percentValue(arr, 'noshow', true),
+    
+        breakdown: arr => {
+          const uniqueMatches = new Set(arr.map(row => row.match));
+          const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
+            arr.some(row => row.match === match && row.breakdowncomments !== null)
+          ).length;
+          return (uniqueBreakdownCount / uniqueMatches.size) * 100;
+        },
+    
+        defense: arr => {
+          const uniqueMatches = new Set(arr.map(row => row.match));
+          const uniqueDefenseCount = Array.from(uniqueMatches).filter(match =>
+            arr.some(row => row.match === match && row.defensecomments !== null)
+          ).length;
+          return (uniqueDefenseCount / uniqueMatches.size) * 100;
+        },
+    
+        matchesScouted: () => matchesScouted,
+        scouts: arr => {
+          const scoutsByMatch = {};
+          arr.forEach(row => {
+            if (row.scoutname && row.scoutname.trim()) {
+              if (!scoutsByMatch[row.match]) {
+                scoutsByMatch[row.match] = [];
+              }
+              if (!scoutsByMatch[row.match].includes(row.scoutname)) {
+                scoutsByMatch[row.match].push(row.scoutname);
+              }
+            }
+          });
+          
+          const result = Object.entries(scoutsByMatch).map(([match, scouts]) => 
+            ` *Match ${match}: ${scouts.join(', ')}*`
+          );
+          
+          return result.length > 0 ? result : [];
+        },
+        generalComments: arr => {
+          const commentsByMatch = {};
+          arr.forEach(row => {
+            if (row.generalcomments && row.generalcomments.trim()) {
+              if (!commentsByMatch[row.match]) {
+                commentsByMatch[row.match] = [];
+              }
+              commentsByMatch[row.match].push(row.generalcomments);
+            }
+          });
+          
+          const result = Object.entries(commentsByMatch).map(([match, comments]) => 
+            ` *Match ${match}: ${comments.join(' -- ')}*`
+          );
+          
+          return result.length > 0 ? result : [];
+        },
+        
+        breakdownComments: arr => {
+          const commentsByMatch = {};
+          arr.forEach(row => {
+            if (row.breakdowncomments && row.breakdowncomments.trim()) {
+              if (!commentsByMatch[row.match]) {
+                commentsByMatch[row.match] = [];
+              }
+              commentsByMatch[row.match].push(row.breakdowncomments);
+            }
+          });
+          
+          const result = Object.entries(commentsByMatch).map(([match, comments]) => 
+            ` *Match ${match}: ${comments.join(' -- ')}*`
+          );
+          
+          return result.length > 0 ? result : [];
+        },
+      
     defenseComments: arr => {
       const commentsByMatch = {};
       arr.forEach(row => {
