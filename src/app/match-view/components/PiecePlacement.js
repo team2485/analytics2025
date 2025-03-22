@@ -7,8 +7,6 @@ export default function PiecePlacement({ colors, matchMax, L1, L2, L3, L4, net, 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
-  console.log('Rendering PiecePlacement:', typeof window !== 'undefined' ? 'Client' : 'Server');
-
 
   useEffect(() => {
     // Destroy existing chart if it exists

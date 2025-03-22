@@ -497,7 +497,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
       team6: data?.team6?.qualitative[qual] || 0,
       fullMark: 5});
   }
-  console.log(radarData);
+
 
   let matchMax = 0;
   for (let teamData of [data.team1, data.team2, data.team3, data.team4, data.team5, data.team6]) {
