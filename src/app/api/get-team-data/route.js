@@ -557,53 +557,107 @@ export async function GET(request) {
   // which appears to be closed with "))" and then the result is assigned to returnObject[0]
   
   // First part of your object definition with fixed endPlacement
-  endPlacement: arr => {
-    // Group data by match ID
+  endPlacement: (rows) => {
+    console.log("Total number of rows:", rows.length);
+    
+    // Group data by match number instead of matchid
     const matchGroups = {};
     rows.forEach(row => {
-      const matchId = row.matchid || row.match_id; // adapt to your actual match ID field name
-      if (!matchGroups[matchId]) {
-        matchGroups[matchId] = [];
+      const matchId = row.match; // Use match number as the identifier
+      if (matchId === undefined || matchId === null) {
+        console.log("Row missing match number:", row);
+        return; // Skip rows without match
       }
-      matchGroups[matchId].push(row);
+      
+      // Create a unique key combining match number and match type (if available)
+      const matchKey = row.matchtype ? `${matchId}-${row.matchtype}` : `${matchId}`;
+      
+      if (!matchGroups[matchKey]) {
+        matchGroups[matchKey] = [];
+      }
+      matchGroups[matchKey].push(row);
     });
     
-    // Find the most common endlocation for each match
-    const matchModes = [];
-    Object.values(matchGroups).forEach(matchRows => {
-      // Count occurrences of each endlocation value
-      const counts = {};
-      matchRows.forEach(row => {
-        const endLoc = row.endlocation;
-        counts[endLoc] = (counts[endLoc] || 0) + 1;
-      });
+    console.log("Match groups created:", Object.keys(matchGroups).length);
+    
+    // Count matches by their most common endlocation
+    const endLocationCounts = {
+      0: 0, // none
+      1: 0, // park
+      2: 0, // parkandFail
+      3: 0, // shallow
+      4: 0  // deep
+    };
+    
+    // For each match, find the most common endlocation
+    Object.entries(matchGroups).forEach(([matchKey, matchRows]) => {
+      // Count occurrences of each endlocation value in this match
+      const locationFrequency = {};
       
-      // Find the mode (most frequent value)
-      let mode = null;
-      let maxCount = 0;
-      Object.entries(counts).forEach(([value, count]) => {
-        if (count > maxCount) {
-          maxCount = count;
-          mode = parseInt(value);
+      matchRows.forEach(row => {
+        if (!('endlocation' in row)) {
+          console.log(`Row missing endlocation in match ${matchKey}:`, row);
+          return; // Skip rows without endlocation
+        }
+        
+        const endLoc = Number(row.endlocation);
+        if (!isNaN(endLoc) && endLoc >= 0 && endLoc <= 4) {
+          locationFrequency[endLoc] = (locationFrequency[endLoc] || 0) + 1;
+        } else {
+          console.log(`Invalid endlocation value in match ${matchKey}:`, row.endlocation);
         }
       });
       
-      matchModes.push(mode);
+      console.log(`Match ${matchKey} location frequencies:`, locationFrequency);
+      
+      // Find the most frequent endlocation for this match
+      let mostFrequentLocation = null;
+      let highestCount = 0;
+      
+      Object.entries(locationFrequency).forEach(([location, count]) => {
+        if (count > highestCount) {
+          highestCount = count;
+          mostFrequentLocation = Number(location);
+        }
+      });
+      
+      console.log(`Match ${matchKey} most frequent location:`, mostFrequentLocation);
+      
+      // Increment the count for this endlocation if valid
+      if (mostFrequentLocation !== null && mostFrequentLocation in endLocationCounts) {
+        endLocationCounts[mostFrequentLocation]++;
+      }
     });
     
-    // Calculate percentages of the modal values
-    const totalMatches = matchModes.length;
-    return {
-      none: (matchModes.filter(mode => mode === 0).length / totalMatches) * 100,
-      park: (matchModes.filter(mode => mode === 1).length / totalMatches) * 100,
-      shallow: (matchModes.filter(mode => mode === 3).length / totalMatches) * 100,
-      deep: (matchModes.filter(mode => mode === 4).length / totalMatches) * 100,
-      parkandFail: (matchModes.filter(mode => mode === 2).length / totalMatches) * 100,
+    console.log("Final endlocation counts:", endLocationCounts);
+    
+    // Calculate total matches with valid endlocations
+    const totalMatches = Object.values(endLocationCounts).reduce((sum, count) => sum + count, 0);
+    console.log("Total matches with valid endlocations:", totalMatches);
+    
+    // If no matches, return zeros
+    if (totalMatches === 0) {
+      console.log("No valid matches found, returning zeros");
+      return { none: 0, park: 0, parkandFail: 0, shallow: 0, deep: 0 };
+    }
+    
+    // Calculate percentages
+    const percentages = {
+      none: (endLocationCounts[0] / totalMatches) * 100,
+      park: (endLocationCounts[1] / totalMatches) * 100,
+      parkandFail: (endLocationCounts[2] / totalMatches) * 100,
+      shallow: (endLocationCounts[3] / totalMatches) * 100,
+      deep: (endLocationCounts[4] / totalMatches) * 100
     };
+    
+    console.log("Final percentages:", percentages);
+    return percentages;
+  
   },
 
+  
   // Fixed attemptCage function using the same match-based approach
-  attemptCage: arr => {
+  attemptCage: (rows) => {
     // Group data by match ID
     const matchGroups = {};
     rows.forEach(row => {
@@ -614,23 +668,23 @@ export async function GET(request) {
       matchGroups[matchId].push(row);
     });
     
-    // Count matches where the modal endlocation value indicates a cage attempt
-    const matchesWithAttempt = Object.values(matchGroups).filter(matchRows => {
-      // Find the most common endlocation for this match
-      const counts = {};
-      matchRows.forEach(row => {
-        const endLoc = row.endlocation;
-        counts[endLoc] = (counts[endLoc] || 0) + 1;
-      });
-      
-      let mode = null;
-      let maxCount = 0;
-      Object.entries(counts).forEach(([value, count]) => {
-        if (count > maxCount) {
-          maxCount = count;
-          mode = parseInt(value);
-        }
-      });
+   // Count matches where the modal endlocation value indicates a cage attempt
+   const matchesWithAttempt = Object.values(matchGroups).filter(matchRows => {
+    // Find the most common endlocation for this match
+    const counts = {};
+    matchRows.forEach(row => {
+      const endLoc = row.endlocation;
+      counts[endLoc] = (counts[endLoc] || 0) + 1;
+    });
+    
+    let mode = null;
+    let maxCount = 0;
+    Object.entries(counts).forEach(([value, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        mode = parseInt(value);
+      }
+    });
       
       // Return true if the modal value indicates a cage attempt
       return [2, 3, 4].includes(mode);
@@ -641,7 +695,7 @@ export async function GET(request) {
   },
   
   // Fixed successCage function using the same match-based approach
-  successCage: arr => {
+  successCage: (rows) => {
     // Group data by match ID
     const matchGroups = {};
     rows.forEach(row => {
@@ -651,24 +705,24 @@ export async function GET(request) {
       }
       matchGroups[matchId].push(row);
     });
-    
-    // Count matches where the modal endlocation value indicates a successful cage
-    const matchesWithSuccess = Object.values(matchGroups).filter(matchRows => {
-      // Find the most common endlocation for this match
-      const counts = {};
-      matchRows.forEach(row => {
-        const endLoc = row.endlocation;
-        counts[endLoc] = (counts[endLoc] || 0) + 1;
-      });
-      
-      let mode = null;
-      let maxCount = 0;
-      Object.entries(counts).forEach(([value, count]) => {
-        if (count > maxCount) {
-          maxCount = count;
-          mode = parseInt(value);
-        }
-      });
+
+ // Count matches where the modal endlocation value indicates a successful cage
+ const matchesWithSuccess = Object.values(matchGroups).filter(matchRows => {
+  // Find the most common endlocation for this match
+  const counts = {};
+  matchRows.forEach(row => {
+    const endLoc = row.endlocation;
+    counts[endLoc] = (counts[endLoc] || 0) + 1;
+  });
+  
+  let mode = null;
+  let maxCount = 0;
+  Object.entries(counts).forEach(([value, count]) => {
+    if (count > maxCount) {
+      maxCount = count;
+      mode = parseInt(value);
+    }
+  });
       
       // Return true if the modal value indicates a successful cage
       return [3, 4].includes(mode);
@@ -703,6 +757,7 @@ returnObject[0] = {
   lollipop: rows.some(row => row.lollipop === true),
 };
 
+
 // Aggregate function definition
 function aggregateByMatch(dataArray) {
   return tidy(
@@ -732,7 +787,11 @@ returnObject[0].epaOverTime = processedEPAOverTime;
 returnObject[0].autoOverTime = processedAutoOverTime;
 returnObject[0].teleOverTime = processedTeleOverTime;
 
-console.log("Backend End Placement:", returnObject[0].defense);
+// Add debugging logs
+console.log("Backend End Placement:", returnObject[0].endPlacement);
 
+// Just one return statement
 return NextResponse.json(returnObject[0], { status: 200 });
+
 }
+
