@@ -17,8 +17,8 @@ function calcAuto(record) {
       record.telel3success * 4 + // Level 3 Coral
       record.telel4success * 5 + // Level 4 Coral
       record.teleprocessorsuccess * 6 + // Processor success in teleop
-      record.telenetsuccess * 4 + // Net success in teleop
-      record.hpsuccess * 2 // Human player success bonus
+      record.telenetsuccess * 4 // Net success in teleop
+
     );
   }
   
