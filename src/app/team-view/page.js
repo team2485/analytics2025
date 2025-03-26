@@ -333,7 +333,6 @@ function TeamView() {
                         L4={Math.round(10*(data.auto.coral.avgL4 + data.tele.coral.avgL4))/10}
                         net={Math.round(10*(data.auto.algae.avgNet + data.tele.algae.avgNet))/10}
                         processor={Math.round(10*(data.auto.algae.avgProcessor + data.tele.algae.avgProcessor))/10}
-                        HP={Math.round(10*data.tele.avgHp)/10}
                     />
                 </div>
                 <div className={styles.valueBoxes}>
@@ -554,11 +553,9 @@ function TeamView() {
               <tr>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Algae Intake</td>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
-                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px"}}>Lollipop</td>
               </tr>
               <tr>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeGroundIntake}></input></td>
-                  <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="sourcecheck" type="checkbox" readOnly checked={data.lollipop}></input></td>
               </tr>
               <tr>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Reef Intake</td>

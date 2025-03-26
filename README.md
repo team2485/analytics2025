@@ -45,8 +45,6 @@ CREATE TABLE phr2025 (
    TeleProcessorFail INT,
    TeleNetSuccess INT,
    TeleNetFail INT,
-   HPSuccess INT,
-   HPFail INT,
    EndLocation INT,
    CoralSpeed INT,
    ProcessorSpeed INT,
@@ -60,7 +58,6 @@ CREATE TABLE phr2025 (
    CageHazard INT,
    CoralGrndIntake BOOLEAN,
    CoralStationIntake BOOLEAN,
-   Lollipop BOOLEAN,
    AlgaeGrndIntake BOOLEAN,
    AlgaeHighReefIntake BOOLEAN,
    AlgaeLowReefIntake BOOLEAN,
@@ -74,9 +71,9 @@ INSERT INTO phr2025 (
    AutoAlgaeRemoved, AutoProcessorSuccess, AutoProcessorFail, AutoNetSuccess, AutoNetFail,
    TeleL1Success, TeleL1Fail, TeleL2Success, TeleL2Fail, TeleL3Success, TeleL3Fail, TeleL4Success, TeleL4Fail,
    TeleAlgaeRemoved, TeleProcessorSuccess, TeleProcessorFail, TeleNetSuccess, TeleNetFail,
-   HPSuccess, HPFail, EndLocation, CoralSpeed, ProcessorSpeed, NetSpeed, AlgaeRemovalSpeed, ClimbSpeed,
+   EndLocation, CoralSpeed, ProcessorSpeed, NetSpeed, AlgaeRemovalSpeed, ClimbSpeed,
    Maneuverability, DefensePlayed, DefenseEvasion, Aggression, CageHazard,
-   CoralGrndIntake, CoralStationIntake, Lollipop, AlgaeGrndIntake, AlgaeHighReefIntake, AlgaeLowReefIntake,
+   CoralGrndIntake, CoralStationIntake, AlgaeGrndIntake, AlgaeHighReefIntake, AlgaeLowReefIntake,
    GeneralComments, BreakdownComments, DefenseComments
 )
 VALUES

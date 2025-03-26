@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-export default function PiecePlacement({ colors, matchMax, L1, L2, L3, L4, net, processor, HP }) {
+export default function PiecePlacement({ colors, matchMax, L1, L2, L3, L4, net, processor }) {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -19,10 +19,10 @@ export default function PiecePlacement({ colors, matchMax, L1, L2, L3, L4, net, 
       chartInstance.current = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['L1', 'L2', 'L3', 'L4', 'Net', 'Prcsr', 'HP'],
+          labels: ['L1', 'L2', 'L3', 'L4', 'Net', 'Prcsr'],
           datasets: [
             {
-              data: [L1, L2, L3, L4, net, processor, HP],
+              data: [L1, L2, L3, L4, net, processor],
               backgroundColor: colors[0],
               borderColor: colors[2],
               borderWidth: 1,
@@ -51,7 +51,7 @@ export default function PiecePlacement({ colors, matchMax, L1, L2, L3, L4, net, 
         chartInstance.current.destroy();
       }
     };
-  }, [L1, L2, L3, L4, net, processor, HP, matchMax]);
+  }, [L1, L2, L3, L4, net, processor, matchMax]);
 
   return <canvas ref={chartRef} />;
 }

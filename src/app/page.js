@@ -15,7 +15,6 @@ import JSConfetti from 'js-confetti';
 
 export default function Home() {
   const [noShow, setNoShow] = useState(false);
-  const [humanplayer, setHumanPlayer] = useState(false);
   const [breakdown, setBreakdown] = useState(false);
   const [defense, setDefense] = useState(false);
   const [matchType, setMatchType] = useState("2");
@@ -37,11 +36,6 @@ export default function Home() {
   function onNoShowChange(e) {
     let checked = e.target.checked;
     setNoShow(checked);
-  }
-
-  function onHumanPlayerChange(e) {
-    let checked = e.target.checked;
-    setHumanPlayer(checked);
   }
 
   function onBreakdownChange(e) {
@@ -108,7 +102,23 @@ export default function Home() {
         alert("Error validating team and match. Please try again.");
         submitButton.disabled = false;
         return;
-      }
+      } 
+    } else {
+      try {
+        const response = await fetch(`/api/get-valid-match-teams?team=${data.team}`)
+        const validationData = await response.json();
+        
+        if (!validationData.valid) {
+          alert("Invalid Team!");
+          submitButton.disabled = false;
+          return;
+        }
+      } catch (error) {
+        console.error("Validation error:", error);
+        alert("Error validating team. Please try again.");
+        submitButton.disabled = false;
+        return;
+      } 
     }
 
     //confirm and submit
@@ -396,22 +406,6 @@ console.log("page",matchType)
                       internalName={"telenetfail"}/>
                 </div>
               </div>
-              <div className={styles.HumanPlayer}>
-              <SubHeader subHeaderName={"Human Player"}/>
-              <Checkbox visibleName={"Human Player From Team?"} internalName={"humanplayer"} changeListener={onHumanPlayerChange}/>
-              { humanplayer &&
-                <div className={styles.HBox}>
-                  <NumericInput 
-                    visibleName={"Success"}
-                    pieceType={"Success"}
-                    internalName={"hpsuccess"}/>
-                  <NumericInput 
-                    visibleName={"Fail"}
-                    pieceType={"Fail"}
-                    internalName={"hpfail"}/>
-                </div>
-              }
-              </div>
             <div className={styles.Endgame}>
               <Header headerName={"Endgame"}/>
               <EndPlacement/>
@@ -429,10 +423,6 @@ console.log("page",matchType)
                 <Checkbox
                   visibleName={"Coral Station"}
                   internalName={"coralstationintake"}
-                />
-                <Checkbox
-                  visibleName={"Lollipop"}
-                  internalName={"algaegndintake"}
                 />
                 <Checkbox
                   visibleName={"Algae Ground"}

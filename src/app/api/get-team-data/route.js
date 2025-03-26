@@ -535,17 +535,6 @@ export async function GET(request) {
         })(),
       },
       
-      avgHp: (() => {
-        const validRows = rows.filter(row => row.hpsuccess !== null);
-        return validRows.length ? validRows.reduce((sum, row) => sum + row.hpsuccess, 0) / validRows.length : 0;
-      })(),
-      successHp: (() => {
-        const successes = rows.reduce((sum, row) => sum + (row.hpsuccess || 0), 0);
-        const totalAttempts = successes + rows.reduce((sum, row) => sum + (row.hpfail || 0), 0);
-        return totalAttempts > 0 ? (successes / totalAttempts) * 100 : 0;
-      })(),
-
-
     }),
 
 // This appears to be inside a function that returns something via NextResponse
@@ -760,7 +749,6 @@ returnObject[0] = {
   algaeGroundIntake: rows.some(row => row.algaegrndintake === true),
   algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true),
   algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true),
-  lollipop: rows.some(row => row.lollipop === true),
 };
 
 

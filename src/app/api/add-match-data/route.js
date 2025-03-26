@@ -118,7 +118,7 @@ export async function POST(req) {
   // Insert Data into Database**
   let resp = await sql`
     INSERT INTO sdr2025 (
-      scoutname, scoutteam, team, match, matchtype, breakdown, noshow, leave, autol1success, autol1fail, autol2success, autol2fail, autol3success, autol3fail, autol4success, autol4fail, autoalgaeremoved, autoprocessorsuccess, autoprocessorfail, autonetsuccess, autonetfail, telel1success, telel1fail, telel2success, telel2fail, telel3success, telel3fail, telel4success, telel4fail, telealgaeremoved, teleprocessorsuccess, teleprocessorfail, telenetsuccess, telenetfail, hpsuccess, hpfail, endlocation, coralspeed, processorspeed, netspeed, algaeremovalspeed, climbspeed, maneuverability, defenseplayed, defenseevasion, aggression, cagehazard, coralgrndintake, coralstationintake, lollipop, algaegrndintake, algaehighreefintake, algaelowreefintake, generalcomments, breakdowncomments, defensecomments
+      scoutname, scoutteam, team, match, matchtype, breakdown, noshow, leave, autol1success, autol1fail, autol2success, autol2fail, autol3success, autol3fail, autol4success, autol4fail, autoalgaeremoved, autoprocessorsuccess, autoprocessorfail, autonetsuccess, autonetfail, telel1success, telel1fail, telel2success, telel2fail, telel3success, telel3fail, telel4success, telel4fail, telealgaeremoved, teleprocessorsuccess, teleprocessorfail, telenetsuccess, telenetfail, endlocation, coralspeed, processorspeed, netspeed, algaeremovalspeed, climbspeed, maneuverability, defenseplayed, defenseevasion, aggression, cagehazard, coralgrndintake, coralstationintake, algaegrndintake, algaehighreefintake, algaelowreefintake, generalcomments, breakdowncomments, defensecomments
     )
     VALUES (
       ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${adjustedMatch}, ${body.matchType}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 
@@ -126,9 +126,9 @@ export async function POST(req) {
       ${body.autoalgaeremoved}, ${body.autoprocessorsuccess}, ${body.autoprocessorfail}, ${body.autonetsuccess}, ${body.autonetfail}, 
       ${body.telel1success}, ${body.telel1fail}, ${body.telel2success}, ${body.telel2fail}, ${body.telel3success}, ${body.telel3fail}, ${body.telel4success}, ${body.telel4fail}, 
       ${body.telealgaeremoved}, ${body.teleprocessorsuccess}, ${body.teleprocessorfail}, ${body.telenetsuccess}, ${body.telenetfail}, 
-      ${body.hpsuccess}, ${body.hpfail}, ${body.endlocation}, ${body.coralspeed}, ${body.processorspeed}, ${body.netspeed}, ${body.algaeremovalspeed}, 
+      ${body.endlocation}, ${body.coralspeed}, ${body.processorspeed}, ${body.netspeed}, ${body.algaeremovalspeed}, 
       ${body.climbspeed}, ${body.maneuverability}, ${body.defenseplayed}, ${body.defenseevasion}, ${body.aggression}, ${body.cagehazard}, 
-      ${body.coralgrndintake}, ${body.coralstationintake}, ${body.lollipop}, ${body.algaegrndintake}, ${body.algaehighreefintake}, ${body.algaelowreefintake}, 
+      ${body.coralgrndintake}, ${body.coralstationintake}, ${body.algaegrndintake}, ${body.algaehighreefintake}, ${body.algaelowreefintake}, 
       ${body.generalcomments}, ${body.breakdowncomments}, ${body.defensecomments}
       )`;      
 
