@@ -19,7 +19,7 @@ export async function POST(req) {
       adjustedMatch = body.match;
       break;
     case 3: // elim
-      adjustedMatch = body.match + 100;
+      adjustedMatch = body.match + 150;
       break;
   }
 
