@@ -366,9 +366,10 @@ function AllianceButtons({t1, t2, t3, colors}) {
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
 
     //auto rp = all robots leave and alliance scores one coral
-    const allianceCoral = Math.floor(teams[0].autoCoral) + Math.floor(teams[1].autoCoral) + Math.floor(teams[2].autoCoral);
+    const allianceAuto = Math.floor(teams[0].auto) + Math.floor(teams[1].auto) + Math.floor(teams[2].auto);
     let RP_AUTO = RGBColors.red;
-    if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+    if ((allianceAuto > 9) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+
 
     //coral rp = 5 coral scored on each level (5 on 3 levels is yellow)
     const allianceL1 = teams[0].avgPieces.L1 + teams[1].avgPieces.L1 + teams[2].avgPieces.L1;
