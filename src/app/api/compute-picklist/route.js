@@ -69,7 +69,6 @@ export async function POST(request) {
       telel4success: d.telel4success || 0,
       teleprocessorsuccess: d.teleprocessorsuccess || 0,
       telenetsuccess: d.telenetsuccess || 0,
-      hpsuccess: d.hpsuccess || 0
     }),    
     end: d => calcEnd({
       endlocation: d.endlocation || 0
@@ -88,7 +87,6 @@ export async function POST(request) {
       telel4success: d.telel4success || 0,
       teleprocessorsuccess: d.teleprocessorsuccess || 0,
       telenetsuccess: d.telenetsuccess || 0,
-      hpsuccess: d.hpsuccess || 0,
       endlocation: d.endlocation || 0
     }),
     cage: d => {

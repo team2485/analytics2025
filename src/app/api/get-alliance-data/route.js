@@ -62,7 +62,6 @@ function initializeTeamData(row, auto, tele, end, frcAPITeamInfo) {
       L4: row.autol4success + row.telel4success,
       net: row.autoprocessorsuccess + row.teleprocessorsuccess,
       processor: row.autonetsuccess + row.telenetsuccess,
-      HP: row.hpsuccess,
     },
     leave: row.leave,
     autoCoral: row.autocoralsuccess,
@@ -94,7 +93,6 @@ function accumulateTeamData(teamData, row, auto, tele, end) {
   teamData.avgPieces.L4 += row.autol4success + row.telel4success;
   teamData.avgPieces.net += row.autoprocessorsuccess + row.teleprocessorsuccess;
   teamData.avgPieces.processor += row.autonetsuccess + row.telenetsuccess;
-  teamData.avgPieces.HP += row.hpsuccess;
   teamData.removedAlgae += row.autoalgaeremoved + row.telealgaeremoved;
 
   const endgameData = createEndgameData(row.endlocation);
@@ -140,7 +138,6 @@ function calculateAverages(responseObject, rows) {
     teamData.avgPieces.L4 = average(teamData.avgPieces.L4, count);
     teamData.avgPieces.net = average(teamData.avgPieces.net, count);
     teamData.avgPieces.processor = average(teamData.avgPieces.processor, count);
-    teamData.avgPieces.HP = average(teamData.avgPieces.HP, count);
     teamData.removedAlgae = average(teamData.removedAlgae, count);
 
     let locationSum =

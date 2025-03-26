@@ -86,13 +86,6 @@
   align-items: center;
 }
 
-.HumanPlayer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .MainDiv h2 {
   text-align: center;
 }
