@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql } from '@vercel/postgres';
-import { tidy, mutate, arrange, desc, mean, select, summarizeAll, max, groupBy } from '@tidyjs/tidy';
+import { tidy, mutate, arrange, desc, mean, select, summarizeAll, summarize, max, groupBy } from '@tidyjs/tidy';
 import { calcAuto, calcTele, calcEnd, calcEPA } from "@/util/calculations";
 
 export async function POST(request) {
@@ -8,9 +8,7 @@ export async function POST(request) {
 
   let data = await sql`SELECT * FROM sdr2025;`;
   let rows = data.rows;
-  console.log(rows)
 
-  // Average numerical fields and handle exceptions
   function averageField(index) {
     if (['breakdown', 'leave', 'noshow'].includes(index)) return arr => arr.some(row => row[index] === true);
     if (['scoutname', 'generalcomments', 'breakdowncomments', 'defensecomments'].includes(index)) return arr => arr.map(row => row[index]).join(', ');
@@ -20,45 +18,40 @@ export async function POST(request) {
       : 0;    
   }
 
+  // Pre-process: remove no-shows
+  rows = rows.filter(row => !row.noshow);
+
+  // Calculate consistency per team before summarizing
+  const teamConsistencyMap = Object.fromEntries(
+    tidy(rows, groupBy(['team'], [
+      summarize({
+        consistency: arr => {
+          const uniqueMatches = new Set(arr.map(row => row.match));
+          const uniqueBreakdownCount = Array.from(uniqueMatches).filter(match =>
+            arr.some(row => row.match === match && row.breakdowncomments && row.breakdowncomments.trim() !== "")
+          ).length;
+          const breakdownRate = uniqueMatches.size > 0 
+            ? (uniqueBreakdownCount / uniqueMatches.size) * 100 
+            : 0;
+
+          const epaValues = arr.map(row => row.epa).filter(v => typeof v === 'number' && !isNaN(v));
+          const meanVal = epaValues.reduce((a, b) => a + b, 0) / epaValues.length || 0;
+          const variance = epaValues.reduce((sum, v) => sum + Math.pow(v - meanVal, 2), 0) / epaValues.length || 0;
+          const epaStdDev = Math.sqrt(variance);
+
+          return 100 - (breakdownRate + epaStdDev);
+        }
+      })
+    ])).map(d => [d.team, d.consistency])
+  );
+
+  // Group by team + match first
   let teamTable = tidy(rows, groupBy(['team', 'match'], [summarizeAll(averageField)]));
-  teamTable = teamTable.filter(dr => !dr.noshow);
+
+  // Group by team
   teamTable = tidy(teamTable, groupBy(['team'], [summarizeAll(averageField)]));
 
-  const calcConsistency = (dr) => {
-    // Calculate success rate for auto and tele piece placement
-    const autoSuccess = (dr.autol1success || 0) + (dr.autol2success || 0) + (dr.autol3success || 0) + (dr.autol4success || 0);
-    const autoAttempts = autoSuccess + (dr.autol1fail || 0) + (dr.autol2fail || 0) + (dr.autol3fail || 0) + (dr.autol4fail || 0);
-
-    const teleSuccess = (dr.telel1success || 0) + (dr.telel2success || 0) + (dr.telel3success || 0) + (dr.telel4success || 0);
-    const teleAttempts = teleSuccess + (dr.telel1fail || 0) + (dr.telel2fail || 0) + (dr.telel3fail || 0) + (dr.telel4fail || 0);
-
-    const successRate = (autoAttempts + teleAttempts) > 0 
-        ? ((autoSuccess + teleSuccess) / (autoAttempts + teleAttempts)) * 100 
-        : 0;
-
-    // Endgame success (shallow or deep dock)
-    const endgameSuccess = (dr.endlocation === 2 || dr.endlocation === 3) ? 1 : 0;
-
-    // No-show penalty
-    const noShowPenalty = dr.noshow ? 0 : 1;
-
-    // Breakdown penalty based on comments: 20% reduction if breakdown comments exist
-    const breakdownPenalty = dr.breakdowncomments && dr.breakdowncomments.trim() !== "" ? 0.8 : 1;
-
-    // Calculate average of success metrics
-    const metrics = [successRate, endgameSuccess * 100, noShowPenalty * 100];
-    const validMetrics = metrics.filter(val => val >= 0);
-
-    // Calculate final consistency with breakdown penalty
-    const baseConsistency = validMetrics.length > 0
-        ? validMetrics.reduce((sum, value) => sum + value, 0) / validMetrics.length
-        : 0;
-
-    return baseConsistency * breakdownPenalty;
-};
-
-
-
+  // Calculate performance metrics
   teamTable = tidy(teamTable, mutate({
     auto: d => calcAuto({
       autol1success: d.autol1success || 0,
@@ -97,15 +90,14 @@ export async function POST(request) {
       telenetsuccess: d.telenetsuccess || 0,
       hpsuccess: d.hpsuccess || 0,
       endlocation: d.endlocation || 0
-    }),    
+    }),
     cage: d => {
       const roundedEndLocation = Math.round(d.endlocation ?? 0);
-      if (roundedEndLocation === 2) return 6;  // Shallow Cage
-      if (roundedEndLocation === 3) return 12; // Deep Cage
-      return 0;  // No cage success or failed attempt
-  },
-
-    consistency: d => calcConsistency(d),
+      if (roundedEndLocation === 2) return 6;
+      if (roundedEndLocation === 3) return 12;
+      return 0;
+    },
+    consistency: d => teamConsistencyMap[d.team] ?? 0,
     coral: d => {
       const success = (d.autol1success || 0) + (d.autol2success || 0) + (d.autol3success || 0) + (d.autol4success || 0) +
                      (d.telel1success || 0) + (d.telel2success || 0) + (d.telel3success || 0) + (d.telel4success || 0);
@@ -114,7 +106,6 @@ export async function POST(request) {
       const totalAttempts = success + fail;
       return totalAttempts > 0 ? (success / totalAttempts) * 100 : 0;
     },
-    
     algae: d => {
       const success = (d.autoprocessorsuccess || 0) + (d.teleprocessorsuccess || 0) +
                       (d.autonetsuccess || 0) + (d.telenetsuccess || 0);
@@ -122,64 +113,45 @@ export async function POST(request) {
                    (d.autonetfail || 0) + (d.telenetfail || 0);
       const totalAttempts = success + fail;
       return totalAttempts > 0 ? (success / totalAttempts) * 100 : 0;
-  },
-  
-  
-  defense: d => {
-    const defensePlayed = d.defenseplayed || 0;
-    return defensePlayed > 0 ? defensePlayed * 10 : 0;  // Scale as needed (example: x10 for visibility)
-},
-}), select(['team', 'auto', 'tele', 'end', 'epa', 'cage', 'consistency', 'coral', 'algae', 'defense']));
+    },
+    defense: d => {
+      const defensePlayed = d.defenseplayed || 0;
+      return defensePlayed > 0 ? defensePlayed * 10 : 0;
+    },
+  }), select(['team', 'auto', 'tele', 'end', 'epa', 'cage', 'consistency', 'coral', 'algae', 'defense']));
 
-
-
-  
- // Fetch TBA Rankings
- async function getTBARankings() {
-  try {
-    const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025casd/rankings`, {
-      headers: {
-        'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      console.error(`TBA API Error: ${response.status}`);
-      return []; // Return empty array if API fails
+  // Fetch and integrate TBA rankings
+  async function getTBARankings() {
+    try {
+      const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025casd/rankings`, {
+        headers: {
+          'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
+          'Accept': 'application/json'
+        }
+      });
+      if (!response.ok) return [];
+      const data = await response.json();
+      return data.rankings.map(team => ({
+        teamNumber: team.team_key.replace('frc', ''),
+        rank: team.rank
+      }));
+    } catch (error) {
+      console.error('Error fetching TBA rankings:', error);
+      return [];
     }
-
-    const data = await response.json();
-    return data.rankings.map(team => ({
-      teamNumber: team.team_key.replace('frc', ''),
-      rank: team.rank
-    }));
-  } catch (error) {
-    console.error('Error fetching TBA rankings:', error);
-    return [];
   }
-}
 
-// Get rankings and add them to team data
-try {
-  const tbaRankings = await getTBARankings();
-  teamTable = teamTable.map(teamData => {
-    const rankedData = tbaRankings.find(rankedTeam => 
-      rankedTeam.teamNumber == teamData.team
-    );
-    
-    return {
-      ...teamData,
-      tbaRank: rankedData ? rankedData.rank : -1
-    };
-  });
-} catch (error) {
-  console.error('Error updating rankings:', error);
-  // Continue without rankings if there's an error
-}
+  try {
+    const tbaRankings = await getTBARankings();
+    teamTable = teamTable.map(teamData => {
+      const rankedData = tbaRankings.find(rankedTeam => rankedTeam.teamNumber == teamData.team);
+      return { ...teamData, tbaRank: rankedData ? rankedData.rank : -1 };
+    });
+  } catch (error) {
+    console.error('Error updating rankings:', error);
+  }
 
-  console.log(teamTable)
-
+  // Normalize and rank
   const maxes = tidy(teamTable, summarizeAll(max))[0];
 
   teamTable = tidy(teamTable, mutate({
@@ -196,61 +168,7 @@ try {
       const value = d[key] ?? 0;
       return sum + (value * parseFloat(weight));
     }, 0),
-      }), arrange(desc('score')));
-
-  console.log(teamTable)
-
+  }), arrange(desc('score')));
 
   return NextResponse.json(teamTable, { status: 200 });
 }
-
-
-
-
-// // Update team data with rankings
-// async function updateTeamRankings(teamTable) {
-//   const firstRankings = await getTBARankings;
-
-//   return teamTable.map(teamData => {
-//     let firstRanking = -1;
-//     let rankedData = firstRankings.filter(rankedTeamData => 
-//       rankedTeamData.teamNumber == teamData.team
-//     );
-    
-//     if (rankedData.length == 1) {
-//       firstRanking = rankedData[0].rank;
-//     }
-    
-//     return {
-//       ...teamData,
-//       firstRanking,
-//     };
-//   });
-// }
-
-// const frcAPITeamRankings = await fetch("https://frc-api.firstinspires.org/v3.0/2025/rankings/CURIE", {
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Authorization': 'Basic ' + process.env.FIRST_AUTH_TOKEN, // Make sure to store the API key in .env
-//   }
-// }).then(resp => {
-//   if (resp.status !== 200) {
-//     return { Rankings: [] }; // Return an empty array if the API fails
-//   }
-//   return resp.json();
-// }).then(data => data.Rankings);
-// */
-
-// /*
-// // Add FRC API Rankings to team data
-// teamTable = teamTable.map(teamData => {
-//   let firstRanking = -1;
-//   let rankedData = frcAPITeamRankings.filter(rankedTeamData => rankedTeamData.teamNumber == teamData.team);
-//   if (rankedData.length == 1) {
-//     firstRanking = rankedData[0].rank;
-//   }
-//   return {
-//     ...teamData,
-//     firstRanking,
-//   };
-// });

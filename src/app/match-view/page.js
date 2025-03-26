@@ -411,7 +411,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
         <div style={{background: RP_BARGE}}>Barge</div>
       </div>
     </div>
-    
+  
   }
 
   function TeamDisplay({teamData, colors, matchMax}) {
