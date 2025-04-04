@@ -439,19 +439,6 @@ function TeamView() {
         <div className={styles.alignElements}>
           <div className={styles.coralAndHP}>
             <div className={styles.valueBoxes}>
-                  <table className={styles.differentTable}> 
-                      <tbody>
-                        <tr>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][2], width:"34px"}} rowSpan="2">HP</td>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Success</td>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][1]}}>Scored</td>
-                        </tr>
-                        <tr>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{`${Math.round(10*data.tele.successHp)/10}%`}</td>
-                          <td className={styles.coloredBoxes} style={{backgroundColor: Colors[2][0]}}>{Math.round(10*data.tele.avgHp)/10}</td>
-                        </tr>
-                    </tbody>
-                  </table>
                 </div>
                   <table className={styles.coralTable}> 
                     <tbody>
@@ -553,6 +540,7 @@ function TeamView() {
               <tr>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][2], width: "40px"}} rowSpan="2">Algae Intake</td>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][1], width: "50px", height: "10px"}}>Ground</td>
+                  <td className={styles.coloredBoxes} style={{backgroundColor: '#f7f7f7', width: "50px", height: "10px" }} rowSpan="2"><img src="/coral.png" alt="coral"/></td>
               </tr>
               <tr>
                   <td className={styles.coloredBoxes} style={{backgroundColor: Colors[4][0], width: "50px", height: "30px"}}><input id="groundcheck" type="checkbox" readOnly checked={data.algaeGroundIntake}></input></td>
