@@ -164,8 +164,8 @@ function calculateAverages(responseObject, rows) {
     teamData.qualitative.maneuverability = average(teamData.qualitative.maneuverability, count);
     teamData.qualitative.defenseplayed = average(teamData.qualitative.defenseplayed, count);
     teamData.qualitative.defenseevasion = average(teamData.qualitative.defenseevasion, count);
-    teamData.qualitative.aggression = average(teamData.qualitative.aggression, count);
-    teamData.qualitative.cagehazard = average(teamData.qualitative.cagehazard, count);
+    teamData.qualitative.aggression = 5 - average(teamData.qualitative.aggression, count);
+    teamData.qualitative.cagehazard = 5 - average(teamData.qualitative.cagehazard, count);
   }
 }
 

@@ -29,7 +29,7 @@ function MatchView() {
     ["#DDB7F7", "#B38DDE", "#B16FDC", "#9051BE", "#975EB5"], //purple
     ["#F6C1D8", "#F2A8C9", "#D883A2", "#D883AC", "#B55E7B"], //pink
     ["#FFD1D0", "#F7B7B7", "#DC8683", "#BE5151", "#B55E5E"], //red
-    ["#FFD4AB", "#FABD7C", "#FFAF72", "#FFA75A", "#FF9F4B"], //orange
+    ["#FFC999", "#FFB370", "#FF9D47", "#FF7C0A", "#ed5e07"], //orange
     
   ];
   
