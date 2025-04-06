@@ -760,7 +760,6 @@ returnObject[0] = {
   algaeGroundIntake: rows.some(row => row.algaegrndintake === true),
   algaeLowReefIntake: rows.some(row => row.algaelowreefintake === true),
   algaeHighReefIntake: rows.some(row => row.algaehighreefintake === true),
-  lollipop: rows.some(row => row.lollipop === true),
 };
 
 

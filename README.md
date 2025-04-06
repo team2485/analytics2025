@@ -60,7 +60,6 @@ CREATE TABLE phr2025 (
    CageHazard INT,
    CoralGrndIntake BOOLEAN,
    CoralStationIntake BOOLEAN,
-   Lollipop BOOLEAN,
    AlgaeGrndIntake BOOLEAN,
    AlgaeHighReefIntake BOOLEAN,
    AlgaeLowReefIntake BOOLEAN,

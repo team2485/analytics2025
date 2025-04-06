@@ -185,7 +185,6 @@ export default function Sudo() {
     "cagehazard",
     "coralgrndintake",
     "coralstationintake",
-    "lollipop",
     "algaegrndintake",
     "algaelowreefintake",
     "algaehighreefintake",
