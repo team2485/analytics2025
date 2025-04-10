@@ -288,6 +288,7 @@ export default function Picklist() {
             <th>TBA Rank</th>
             <th>Team</th>
             <th>EPA</th>
+            <th>Last 3 EPA</th>
             <th>Auto</th>
             <th>Tele</th>
             <th>End</th>
@@ -326,6 +327,7 @@ export default function Picklist() {
                         </a>
                       </td>
                       <td style={{ backgroundColor: valueToColor(teamData.epa) }}>{roundToThree(teamData.epa)}</td>
+                      <td style={{ backgroundColor: valueToColor(teamData.last3epa) }}>{roundToThree(teamData.last3epa)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.auto) }}>{roundToThree(teamData.auto)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.tele) }}>{roundToThree(teamData.tele)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.end) }}>{roundToThree(teamData.end)}</td>

@@ -4,13 +4,10 @@ import { tidy, mutate, arrange, desc, mean, select, summarizeAll, max, groupBy }
 import { calcAuto, calcTele, calcEnd, calcEPA } from "@/util/calculations";
 
 export async function POST(request) {
-  const requestBody = await request.json(); // Weight inputs
-
+  const requestBody = await request.json();
   let data = await sql`SELECT * FROM phr2025;`;
   let rows = data.rows;
-  console.log(rows)
 
-  // Average numerical fields and handle exceptions
   function averageField(index) {
     if (['breakdown', 'leave', 'noshow'].includes(index)) return arr => arr.some(row => row[index] === true);
     if (['scoutname', 'generalcomments', 'breakdowncomments', 'defensecomments'].includes(index)) return arr => arr.map(row => row[index]).join(', ');
@@ -24,87 +21,66 @@ export async function POST(request) {
   teamTable = teamTable.filter(dr => !dr.noshow);
   teamTable = tidy(teamTable, groupBy(['team'], [summarizeAll(averageField)]));
 
+  // STEP 1: Calculate last3epa by match grouping
+  const last3EPAMap = {};
+  const matchGroupedByTeam = rows.reduce((acc, row) => {
+    if (!row.noshow) {
+      const team = row.team;
+      const match = row.match;
+      if (!acc[team]) acc[team] = {};
+      if (!acc[team][match]) acc[team][match] = [];
+      acc[team][match].push(row);
+    }
+    return acc;
+  }, {});
+
+  for (const team in matchGroupedByTeam) {
+    const matches = Object.entries(matchGroupedByTeam[team])
+      .map(([matchNum, matchRows]) => {
+        const avgEpa = matchRows.reduce((sum, row) => sum + calcEPA(row), 0) / matchRows.length;
+        return { match: parseInt(matchNum), avgEpa };
+      })
+      .sort((a, b) => b.match - a.match)
+      .slice(0, 3);
+
+    const avgOfLast3 = matches.length > 0
+      ? matches.reduce((sum, m) => sum + m.avgEpa, 0) / matches.length
+      : 0;
+
+    last3EPAMap[team] = avgOfLast3;
+  }
+
   const calcConsistency = (dr) => {
-    // Calculate success rate for auto and tele piece placement
     const autoSuccess = (dr.autol1success || 0) + (dr.autol2success || 0) + (dr.autol3success || 0) + (dr.autol4success || 0);
     const autoAttempts = autoSuccess + (dr.autol1fail || 0) + (dr.autol2fail || 0) + (dr.autol3fail || 0) + (dr.autol4fail || 0);
-
     const teleSuccess = (dr.telel1success || 0) + (dr.telel2success || 0) + (dr.telel3success || 0) + (dr.telel4success || 0);
     const teleAttempts = teleSuccess + (dr.telel1fail || 0) + (dr.telel2fail || 0) + (dr.telel3fail || 0) + (dr.telel4fail || 0);
-
     const successRate = (autoAttempts + teleAttempts) > 0 
         ? ((autoSuccess + teleSuccess) / (autoAttempts + teleAttempts)) * 100 
         : 0;
-
-    // Endgame success (shallow or deep dock)
     const endgameSuccess = (dr.endlocation === 2 || dr.endlocation === 3) ? 1 : 0;
-
-    // No-show penalty
     const noShowPenalty = dr.noshow ? 0 : 1;
-
-    // Breakdown penalty based on comments: 20% reduction if breakdown comments exist
     const breakdownPenalty = dr.breakdowncomments && dr.breakdowncomments.trim() !== "" ? 0.8 : 1;
-
-    // Calculate average of success metrics
     const metrics = [successRate, endgameSuccess * 100, noShowPenalty * 100];
     const validMetrics = metrics.filter(val => val >= 0);
-
-    // Calculate final consistency with breakdown penalty
     const baseConsistency = validMetrics.length > 0
         ? validMetrics.reduce((sum, value) => sum + value, 0) / validMetrics.length
         : 0;
-
     return baseConsistency * breakdownPenalty;
-};
-
-
+  };
 
   teamTable = tidy(teamTable, mutate({
-    auto: d => calcAuto({
-      autol1success: d.autol1success || 0,
-      autol2success: d.autol2success || 0,
-      autol3success: d.autol3success || 0,
-      autol4success: d.autol4success || 0,
-      autoprocessorsuccess: d.autoprocessorsuccess || 0,
-      autonetsuccess: d.autonetsuccess || 0,
-      leave: d.leave || false,
-    }),
-    tele: d => calcTele({
-      telel1success: d.telel1success || 0,
-      telel2success: d.telel2success || 0,
-      telel3success: d.telel3success || 0,
-      telel4success: d.telel4success || 0,
-      teleprocessorsuccess: d.teleprocessorsuccess || 0,
-      telenetsuccess: d.telenetsuccess || 0,
-      hpsuccess: d.hpsuccess || 0
-    }),    
-    end: d => calcEnd({
-      endlocation: d.endlocation || 0
-    }),
-    epa: d => calcEPA({
-      autol1success: d.autol1success || 0,
-      autol2success: d.autol2success || 0,
-      autol3success: d.autol3success || 0,
-      autol4success: d.autol4success || 0,
-      autoprocessorsuccess: d.autoprocessorsuccess || 0,
-      autonetsuccess: d.autonetsuccess || 0,
-      leave: d.leave || false,
-      telel1success: d.telel1success || 0,
-      telel2success: d.telel2success || 0,
-      telel3success: d.telel3success || 0,
-      telel4success: d.telel4success || 0,
-      teleprocessorsuccess: d.teleprocessorsuccess || 0,
-      telenetsuccess: d.telenetsuccess || 0,
-      hpsuccess: d.hpsuccess || 0,
-      endlocation: d.endlocation || 0
-    }),    
+    auto: d => calcAuto(d),
+    tele: d => calcTele(d),
+    end: d => calcEnd(d),
+    epa: d => calcEPA(d),
+    last3epa: d => last3EPAMap[d.team] || 0,
     cage: d => {
       const roundedEndLocation = Math.round(d.endlocation ?? 0);
-      if (roundedEndLocation === 2) return 6;  // Shallow Cage
-      if (roundedEndLocation === 3) return 12; // Deep Cage
-      return 0;  // No cage success or failed attempt
-  },
-
+      if (roundedEndLocation === 2) return 6;
+      if (roundedEndLocation === 3) return 12;
+      return 0;
+    },
     consistency: d => calcConsistency(d),
     coral: d => {
       const success = (d.autol1success || 0) + (d.autol2success || 0) + (d.autol3success || 0) + (d.autol4success || 0) +
@@ -114,7 +90,6 @@ export async function POST(request) {
       const totalAttempts = success + fail;
       return totalAttempts > 0 ? (success / totalAttempts) * 100 : 0;
     },
-    
     algae: d => {
       const success = (d.autoprocessorsuccess || 0) + (d.teleprocessorsuccess || 0) +
                       (d.autonetsuccess || 0) + (d.telenetsuccess || 0);
@@ -122,71 +97,47 @@ export async function POST(request) {
                    (d.autonetfail || 0) + (d.telenetfail || 0);
       const totalAttempts = success + fail;
       return totalAttempts > 0 ? (success / totalAttempts) * 100 : 0;
-  },
-  
-  
-  defense: d => {
-    const defensePlayed = d.defenseplayed || 0;
-    return defensePlayed > 0 ? defensePlayed * 10 : 0;  // Scale as needed (example: x10 for visibility)
-},
-}), select(['team', 'auto', 'tele', 'end', 'epa', 'cage', 'consistency', 'coral', 'algae', 'defense']));
+    },
+    defense: d => {
+      const defensePlayed = d.defenseplayed || 0;
+      return defensePlayed > 0 ? defensePlayed * 10 : 0;
+    },
+  }), select(['team', 'auto', 'tele', 'end', 'epa', 'last3epa', 'cage', 'consistency', 'coral', 'algae', 'defense']));
 
-
-
-  
- // Fetch TBA Rankings
- async function getTBARankings() {
-  try {
-    const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025caph/rankings`, {
-      headers: {
-        'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      console.error(`TBA API Error: ${response.status}`);
-      return []; // Return empty array if API fails
+  const getTBARankings = async () => {
+    try {
+      const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025caph/rankings`, {
+        headers: {
+          'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
+          'Accept': 'application/json'
+        }
+      });
+      if (!response.ok) return [];
+      const data = await response.json();
+      return data.rankings.map(team => ({ teamNumber: team.team_key.replace('frc', ''), rank: team.rank }));
+    } catch (error) {
+      console.error('Error fetching TBA rankings:', error);
+      return [];
     }
-
-    const data = await response.json();
-    return data.rankings.map(team => ({
-      teamNumber: team.team_key.replace('frc', ''),
-      rank: team.rank
-    }));
-  } catch (error) {
-    console.error('Error fetching TBA rankings:', error);
-    return [];
   }
-}
 
-// Get rankings and add them to team data
-try {
-  const tbaRankings = await getTBARankings();
-  teamTable = teamTable.map(teamData => {
-    const rankedData = tbaRankings.find(rankedTeam => 
-      rankedTeam.teamNumber == teamData.team
-    );
-    
-    return {
-      ...teamData,
-      tbaRank: rankedData ? rankedData.rank : -1
-    };
-  });
-} catch (error) {
-  console.error('Error updating rankings:', error);
-  // Continue without rankings if there's an error
-}
-
-  console.log(teamTable)
+  try {
+    const tbaRankings = await getTBARankings();
+    teamTable = teamTable.map(teamData => {
+      const rankedData = tbaRankings.find(rankedTeam => rankedTeam.teamNumber == teamData.team);
+      return { ...teamData, tbaRank: rankedData ? rankedData.rank : -1 };
+    });
+  } catch (error) {
+    console.error('Error updating rankings:', error);
+  }
 
   const maxes = tidy(teamTable, summarizeAll(max))[0];
-
   teamTable = tidy(teamTable, mutate({
     auto: d => maxes.auto ? d.auto / maxes.auto : 0,
     tele: d => maxes.tele ? d.tele / maxes.tele : 0,
     end: d => maxes.end ? d.end / maxes.end : 0,
     epa: d => maxes.epa ? d.epa / maxes.epa : 0,
+    last3epa: d => maxes.last3epa ? d.last3epa / maxes.last3epa : 0,
     cage: d => maxes.cage ? d.cage / maxes.cage : 0,
     consistency: d => maxes.consistency ? d.consistency / maxes.consistency : 0,
     coral: d => maxes.coral ? d.coral / maxes.coral : 0,
@@ -196,10 +147,7 @@ try {
       const value = d[key] ?? 0;
       return sum + (value * parseFloat(weight));
     }, 0),
-      }), arrange(desc('score')));
-
-  console.log(teamTable)
-
+  }), arrange(desc('score')));
 
   return NextResponse.json(teamTable, { status: 200 });
 }
