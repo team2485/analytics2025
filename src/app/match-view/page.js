@@ -18,6 +18,10 @@ export default function MatchViewPage() {
   </Suspense>
 }
 
+function filterNegative(value) {
+  return typeof value === 'number' && value >= 0 ? value : 0;
+}
+
 function MatchView() {
   const [allData, setAllData] = useState(null);
   const [data, setData] = useState(false);
@@ -486,17 +490,26 @@ function AllianceButtons({t1, t2, t3, colors}) {
   ];
 
   //getting radar data
+  const defaultQual = {
+    coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0,
+    climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0,
+    aggression: 0, cagehazard: 0
+  };
+  
   let radarData = [];
-  for (let qual of ['coralspeed', 'processorspeed', 'netspeed', 'algaeremovalspeed', 'climbspeed', 'maneuverability', 'defenseplayed', 'defenseevasion', 'aggression', 'cagehazard']) {
-    radarData.push({qual, 
-      team1: data?.team1?.qualitative[qual] || 0,
-      team2: data?.team2?.qualitative[qual] || 0,
-      team3: data?.team3?.qualitative[qual] || 0,
-      team4: data?.team4?.qualitative[qual] || 0,
-      team5: data?.team5?.qualitative[qual] || 0,
-      team6: data?.team6?.qualitative[qual] || 0,
-      fullMark: 5});
+  for (let qual of Object.keys(defaultQual)) {
+    radarData.push({
+      qual,
+      team1: filterNegative(data?.team1?.qualitative?.[qual]) || 0,
+      team2: filterNegative(data?.team2?.qualitative?.[qual]) || 0,
+      team3: filterNegative(data?.team3?.qualitative?.[qual]) || 0,
+      team4: filterNegative(data?.team4?.qualitative?.[qual]) || 0,
+      team5: filterNegative(data?.team5?.qualitative?.[qual]) || 0,
+      team6: filterNegative(data?.team6?.qualitative?.[qual]) || 0,
+      fullMark: 5
+    });
   }
+  
 
 
   let matchMax = 0;
