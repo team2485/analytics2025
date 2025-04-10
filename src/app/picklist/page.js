@@ -150,7 +150,7 @@ export default function Picklist() {
         </tr>
         <tr>
           <td><label htmlFor="last3epa">Last 3:</label></td>
-          <td><input id="last3epa" type="number" value={weights.last3 || 0} name="last3epa" onChange={handleWeightChange}></input></td>
+          <td><input id="last3epa" type="number" value={weights.last3epa || 0} name="last3epa" onChange={handleWeightChange}></input></td>
           <td><label htmlFor="auto">Auto:</label></td>
           <td><input id="auto" type="number" value={weights.auto || 0} name="auto" onChange={handleWeightChange}></input></td>
           <td><label htmlFor="algae">Algae:</label></td>

@@ -5,7 +5,7 @@ import { calcAuto, calcTele, calcEnd, calcEPA } from "@/util/calculations";
 
 export async function POST(request) {
   const requestBody = await request.json();
-  let data = await sql`SELECT * FROM phr2025;`;
+  let data = await sql`SELECT * FROM sdr2025;`;
   let rows = data.rows;
 
   function averageField(index) {
@@ -135,7 +135,7 @@ export async function POST(request) {
 
   const getTBARankings = async () => {
     try {
-      const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025caph/rankings`, {
+      const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025sdph/rankings`, {
         headers: {
           'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
           'Accept': 'application/json'
