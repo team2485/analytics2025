@@ -22,29 +22,33 @@ export default function Picklist() {
 
   useEffect(() => {
     setIsClient(true);
-
     const urlParams = new URLSearchParams(window.location.search);
-    const urlWeights = Object.fromEntries(urlParams);
+  
+    // Weight keys filter
+    const weightKeys = ['epa', 'last3epa', 'consistency', 'auto', 'tele', 'end', 'coral', 'algae', 'defense'];
+    const urlWeights = Object.fromEntries(
+      Array.from(urlParams).filter(([key]) => weightKeys.includes(key))
+    );
     setWeights(urlWeights);
-
-    const storedRatings = localStorage.getItem('teamRatings');
-    if (storedRatings) {
-      setTeamRatings(JSON.parse(storedRatings));
-    }
-
-
+  
+    // Alliance data parsing
     const urlAlliances = {};
-    let urlTeamsToExclude = teamsToExclude;
-    for (const [key, value] of urlParams.entries()) {
-      if (key.startsWith('A')) {
-        const [, allianceNumber, teamPosition] = key.match(/A(\d+)T(\d+)/);
-        if (!urlAlliances[allianceNumber]) {
-          urlAlliances[allianceNumber] = [];
+    const urlTeamsToExclude = new Array(32).fill('');
+    urlParams.forEach((value, key) => {
+      if (key.startsWith('A') && key.includes('T')) {
+        const match = key.match(/A(\d+)T(\d+)/);
+        if (match) {
+          const [_, allianceNumber, teamPosition] = match;
+          if (!urlAlliances[allianceNumber]) {
+            urlAlliances[allianceNumber] = [];
+          }
+          const index = parseInt(teamPosition) - 1;
+          urlAlliances[allianceNumber][index] = value;
+          urlTeamsToExclude[((parseInt(allianceNumber) - 1) * 4) + index] = +value;
         }
-        urlAlliances[allianceNumber][parseInt(teamPosition) - 1] = value;
-        urlTeamsToExclude[((allianceNumber - 1) * 4) + (teamPosition-1)] = +value;
       }
-    }
+    });
+    
     setAllianceData(urlAlliances);
     setTeamsToExclude(urlTeamsToExclude);
   }, []);
@@ -314,7 +318,33 @@ export default function Picklist() {
     
     updateAlliancesData(allianceNumber, allianceTeams);
   };
+
+const handleAllianceClear = () => {
+  // 1. Clear alliance data in state
+  const clearedAllianceData = {};
+  for (let i = 1; i <= 8; i++) clearedAllianceData[i] = ['', '', '', ''];
+  setAllianceData(clearedAllianceData);
+
+  // 2. Clear localStorage
+  localStorage.setItem('allianceData', JSON.stringify(clearedAllianceData));
   
+  // 3. Reset team exclusions
+  setTeamsToExclude(new Array(32).fill(''));
+
+  // 4. Build new URL params
+  const newParams = new URLSearchParams(weights);
+  
+  // 5. Remove all alliance parameters
+  for (let i = 1; i <= 8; i++) {
+    for (let j = 1; j <= 4; j++) {
+      newParams.delete(`A${i}T${j}`);
+    }
+  }
+
+  // 6. Update URL
+  window.history.replaceState(null, '', `?${newParams.toString()}`);
+};
+
   function PicklistTable() {
     
     const valueToColor = (value) => {
@@ -501,7 +531,10 @@ export default function Picklist() {
           }} className={weightsChanged ? styles.recalculateIsMad : ""}>Recalculate Picklist</button>
         </form>
         <div className={styles.alliances}>
-          <h1>Alliances</h1>
+          <div className={styles.allianceButton}>
+            <h1>Alliances</h1>
+            <button onClick={handleAllianceClear}>Clear All Teams</button>
+          </div>
           <div className={styles.wholeAlliance}>
             <form ref={alliancesFormRef}>
               <table className={styles.allianceTable}>
