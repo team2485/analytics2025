@@ -28,12 +28,12 @@ function MatchView() {
   const searchParams = useSearchParams();
   //light to dark
   const COLORS = [
-    ["#A4E5DF", "#6FDCD3", "#93C8C4", "#73CEC7", "#5EACB5"], //green
-    ["#B7D1F7", "#9FBCEC", "#8FA5F5", "#838FDC", "#5E6CB5"], //blue
-    ["#DDB7F7", "#B38DDE", "#B16FDC", "#9051BE", "#975EB5"], //purple
-    ["#F6C1D8", "#F2A8C9", "#D883A2", "#D883AC", "#B55E7B"], //pink
-    ["#FFD1D0", "#F7B7B7", "#DC8683", "#BE5151", "#B55E5E"], //red
-    ["#FFD4AB", "#FABD7C", "#FFAF72", "#FFA75A", "#FF9F4B"], //orange
+    ["#A6DDD9", "#79CDC6", "#51BEB5", "#3DA49B", "#32867F"], //green
+    ["#C8DCF9", "#91B8F3", "#6CA0EF", "#387ee8", "#1f67d2"], //blue
+    ["#D2B9DF", "#BF9DD2", "#AD81C5", "#9257B2", "#71408C"], //purple
+    ["#F1D0E0", "#E7B1CC", "#DD92B6", "#CE6497", "#C44582"], //pink
+    ["#FFD1D0", "#F7B7B7", "#DC8683", "#BE5151", "#A43D3D"], //red
+    ["#FFC999", "#FFB370", "#FF9D47", "#FF7C0A", "#ed5e07"], //orange
     
   ];
   
@@ -370,9 +370,10 @@ function AllianceButtons({t1, t2, t3, colors}) {
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
 
     //auto rp = all robots leave and alliance scores one coral
-    const allianceCoral = Math.floor(teams[0].autoCoral) + Math.floor(teams[1].autoCoral) + Math.floor(teams[2].autoCoral);
+    const allianceAuto = Math.floor(teams[0].auto) + Math.floor(teams[1].auto) + Math.floor(teams[2].auto);
     let RP_AUTO = RGBColors.red;
-    if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+    if ((allianceAuto > 9) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+
 
     //coral rp = 5 coral scored on each level (5 on 3 levels is yellow)
     const allianceL1 = teams[0].avgPieces.L1 + teams[1].avgPieces.L1 + teams[2].avgPieces.L1;
