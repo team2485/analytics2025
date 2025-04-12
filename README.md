@@ -9,7 +9,7 @@ npm install
 Next, set up the database on Vercel with test data.
 ```sql
 
-CREATE TABLE phr2025 (
+CREATE TABLE eventCompetitionYear (
    ID serial PRIMARY KEY,
    ScoutName VARCHAR (255),
    ScoutTeam INT,
@@ -65,7 +65,8 @@ CREATE TABLE phr2025 (
    BreakdownComments VARCHAR (255),
    DefenseComments VARCHAR (255)
 );
-INSERT INTO phr2025 (
+
+INSERT INTO eventCompetitionYear  (
    ScoutName, ScoutTeam, Team, Match, MatchType, Breakdown, NoShow, Leave,
    AutoL1Success, AutoL1Fail, AutoL2Success, AutoL2Fail, AutoL3Success, AutoL3Fail, AutoL4Success, AutoL4Fail,
    AutoAlgaeRemoved, AutoProcessorSuccess, AutoProcessorFail, AutoNetSuccess, AutoNetFail,
@@ -83,9 +84,10 @@ VALUES
    1, 2, 1, 3, 0,
    4, 2, 3, 1, 2, 3, 3, 0,
    2, 1, 1, 2, 0,
-   5, 0, 2, 4, 3, 5, 2, 3,
-   4, 2, 3, 1, 2,
-   TRUE, FALSE, TRUE, TRUE, FALSE, FALSE,
+   5, 0, 2, 4, 3, 5,
+   2, 3, 4, 2, 3,
+   TRUE, FALSE, TRUE, TRUE, FALSE,
    'Performed well in auto but struggled with teleop.', NULL, 'Played strong defense.'
 );
+
 ```

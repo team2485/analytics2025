@@ -19,7 +19,7 @@ export async function POST(req) {
       adjustedMatch = body.match;
       break;
     case 3: // elim
-      adjustedMatch = body.match + 100;
+      adjustedMatch = body.match + 150;
       break;
   }
 
@@ -117,8 +117,10 @@ export async function POST(req) {
   
   // Insert Data into Database**
   let resp = await sql`
+
     INSERT INTO champs2025 (
       scoutname, scoutteam, team, match, matchtype, breakdown, noshow, leave, autol1success, autol1fail, autol2success, autol2fail, autol3success, autol3fail, autol4success, autol4fail, autoalgaeremoved, autoprocessorsuccess, autoprocessorfail, autonetsuccess, autonetfail, telel1success, telel1fail, telel2success, telel2fail, telel3success, telel3fail, telel4success, telel4fail, telealgaeremoved, teleprocessorsuccess, teleprocessorfail, telenetsuccess, telenetfail, endlocation, coralspeed, processorspeed, netspeed, algaeremovalspeed, climbspeed, maneuverability, defenseplayed, defenseevasion, aggression, cagehazard, coralgrndintake, coralstationintake, algaegrndintake, algaehighreefintake, algaelowreefintake, generalcomments, breakdowncomments, defensecomments
+
     )
     VALUES (
       ${body.scoutname}, ${body.scoutteam}, ${body.team}, ${adjustedMatch}, ${body.matchType}, ${body.breakdown}, ${body.noshow}, ${body.leave}, 

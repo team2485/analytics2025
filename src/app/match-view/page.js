@@ -18,18 +18,22 @@ export default function MatchViewPage() {
   </Suspense>
 }
 
+function filterNegative(value) {
+  return typeof value === 'number' && value >= 0 ? value : 0;
+}
+
 function MatchView() {
   const [allData, setAllData] = useState(null);
   const [data, setData] = useState(false);
   const searchParams = useSearchParams();
   //light to dark
   const COLORS = [
-    ["#A4E5DF", "#6FDCD3", "#93C8C4", "#73CEC7", "#5EACB5"], //green
-    ["#B7D1F7", "#9FBCEC", "#8FA5F5", "#838FDC", "#5E6CB5"], //blue
-    ["#DDB7F7", "#B38DDE", "#B16FDC", "#9051BE", "#975EB5"], //purple
-    ["#F6C1D8", "#F2A8C9", "#D883A2", "#D883AC", "#B55E7B"], //pink
-    ["#FFD1D0", "#F7B7B7", "#DC8683", "#BE5151", "#B55E5E"], //red
-    ["#FFD4AB", "#FABD7C", "#FFAF72", "#FFA75A", "#FF9F4B"], //orange
+    ["#A6DDD9", "#79CDC6", "#51BEB5", "#3DA49B", "#32867F"], //green
+    ["#C8DCF9", "#91B8F3", "#6CA0EF", "#387ee8", "#1f67d2"], //blue
+    ["#D2B9DF", "#BF9DD2", "#AD81C5", "#9257B2", "#71408C"], //purple
+    ["#F1D0E0", "#E7B1CC", "#DD92B6", "#CE6497", "#C44582"], //pink
+    ["#FFD1D0", "#F7B7B7", "#DC8683", "#BE5151", "#A43D3D"], //red
+    ["#FFC999", "#FFB370", "#FF9D47", "#FF7C0A", "#ed5e07"], //orange
     
   ];
   
@@ -366,9 +370,10 @@ function AllianceButtons({t1, t2, t3, colors}) {
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
 
     //auto rp = all robots leave and alliance scores one coral
-    const allianceCoral = Math.floor(teams[0].autoCoral) + Math.floor(teams[1].autoCoral) + Math.floor(teams[2].autoCoral);
+    const allianceAuto = Math.floor(teams[0].auto) + Math.floor(teams[1].auto) + Math.floor(teams[2].auto);
     let RP_AUTO = RGBColors.red;
-    if ((allianceCoral >= 1) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+    if ((allianceAuto > 9) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
+
 
     //coral rp = 5 coral scored on each level (5 on 3 levels is yellow)
     const allianceL1 = teams[0].avgPieces.L1 + teams[1].avgPieces.L1 + teams[2].avgPieces.L1;
@@ -377,10 +382,10 @@ function AllianceButtons({t1, t2, t3, colors}) {
     const allianceL4 = teams[0].avgPieces.L4 + teams[1].avgPieces.L4 + teams[2].avgPieces.L4;
     let RP_CORAL = RGBColors.red;
     const conditions = [
-      allianceL1 >= 5,
-      allianceL2 >= 5,
-      allianceL3 >= 5,
-      allianceL4 >= 5
+      allianceL1 >= 7,
+      allianceL2 >= 7,
+      allianceL3 >= 7,
+      allianceL4 >= 7
     ];
     //count the number of true conditions
     const trueCount = conditions.filter(Boolean).length;
@@ -392,7 +397,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
     //barge rp = 14 points in the barge
     const endgamePoints = Math.floor(teams[0].end) + Math.floor(teams[1].end) + Math.floor(teams[2].end)
     let RP_BARGE = RGBColors.red;
-    if (endgamePoints >= 14) RP_BARGE = RGBColors.green;
+    if (endgamePoints >= 16) RP_BARGE = RGBColors.green;
 
     return <div className={styles.lightBorderBox}>
       <div className={styles.scoreBreakdownContainer}>
@@ -486,17 +491,26 @@ function AllianceButtons({t1, t2, t3, colors}) {
   ];
 
   //getting radar data
+  const defaultQual = {
+    coralspeed: 0, processorspeed: 0, netspeed: 0, algaeremovalspeed: 0,
+    climbspeed: 0, maneuverability: 0, defenseplayed: 0, defenseevasion: 0,
+    aggression: 0, cagehazard: 0
+  };
+  
   let radarData = [];
-  for (let qual of ['coralspeed', 'processorspeed', 'netspeed', 'algaeremovalspeed', 'climbspeed', 'maneuverability', 'defenseplayed', 'defenseevasion', 'aggression', 'cagehazard']) {
-    radarData.push({qual, 
-      team1: data?.team1?.qualitative[qual] || 0,
-      team2: data?.team2?.qualitative[qual] || 0,
-      team3: data?.team3?.qualitative[qual] || 0,
-      team4: data?.team4?.qualitative[qual] || 0,
-      team5: data?.team5?.qualitative[qual] || 0,
-      team6: data?.team6?.qualitative[qual] || 0,
-      fullMark: 5});
+  for (let qual of Object.keys(defaultQual)) {
+    radarData.push({
+      qual,
+      team1: filterNegative(data?.team1?.qualitative?.[qual]) || 0,
+      team2: filterNegative(data?.team2?.qualitative?.[qual]) || 0,
+      team3: filterNegative(data?.team3?.qualitative?.[qual]) || 0,
+      team4: filterNegative(data?.team4?.qualitative?.[qual]) || 0,
+      team5: filterNegative(data?.team5?.qualitative?.[qual]) || 0,
+      team6: filterNegative(data?.team6?.qualitative?.[qual]) || 0,
+      fullMark: 5
+    });
   }
+  
 
 
   let matchMax = 0;

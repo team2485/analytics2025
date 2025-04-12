@@ -26,6 +26,11 @@ export default function TeamViewPage() {
     );
 }
 
+function filterNegative(value) {
+  return typeof value === 'number' && value >= 0 ? value : 0;
+}
+
+
 function TeamView() {
 
     //for backend
@@ -523,7 +528,14 @@ function TeamView() {
           <h1 className={styles.header} style={{ color: Colors[4][3] }}>Qualitative</h1>
             <div className={styles.radarContainer}>
             <h4 className={styles.graphTitle} >Qualitative Ratings</h4>
-              <Qualitative data={data.qualitative} color1={Colors[4][2]} color2={Colors[4][2]}/>
+            <Qualitative 
+                data={data.qualitative.map(q => ({ 
+                  ...q, 
+                  rating: filterNegative(q.rating) 
+                }))} 
+                color1={Colors[4][2]} 
+                color2={Colors[4][2]} 
+              />
             <p>*Inverted so outside is good</p>
           </div>
           <table className={styles.differentTable}> 
