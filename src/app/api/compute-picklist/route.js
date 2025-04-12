@@ -4,8 +4,11 @@ import { tidy, mutate, arrange, desc, mean, select, summarizeAll, summarize, max
 import { calcAuto, calcTele, calcEnd, calcEPA } from "@/util/calculations";
 
 export async function POST(request) {
-  const requestBody = await request.json();
-  let data = await sql`SELECT * FROM sdr2025;`;
+
+  const requestBody = await request.json(); // Weight inputs
+
+  let data = await sql`SELECT * FROM champs2025;`;
+
   let rows = data.rows;
 
   function averageField(index) {
@@ -99,11 +102,13 @@ export async function POST(request) {
   };
 
   teamTable = tidy(teamTable, mutate({
+
     auto: d => calcAuto(d),
     tele: d => calcTele(d),
     end: d => calcEnd(d),
     epa: d => calcEPA(d),
     last3epa: d => last3EPAMap[d.team] || 0,
+
     cage: d => {
       const roundedEndLocation = Math.round(d.endlocation ?? 0);
       if (roundedEndLocation === 2) return 6;
@@ -135,7 +140,7 @@ export async function POST(request) {
 
   const getTBARankings = async () => {
     try {
-      const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025casd/rankings`, {
+      const response = await fetch(`https://www.thebluealliance.com/api/v3/event/2025hop/rankings`, {
         headers: {
           'X-TBA-Auth-Key': process.env.TBA_AUTH_KEY,
           'Accept': 'application/json'

@@ -170,8 +170,6 @@ export default function Sudo() {
     "teleprocessorfail",
     "telenetsuccess",
     "telenetfail",
-    "hpsuccess",
-    "hpfail",
     "endlocation",
     "coralspeed",
     "processorspeed",

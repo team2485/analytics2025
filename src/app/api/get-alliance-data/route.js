@@ -6,10 +6,10 @@ export const revalidate = 300; // Cache for 5 minutes
 
 export async function GET() {
   try {
-    const { rows } = await sql`SELECT * FROM sdr2025;`;
+    const { rows } = await sql`SELECT * FROM champs2025;`;
     let responseObject = {};
 
-    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2025casd/teams`, {
+    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2025hop/teams`, {
       headers: {
         "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
         "Accept": "application/json"

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
-export default function PiecePlacement({ L1, L2, L3, L4, net, processor, HP }) {
+export default function PiecePlacement({ L1, L2, L3, L4, net, processor}) {
   const [isClient, setIsClient] = useState(false);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -21,10 +21,10 @@ export default function PiecePlacement({ L1, L2, L3, L4, net, processor, HP }) {
         chartInstance.current = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['L1', 'L2', 'L3', 'L4', 'Net', 'Prcsr', 'HP'],
+            labels: ['L1', 'L2', 'L3', 'L4', 'Net', 'Prcsr'],
             datasets: [{
               label: 'Piece Placement',
-              data: [L1, L2, L3, L4, net, processor, HP],
+              data: [L1, L2, L3, L4, net, processor],
               backgroundColor: "#76E3D3",
               borderColor: "#18a9a2",
               borderWidth: 1
@@ -52,7 +52,7 @@ export default function PiecePlacement({ L1, L2, L3, L4, net, processor, HP }) {
         chartInstance.current.destroy();
       }
     };
-  }, [isClient, L1, L2, L3, L4, net, processor, HP]);
+  }, [isClient, L1, L2, L3, L4, net, processor]);
   if (!isClient) {
     return null;
   }

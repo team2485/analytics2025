@@ -381,7 +381,7 @@
     justify-content: space-between;
     width: 360px;
     align-self: center;
-
+    align-items: center;
 }
 
 .coralAndHP {
