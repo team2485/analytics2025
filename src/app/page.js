@@ -74,6 +74,7 @@ export default function Home() {
         }
       }
     });
+     
     //clear unneeded checkbox values
     data.breakdown = undefined;
     data.defense = undefined;
