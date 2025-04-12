@@ -381,10 +381,10 @@ function AllianceButtons({t1, t2, t3, colors}) {
     const allianceL4 = teams[0].avgPieces.L4 + teams[1].avgPieces.L4 + teams[2].avgPieces.L4;
     let RP_CORAL = RGBColors.red;
     const conditions = [
-      allianceL1 >= 5,
-      allianceL2 >= 5,
-      allianceL3 >= 5,
-      allianceL4 >= 5
+      allianceL1 >= 7,
+      allianceL2 >= 7,
+      allianceL3 >= 7,
+      allianceL4 >= 7
     ];
     //count the number of true conditions
     const trueCount = conditions.filter(Boolean).length;
@@ -396,7 +396,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
     //barge rp = 14 points in the barge
     const endgamePoints = Math.floor(teams[0].end) + Math.floor(teams[1].end) + Math.floor(teams[2].end)
     let RP_BARGE = RGBColors.red;
-    if (endgamePoints >= 14) RP_BARGE = RGBColors.green;
+    if (endgamePoints >= 16) RP_BARGE = RGBColors.green;
 
     return <div className={styles.lightBorderBox}>
       <div className={styles.scoreBreakdownContainer}>

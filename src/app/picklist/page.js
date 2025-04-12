@@ -22,29 +22,33 @@ export default function Picklist() {
 
   useEffect(() => {
     setIsClient(true);
-
     const urlParams = new URLSearchParams(window.location.search);
-    const urlWeights = Object.fromEntries(urlParams);
+  
+    // Weight keys filter
+    const weightKeys = ['epa', 'last3epa', 'consistency', 'auto', 'tele', 'end', 'coral', 'algae', 'defense'];
+    const urlWeights = Object.fromEntries(
+      Array.from(urlParams).filter(([key]) => weightKeys.includes(key))
+    );
     setWeights(urlWeights);
-
-    const storedRatings = localStorage.getItem('teamRatings');
-    if (storedRatings) {
-      setTeamRatings(JSON.parse(storedRatings));
-    }
-
-
+  
+    // Alliance data parsing
     const urlAlliances = {};
-    let urlTeamsToExclude = teamsToExclude;
-    for (const [key, value] of urlParams.entries()) {
-      if (key.startsWith('A')) {
-        const [, allianceNumber, teamPosition] = key.match(/A(\d+)T(\d+)/);
-        if (!urlAlliances[allianceNumber]) {
-          urlAlliances[allianceNumber] = [];
+    const urlTeamsToExclude = new Array(32).fill('');
+    urlParams.forEach((value, key) => {
+      if (key.startsWith('A') && key.includes('T')) {
+        const match = key.match(/A(\d+)T(\d+)/);
+        if (match) {
+          const [_, allianceNumber, teamPosition] = match;
+          if (!urlAlliances[allianceNumber]) {
+            urlAlliances[allianceNumber] = [];
+          }
+          const index = parseInt(teamPosition) - 1;
+          urlAlliances[allianceNumber][index] = value;
+          urlTeamsToExclude[((parseInt(allianceNumber) - 1) * 4) + index] = +value;
         }
-        urlAlliances[allianceNumber][parseInt(teamPosition) - 1] = value;
-        urlTeamsToExclude[((allianceNumber - 1) * 4) + (teamPosition-1)] = +value;
       }
-    }
+    });
+    
     setAllianceData(urlAlliances);
     setTeamsToExclude(urlTeamsToExclude);
   }, []);
@@ -143,24 +147,24 @@ export default function Picklist() {
         <tr>
           <td><label htmlFor="epa">EPA:</label></td>
           <td><input id="epa" type="number" value={weights.epa || 0} name="epa" onChange={handleWeightChange}></input></td>
-          <td><label htmlFor="end">End:</label></td>
-          <td><input id="end" type="number" value={weights.end || 0} name="end" onChange={handleWeightChange}></input></td>
-          <td><label htmlFor="cage">Cage:</label></td>
-          <td><input id="cage" type="number" value={weights.cage || 0} name="cage" onChange={handleWeightChange}></input></td>
-        </tr>
-        <tr>
-          <td><label htmlFor="auto">Auto:</label></td>
-          <td><input id="auto" type="number" value={weights.auto || 0} name="auto" onChange={handleWeightChange}></input></td>
-          <td><label htmlFor="coral">Coral:</label></td>
-          <td><input id="coral" type="number" value={weights.coral || 0} name="coral" onChange={handleWeightChange}></input></td>
-          <td><label htmlFor="consistency">Consistency:</label></td>
-          <td><input id="consistency" type="number" value={weights.consistency || 0} name="consistency" onChange={handleWeightChange}></input></td>
-        </tr>
-        <tr>
           <td><label htmlFor="tele">Tele:</label></td>
           <td><input id="tele" type="number" value={weights.tele || 0} name="tele" onChange={handleWeightChange}></input></td>
+          <td><label htmlFor="coral">Coral:</label></td>
+          <td><input id="coral" type="number" value={weights.coral || 0} name="coral" onChange={handleWeightChange}></input></td>
+        </tr>
+        <tr>
+          <td><label htmlFor="last3epa">Last 3:</label></td>
+          <td><input id="last3epa" type="number" value={weights.last3epa || 0} name="last3epa" onChange={handleWeightChange}></input></td>
+          <td><label htmlFor="auto">Auto:</label></td>
+          <td><input id="auto" type="number" value={weights.auto || 0} name="auto" onChange={handleWeightChange}></input></td>
           <td><label htmlFor="algae">Algae:</label></td>
           <td><input id="algae" type="number" value={weights.algae || 0} name="algae" onChange={handleWeightChange}></input></td>
+        </tr>
+        <tr>
+          <td><label htmlFor="consistency">Cnstcy:</label></td>
+          <td><input id="consistency" type="number" value={weights.consistency || 0} name="consistency" onChange={handleWeightChange}></input></td>
+          <td><label htmlFor="end">End:</label></td>
+          <td><input id="end" type="number" value={weights.end || 0} name="end" onChange={handleWeightChange}></input></td>
           <td><label htmlFor="defense">Defense:</label></td>
           <td><input id="defense" type="number" value={weights.defense || 0} name="defense" onChange={handleWeightChange}></input></td>
         </tr>
@@ -225,7 +229,7 @@ export default function Picklist() {
   
     // Process URL parameters for alliances
     const urlAlliances = {};
-    let urlTeamsToExclude = new Array(24);
+    let urlTeamsToExclude = new Array(32);
     
     for (const [key, value] of urlParams.entries()) {
       if (key.startsWith('A') && key.includes('T')) {
@@ -236,7 +240,7 @@ export default function Picklist() {
         urlAlliances[allianceNumber][parseInt(teamPosition) - 1] = value;
         
         if (value) {
-          urlTeamsToExclude[((parseInt(allianceNumber) - 1) * 3) + (parseInt(teamPosition) - 1)] = +value;
+          urlTeamsToExclude[((parseInt(allianceNumber) - 1) * 4) + (parseInt(teamPosition) - 1)] = +value;
         }
       }
     }
@@ -250,11 +254,11 @@ export default function Picklist() {
     
     // Update teams to exclude based on alliance data
     if (Object.keys(finalAllianceData).length > 0) {
-      let updatedTeamsToExclude = new Array(24);
+      let updatedTeamsToExclude = new Array(32);
       Object.entries(finalAllianceData).forEach(([allianceNumber, teams]) => {
         teams.forEach((team, index) => {
           if (team) {
-            updatedTeamsToExclude[((parseInt(allianceNumber) - 1) * 3) + index] = +team;
+            updatedTeamsToExclude[((parseInt(allianceNumber) - 1) * 4) + index] = +team;
           }
         });
       });
@@ -268,21 +272,26 @@ export default function Picklist() {
     const firstValue = allianceData ? allianceData[0] : '';
     const secondValue = allianceData ? allianceData[1] : '';
     const thirdValue = allianceData ? allianceData[2] : '';
+    const fourthValue = allianceData ? allianceData[3] : '';
 
     return (
       <tr>
         <td>A{allianceNumber}</td>
         <td><label htmlFor={`A${allianceNumber}T1`}></label><input name={`A${allianceNumber}T1`} type="number" defaultValue={firstValue}
           onBlur={e => {
-            handleAllianceChange(allianceNumber, [e.target.value, secondValue, thirdValue]);
+            handleAllianceChange(allianceNumber, [e.target.value, secondValue, thirdValue, fourthValue]);
           }}></input></td>
         <td><label htmlFor={`A${allianceNumber}T2`}></label><input name={`A${allianceNumber}T2`} type="number" defaultValue={secondValue}
           onBlur={e => {
-            handleAllianceChange(allianceNumber, [firstValue, e.target.value, thirdValue])
+            handleAllianceChange(allianceNumber, [firstValue, e.target.value, thirdValue, fourthValue])
           }}></input></td>
         <td><label htmlFor={`A${allianceNumber}T3`}></label><input name={`A${allianceNumber}T3`} type="number" defaultValue={thirdValue}
           onBlur={e => {
-            handleAllianceChange(allianceNumber, [firstValue, secondValue, e.target.value])
+            handleAllianceChange(allianceNumber, [firstValue, secondValue, e.target.value, fourthValue])
+          }}></input></td>
+        <td><label htmlFor={`A${allianceNumber}T4`}></label><input name={`A${allianceNumber}T4`} type="number" defaultValue={fourthValue}
+          onBlur={e => {
+            handleAllianceChange(allianceNumber, [firstValue, secondValue, thirdValue, e.target.value])
           }}></input></td>
       </tr>
     )
@@ -302,14 +311,40 @@ export default function Picklist() {
     // Update teams to exclude
     let updatedTeamsToExclude = [...teamsToExclude];
     allianceTeams.forEach((team, index) => {
-      const position = ((parseInt(allianceNumber) - 1) * 3) + index;
+      const position = ((parseInt(allianceNumber) - 1) * 4) + index;
       updatedTeamsToExclude[position] = team ? +team : undefined;
     });
     setTeamsToExclude(updatedTeamsToExclude);
     
     updateAlliancesData(allianceNumber, allianceTeams);
   };
+
+const handleAllianceClear = () => {
+  // 1. Clear alliance data in state
+  const clearedAllianceData = {};
+  for (let i = 1; i <= 8; i++) clearedAllianceData[i] = ['', '', '', ''];
+  setAllianceData(clearedAllianceData);
+
+  // 2. Clear localStorage
+  localStorage.setItem('allianceData', JSON.stringify(clearedAllianceData));
   
+  // 3. Reset team exclusions
+  setTeamsToExclude(new Array(32).fill(''));
+
+  // 4. Build new URL params
+  const newParams = new URLSearchParams(weights);
+  
+  // 5. Remove all alliance parameters
+  for (let i = 1; i <= 8; i++) {
+    for (let j = 1; j <= 4; j++) {
+      newParams.delete(`A${i}T${j}`);
+    }
+  }
+
+  // 6. Update URL
+  window.history.replaceState(null, '', `?${newParams.toString()}`);
+};
+
   function PicklistTable() {
     
     const valueToColor = (value) => {
@@ -363,10 +398,10 @@ export default function Picklist() {
             <th>TBA Rank</th>
             <th>Team</th>
             <th>EPA</th>
+            <th>Last 3 EPA</th>
             <th>Auto</th>
             <th>Tele</th>
             <th>End</th>
-            <th>Cage</th>
             <th>Cnstcy</th>
             <th>Coral</th>
             <th>Algae</th>
@@ -401,10 +436,10 @@ export default function Picklist() {
                         </a>
                       </td>
                       <td style={{ backgroundColor: valueToColor(teamData.epa) }}>{roundToThree(teamData.epa)}</td>
+                      <td style={{ backgroundColor: valueToColor(teamData.last3epa) }}>{roundToThree(teamData.last3epa)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.auto) }}>{roundToThree(teamData.auto)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.tele) }}>{roundToThree(teamData.tele)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.end) }}>{roundToThree(teamData.end)}</td>
-                      <td style={{ backgroundColor: valueToColor(teamData.cage) }}>{roundToThree(teamData.cage)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.consistency) }}>{roundToThree(teamData.consistency)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.coral) }}>{roundToThree(teamData.coral)}</td>
                       <td style={{ backgroundColor: valueToColor(teamData.algae) }}>{roundToThree(teamData.algae)}</td>
@@ -484,7 +519,7 @@ export default function Picklist() {
 
   return (
     <div className={styles.MainDiv}>
-      <div>
+      <div className={styles.LeftColumn}>
         <form ref={weightsFormRef} className={styles.weightsForm}>
           <div className={styles.weights}>
             <h1>Weights</h1>
@@ -496,7 +531,10 @@ export default function Picklist() {
           }} className={weightsChanged ? styles.recalculateIsMad : ""}>Recalculate Picklist</button>
         </form>
         <div className={styles.alliances}>
-          <h1>Alliances</h1>
+          <div className={styles.allianceButton}>
+            <h1>Alliances</h1>
+            <button onClick={handleAllianceClear}>Clear All Teams</button>
+          </div>
           <div className={styles.wholeAlliance}>
             <form ref={alliancesFormRef}>
               <table className={styles.allianceTable}>
@@ -506,6 +544,7 @@ export default function Picklist() {
                     <th>T1</th>
                     <th>T2</th>
                     <th>T3</th>
+                    <th>T4</th>
                   </tr>
                 </thead>
                 <tbody>
