@@ -6,10 +6,10 @@ export const revalidate = 300; // Cache for 5 minutes
 
 export async function GET() {
   try {
-    const { rows } = await sql`SELECT * FROM sdr2025;`;
+    const { rows } = await sql`SELECT * FROM champs2025;`;
     let responseObject = {};
 
-    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2025casd/teams`, {
+    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2025hop/teams`, {
       headers: {
         "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
         "Accept": "application/json"
@@ -62,6 +62,7 @@ function initializeTeamData(row, auto, tele, end, frcAPITeamInfo) {
       L4: row.autol4success + row.telel4success,
       net: row.autoprocessorsuccess + row.teleprocessorsuccess,
       processor: row.autonetsuccess + row.telenetsuccess,
+      HP: row.hpsuccess,
     },
     leave: row.leave,
     autoCoral: row.autocoralsuccess,
@@ -93,6 +94,7 @@ function accumulateTeamData(teamData, row, auto, tele, end) {
   teamData.avgPieces.L4 += row.autol4success + row.telel4success;
   teamData.avgPieces.net += row.autoprocessorsuccess + row.teleprocessorsuccess;
   teamData.avgPieces.processor += row.autonetsuccess + row.telenetsuccess;
+  teamData.avgPieces.HP += row.hpsuccess;
   teamData.removedAlgae += row.autoalgaeremoved + row.telealgaeremoved;
 
   const endgameData = createEndgameData(row.endlocation);
@@ -138,6 +140,7 @@ function calculateAverages(responseObject, rows) {
     teamData.avgPieces.L4 = average(teamData.avgPieces.L4, count);
     teamData.avgPieces.net = average(teamData.avgPieces.net, count);
     teamData.avgPieces.processor = average(teamData.avgPieces.processor, count);
+    teamData.avgPieces.HP = average(teamData.avgPieces.HP, count);
     teamData.removedAlgae = average(teamData.removedAlgae, count);
 
     let locationSum =
@@ -161,8 +164,8 @@ function calculateAverages(responseObject, rows) {
     teamData.qualitative.maneuverability = average(teamData.qualitative.maneuverability, count);
     teamData.qualitative.defenseplayed = average(teamData.qualitative.defenseplayed, count);
     teamData.qualitative.defenseevasion = average(teamData.qualitative.defenseevasion, count);
-    teamData.qualitative.aggression = average(teamData.qualitative.aggression, count);
-    teamData.qualitative.cagehazard = average(teamData.qualitative.cagehazard, count);
+    teamData.qualitative.aggression = 5 - average(teamData.qualitative.aggression, count);
+    teamData.qualitative.cagehazard = 5 - average(teamData.qualitative.cagehazard, count);
   }
 }
 
