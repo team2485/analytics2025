@@ -727,18 +727,28 @@ export async function GET(request) {
     return attemptedMatches > 0 ? (successfulMatches / attemptedMatches) * 100 : 0;
   },
   
-  qualitative: arr => [
-    { name: "Coral Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.coralspeed || 0), 0) / rows.length : 0 },
-    { name: "Processor Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.processorspeed || 0), 0) / rows.length : 0 },
-    { name: "Net Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.netspeed || 0), 0) / rows.length : 0 },
-    { name: "Algae Removal Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.algaeremovalspeed || 0), 0) / rows.length : 0 },
-    { name: "Climb Speed", rating: rows.length ? rows.reduce((sum, row) => sum + (row.climbspeed || 0), 0) / rows.length : 0 },
-    { name: "Maneuverability", rating: rows.length ? rows.reduce((sum, row) => sum + (row.maneuverability || 0), 0) / rows.length : 0 },
-    { name: "Defense Played", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseplayed || 0), 0) / rows.length : 0 },
-    { name: "Defense Evasion", rating: rows.length ? rows.reduce((sum, row) => sum + (row.defenseevasion || 0), 0) / rows.length : 0 },
-    { name: "Aggression*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.aggression || 0), 0) / rows.length) : 0 },
-    { name: "Cage Hazard*", rating: rows.length ? 5 - (rows.reduce((sum, row) => sum + (row.cagehazard || 0), 0) / rows.length) : 0 },
-  ],
+  qualitative: arr => {
+    function safeAverage(key, invert = false) {
+      const values = rows.map(row => row[key]).filter(v => typeof v === 'number' && v >= 0);
+      if (values.length === 0) return -1;
+      const avg = values.reduce((a, b) => a + b, 0) / values.length;
+      return invert ? 5 - avg : avg;
+    }
+  
+    return [
+      { name: "Coral Speed", rating: safeAverage('coralspeed') },
+      { name: "Processor Speed", rating: safeAverage('processorspeed') },
+      { name: "Net Speed", rating: safeAverage('netspeed') },
+      { name: "Algae Removal Speed", rating: safeAverage('algaeremovalspeed') },
+      { name: "Climb Speed", rating: safeAverage('climbspeed') },
+      { name: "Maneuverability", rating: safeAverage('maneuverability') },
+      { name: "Defense Played", rating: safeAverage('defenseplayed') },
+      { name: "Defense Evasion", rating: safeAverage('defenseevasion') },
+      { name: "Aggression*", rating: safeAverage('aggression', true) },
+      { name: "Cage Hazard*", rating: safeAverage('cagehazard', true) },
+    ];
+  }
+  
 }));  // This appears to close the object and function call that contains these properties
 
 // The rest of your code seems fine and doesn't need modification for your current issue

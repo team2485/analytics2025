@@ -4,6 +4,14 @@ import { calcAuto, calcTele, calcEnd } from "@/util/calculations";
 
 export const revalidate = 300; // Cache for 5 minutes
 
+const avgNonNegative = (values) => {
+  const filtered = values.filter(v => typeof v === 'number' && v >= 0);
+  return filtered.length > 0
+    ? Math.round((filtered.reduce((a, b) => a + b, 0) / filtered.length) * 10) / 10
+    : -1;
+};
+
+
 export async function GET() {
   try {
     const { rows } = await sql`SELECT * FROM champs2025;`;
@@ -156,16 +164,27 @@ function calculateAverages(responseObject, rows) {
         }
       : { none: 100, park: 0, shallow: 0, deep: 0, fail: 0 };
 
-    teamData.qualitative.coralspeed = average(teamData.qualitative.coralspeed, count);
-    teamData.qualitative.processorspeed = average(teamData.qualitative.processorspeed, count);
-    teamData.qualitative.netspeed = average(teamData.qualitative.netspeed, count);
-    teamData.qualitative.algaeremovalspeed = average(teamData.qualitative.algaeremovalspeed, count);
-    teamData.qualitative.climbspeed = average(teamData.qualitative.climbspeed, count);
-    teamData.qualitative.maneuverability = average(teamData.qualitative.maneuverability, count);
-    teamData.qualitative.defenseplayed = average(teamData.qualitative.defenseplayed, count);
-    teamData.qualitative.defenseevasion = average(teamData.qualitative.defenseevasion, count);
-    teamData.qualitative.aggression = 5 - average(teamData.qualitative.aggression, count);
-    teamData.qualitative.cagehazard = 5 - average(teamData.qualitative.cagehazard, count);
+      const teamRows = rows.filter(row => row.team === parseInt(team));
+
+      teamData.qualitative = {
+        coralspeed: avgNonNegative(teamRows.map(r => r.coralspeed)),
+        processorspeed: avgNonNegative(teamRows.map(r => r.processorspeed)),
+        netspeed: avgNonNegative(teamRows.map(r => r.netspeed)),
+        algaeremovalspeed: avgNonNegative(teamRows.map(r => r.algaeremovalspeed)),
+        climbspeed: avgNonNegative(teamRows.map(r => r.climbspeed)),
+        maneuverability: avgNonNegative(teamRows.map(r => r.maneuverability)),
+        defenseplayed: avgNonNegative(teamRows.map(r => r.defenseplayed)),
+        defenseevasion: avgNonNegative(teamRows.map(r => r.defenseevasion)),
+        aggression: (() => {
+          const raw = avgNonNegative(teamRows.map(r => r.aggression));
+          return raw === -1 ? -1 : 5 - raw;
+        })(),
+        cagehazard: (() => {
+          const raw = avgNonNegative(teamRows.map(r => r.cagehazard));
+          return raw === -1 ? -1 : 5 - raw;
+        })()
+      };
+      
   }
 }
 
