@@ -401,7 +401,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
 
     return <div className={styles.lightBorderBox}>
       <div className={styles.scoreBreakdownContainer}>
-        <div style={{background: colors[0]}} className={styles.EPABox}>{Math.round(10*auto)/10 + Math.round(10*tele)/10 + Math.round(10*end)/10}</div>
+        <div style={{background: colors[0]}} className={styles.EPABox}>{Math.round((end+tele+auto)*10)/10}</div>
         <div className={styles.EPABreakdown}>
           <div style={{background: colors[1]}}>A: {Math.round(10*auto)/10}</div>
           <div style={{background: colors[1]}}>T: {Math.round(10*tele)/10}</div>
