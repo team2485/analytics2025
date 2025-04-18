@@ -45,12 +45,12 @@ export async function GET(request) {
       const match = matchArr[0];
       return NextResponse.json({
         // Blue alliance lists teams with "frc" prefix, so we remove it
-        team1: parseInt(match.alliances.blue.team_keys[0].replace('frc', '')),
-        team2: parseInt(match.alliances.blue.team_keys[1].replace('frc', '')),
-        team3: parseInt(match.alliances.blue.team_keys[2].replace('frc', '')),
-        team4: parseInt(match.alliances.red.team_keys[0].replace('frc', '')),
-        team5: parseInt(match.alliances.red.team_keys[1].replace('frc', '')),
-        team6: parseInt(match.alliances.red.team_keys[2].replace('frc', '')),
+        team1: parseInt(match.alliances.red.team_keys[0].replace('frc', '')),
+        team2: parseInt(match.alliances.red.team_keys[1].replace('frc', '')),
+        team3: parseInt(match.alliances.red.team_keys[2].replace('frc', '')),
+        team4: parseInt(match.alliances.blue.team_keys[0].replace('frc', '')),
+        team5: parseInt(match.alliances.blue.team_keys[1].replace('frc', '')),
+        team6: parseInt(match.alliances.blue.team_keys[2].replace('frc', '')),
       }, { status: 200 });
     } else {
       return NextResponse.json(

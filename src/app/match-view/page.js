@@ -362,7 +362,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
       yellow: "#FFDD9A"
     }
     //win = higher espm than opponents
-    const teamEPA = (team) => team ? team.auto + team.tele + team.end : 0;
+    const teamEPA = (team) => team ? team.last3Auto + team.last3Tele + team.last3End : 0;
     const opponentsEPA = teamEPA(opponents[0]) + teamEPA(opponents[1]) + teamEPA(opponents[2]);
     const currentAllianceEPA = auto + tele + end;
     let RP_WIN = RGBColors.red;
@@ -370,7 +370,7 @@ function AllianceButtons({t1, t2, t3, colors}) {
     else if (currentAllianceEPA == opponentsEPA) RP_WIN = RGBColors.yellow;
 
     //auto rp = all robots leave and alliance scores one coral
-    const allianceAuto = Math.floor(teams[0].auto) + Math.floor(teams[1].auto) + Math.floor(teams[2].auto);
+    const allianceAuto = Math.floor(teams[0].last3Auto) + Math.floor(teams[1].last3Auto) + Math.floor(teams[2].last3Auto);
     let RP_AUTO = RGBColors.red;
     if ((allianceAuto > 9) && (teams[0].leave == true) && (teams[1].leave == true) && (teams[2].leave == true)) RP_AUTO = RGBColors.green;
 
