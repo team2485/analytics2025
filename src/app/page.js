@@ -214,7 +214,7 @@ console.log("page",matchType)
         />
         </div>
         {!noShow && (
-          <>
+          < >
             <div className={styles.Auto}>
               <Header headerName={"Auto"}/>
               <Checkbox visibleName={"Leave"} internalName={"leave"} />
