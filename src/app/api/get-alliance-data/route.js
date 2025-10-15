@@ -14,10 +14,10 @@ const avgNonNegative = (values) => {
 
 export async function GET() {
   try {
-    const { rows } = await sql`SELECT * FROM champs2025;`;
+    const { rows } = await sql`SELECT * FROM scc2025;`;
     let responseObject = {};
 
-    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2025hop/teams`, {
+    const frcAPITeamData = await fetch(`https://www.thebluealliance.com/api/v3/event/2025casnd/teams`, {
       headers: {
         "X-TBA-Auth-Key": process.env.TBA_AUTH_KEY,
         "Accept": "application/json"
