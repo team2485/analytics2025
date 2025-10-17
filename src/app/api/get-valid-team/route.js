@@ -35,7 +35,7 @@ export async function GET(request) {
 
         // Filter for the specific match and team
         const teamKey = `frc${team}`;
-        const matchKey = `2025casnd${match}`;
+        const matchKey = `2025casnd_qm${match}`;
 
         const validMatch = matches.find(match => {
             // Check if this is the correct match
