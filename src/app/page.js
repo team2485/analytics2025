@@ -104,7 +104,7 @@ export default function Home() {
         submitButton.disabled = false;
         return;
       } 
-    } /* else {
+    } else {
       try {
         const response = await fetch(`/api/get-valid-match-teams?team=${data.team}`)
         const validationData = await response.json();
@@ -121,7 +121,6 @@ export default function Home() {
         return;
       } 
     }
-*/
     //confirm and submit
     if (confirm("Are you sure you want to submit?") == true) {
       fetch('/api/add-match-data', {
